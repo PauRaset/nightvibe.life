@@ -101,7 +101,7 @@ const sections: LegalSection[] = [
         Cada local define sus propios niveles, misiones y premios, y es responsable de
         concederlos. Los premios no son canjeables por dinero, están sujetos a disponibilidad y a
         las condiciones del local, y los que incluyan bebidas alcohólicas solo se entregarán a
-        mayores de edad. {siteConfig.name} puede anular puntos o premios obtenidos de forma
+        mayores de edad. {siteConfig.name} puede anular misiones o premios obtenidos de forma
         fraudulenta.
       </p>
     ),

@@ -2,10 +2,12 @@ import { Container } from "../Container";
 import { SectionHeading } from "../SectionHeading";
 
 const missions = [
-  { title: "Escanea el QR del local", points: "+20", done: true },
-  { title: "Sube una foto de la noche", points: "+30", done: true },
-  { title: "Vuelve otro fin de semana", points: "+50", done: false },
+  { title: "Escanea el QR del local", done: true },
+  { title: "Sube una foto de la noche", done: true },
+  { title: "Vuelve otro fin de semana", done: false },
 ];
+
+const completed = missions.filter((m) => m.done).length;
 
 const rewards = [
   { level: "Nivel 1", reward: "Chupito de bienvenida", unlocked: true },
@@ -15,9 +17,18 @@ const rewards = [
 
 function CheckIcon({ done }: { done: boolean }) {
   return done ? (
-    <span className="flex size-6 items-center justify-center rounded-full bg-nv-gradient" aria-hidden="true">
+    <span
+      className="flex size-6 items-center justify-center rounded-full bg-nv-gradient"
+      aria-hidden="true"
+    >
       <svg viewBox="0 0 16 16" className="size-3.5" fill="none">
-        <path d="M3.5 8.5l3 3 6-7" stroke="black" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
+        <path
+          d="M3.5 8.5l3 3 6-7"
+          stroke="black"
+          strokeWidth="2.2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
       </svg>
     </span>
   ) : (
@@ -40,7 +51,8 @@ export function LevelsSection() {
           <div className="flex items-baseline justify-between">
             <p className="text-lg font-extrabold text-white">Nivel 2</p>
             <p className="text-sm text-nv-muted">
-              <span className="font-bold text-white">140</span> / 200 pts
+              <span className="font-bold text-white">{completed}</span> de {missions.length}{" "}
+              misiones
             </p>
           </div>
           <div
@@ -48,10 +60,14 @@ export function LevelsSection() {
             role="progressbar"
             aria-label="Progreso hacia el nivel 3"
             aria-valuemin={0}
-            aria-valuemax={200}
-            aria-valuenow={140}
+            aria-valuemax={missions.length}
+            aria-valuenow={completed}
+            aria-valuetext={`${completed} de ${missions.length} misiones completadas`}
           >
-            <div className="h-full w-[70%] rounded-full bg-nv-gradient" />
+            <div
+              className="h-full rounded-full bg-nv-gradient"
+              style={{ width: `${(completed / missions.length) * 100}%` }}
+            />
           </div>
 
           <h3 className="nv-label mt-8 text-nv-dim">Misiones</h3>
@@ -59,11 +75,14 @@ export function LevelsSection() {
             {missions.map((m) => (
               <li key={m.title} className="flex items-center gap-3 rounded-2xl bg-nv-surface p-3.5">
                 <CheckIcon done={m.done} />
-                <span className={`flex-1 text-sm font-semibold ${m.done ? "text-nv-muted line-through decoration-white/30" : "text-white"}`}>
+                <span
+                  className={`flex-1 text-sm font-semibold ${m.done ? "text-nv-muted line-through decoration-white/30" : "text-white"}`}
+                >
                   {m.title}
-                  <span className="sr-only">{m.done ? " (completada)" : " (pendiente)"}</span>
                 </span>
-                <span className="text-sm font-bold text-white tabular-nums">{m.points}</span>
+                <span className={`nv-label ${m.done ? "text-nv-dim" : "text-nv-violet-text"}`}>
+                  {m.done ? "Completada" : "Pendiente"}
+                </span>
               </li>
             ))}
           </ul>

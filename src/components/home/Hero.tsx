@@ -30,14 +30,8 @@ export function Hero() {
           </p>
           <StoreButtons className="mt-9" />
         </div>
-        <div className="relative motion-safe:animate-float">
-          {/* Segundo móvil solo en escritorio: en 375px no cabe sin apretar el hero. */}
-          <PhoneMockup
-            screen="evento"
-            glow={false}
-            className="absolute! top-12 left-1/2 hidden -translate-x-[95%] -rotate-6 scale-90 opacity-70 lg:block"
-          />
-          <PhoneMockup screen="home" preload className="lg:translate-x-16" />
+        <div className="motion-safe:animate-float">
+          <PhoneMockup screen="home" preload />
         </div>
       </Container>
     </section>

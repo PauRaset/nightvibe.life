@@ -1,24 +1,29 @@
+import { existsSync } from "node:fs";
+import { join } from "node:path";
 import Image from "next/image";
 
-// Marco de iPhone para capturas REALES de la app. Las capturas van en
-// public/screens/ a 1179×2556 px (iPhone 15/16 Pro). Mientras `src` sea null se
-// muestra un placeholder con el fondo de la app.
-// Las capturas no pueden mostrar nombres de locales reales.
+// Marco de iPhone para capturas REALES de la app, en public/screens/ a
+// 1179×2556 px (iPhone 15/16 Pro). Si el archivo no existe se muestra un
+// placeholder con el fondo de la app: basta con añadir el PNG, sin tocar código.
+// Las capturas no pueden mostrar locales, artistas ni personas reales.
+const SCREEN_WIDTH = 1179;
+const SCREEN_HEIGHT = 2556;
+
 export const appScreens = {
   home: {
-    src: null as string | null, // "/screens/home.png"
+    file: "home.png",
     label: "Inicio",
-    alt: "Pantalla de inicio de la app NightVibe: locales cercanos ordenados por calor en tiempo real",
+    alt: "Inicio de la app NightVibe: eventos de esta noche ordenados por calor en tiempo real",
   },
   evento: {
-    src: null as string | null, // "/screens/evento.png"
+    file: "evento.png",
     label: "Detalle de evento",
-    alt: "Detalle de un evento en la app NightVibe con su nivel de calor y la entrada",
+    alt: "Detalle de un evento en la app NightVibe con su nivel de calor",
   },
   entrada: {
-    src: null as string | null, // "/screens/entrada.png"
+    file: "entrada.png",
     label: "Entrada con QR",
-    alt: "Entrada digital con código QR en la app NightVibe",
+    alt: "Entrada digital con código QR a pantalla completa en la app NightVibe",
   },
 };
 
@@ -28,36 +33,34 @@ type PhoneMockupProps = {
   screen: AppScreen;
   /** Solo para la imagen above-the-fold (hero). */
   preload?: boolean;
-  glow?: boolean;
   className?: string;
 };
 
-export function PhoneMockup({ screen, preload = false, glow = true, className = "" }: PhoneMockupProps) {
-  const { src, label, alt } = appScreens[screen];
+export function PhoneMockup({ screen, preload = false, className = "" }: PhoneMockupProps) {
+  const { file, label, alt } = appScreens[screen];
+  const src = `/screens/${file}`;
+  const hasImage = existsSync(join(process.cwd(), "public", src));
 
   return (
-    <div className={`relative mx-auto w-[272px] sm:w-[300px] ${className}`}>
-      {glow && (
-        <div
-          aria-hidden="true"
-          className="absolute -inset-10 -z-10 rounded-full bg-nv-gradient opacity-25 blur-3xl"
-        />
-      )}
-      {/* Bisel */}
-      <div className="rounded-[3rem] bg-black p-[7px] shadow-[0_40px_80px_-20px_rgba(0,0,0,0.8)] ring-1 ring-white/15">
-        {/* Pantalla con la proporción exacta de la captura */}
-        <div className="relative aspect-[1179/2556] overflow-hidden rounded-[2.6rem] bg-nv-app-bg">
-          {src ? (
+    <div className={`mx-auto w-[260px] sm:w-[290px] ${className}`}>
+      <div className="rounded-[3rem] bg-black p-1.5 shadow-[0_30px_60px_-24px_rgba(0,0,0,0.7)] ring-1 ring-white/10">
+        <div className="relative overflow-hidden rounded-[2.65rem] bg-nv-app-bg">
+          {hasImage ? (
             <Image
               src={src}
               alt={alt}
-              fill
-              sizes="(min-width: 640px) 286px, 258px"
+              width={SCREEN_WIDTH}
+              height={SCREEN_HEIGHT}
+              sizes="(min-width: 640px) 278px, 248px"
               preload={preload}
-              className="object-cover"
+              className="block h-auto w-full"
             />
           ) : (
-            <div role="img" aria-label={alt} className="flex h-full items-center justify-center">
+            <div
+              role="img"
+              aria-label={alt}
+              className="flex aspect-[1179/2556] items-center justify-center"
+            >
               <p aria-hidden="true" className="nv-label text-nv-dim">
                 Captura · {label}
               </p>

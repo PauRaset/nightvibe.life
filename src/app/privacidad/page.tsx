@@ -113,7 +113,7 @@ const sections: LegalSection[] = [
 
         <h3>Niveles, misiones y premios (app)</h3>
         <p>
-          Visitas, misiones completadas, puntos y premios canjeados en cada local. Finalidad:
+          Visitas, misiones completadas y premios canjeados en cada local. Finalidad:
           gestionar el programa de niveles de cada local. Base legal: ejecución del contrato (art.
           6.1.b RGPD).
         </p>

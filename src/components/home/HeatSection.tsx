@@ -1,5 +1,6 @@
 import { Container } from "../Container";
 import { HeatBadge } from "../HeatBadge";
+import { PhoneMockup } from "../PhoneMockup";
 import { SectionHeading } from "../SectionHeading";
 
 const steps = [
@@ -10,33 +11,32 @@ const steps = [
 
 export function HeatSection() {
   return (
-    <section id="como-funciona" aria-labelledby="calor-title" className="scroll-mt-20 py-16 sm:py-28">
-      <Container>
-        <SectionHeading
-          id="calor-title"
-          eyebrow="Calor en tiempo real"
-          title="Sabes cómo está antes de llegar."
-          description="Cada local tiene un nivel de calor de 0 a 100 que cambia durante la noche. Un vistazo y decides."
-        />
-
-        <div className="relative mt-14">
-          {/* La escala: el gradiente aquí tiene significado (frío → caliente) */}
-          <div
-            aria-hidden="true"
-            className="absolute top-14 right-[16%] left-[16%] hidden h-px bg-nv-gradient opacity-60 sm:block"
+    <section
+      id="como-funciona"
+      aria-labelledby="calor-title"
+      className="scroll-mt-20 py-16 sm:py-28"
+    >
+      <Container className="grid items-center gap-14 lg:grid-cols-2">
+        <div>
+          <SectionHeading
+            id="calor-title"
+            eyebrow="Calor en tiempo real"
+            title="Sabes cómo está antes de llegar."
+            description="Cada local tiene un nivel de calor de 0 a 100 que cambia durante la noche. Un vistazo y decides."
           />
-          <ol className="grid gap-5 sm:grid-cols-3">
+          <ol className="mt-10 space-y-3">
             {steps.map((step) => (
               <li
                 key={step.value}
-                className="relative flex flex-col items-center rounded-3xl bg-nv-surface px-6 py-8 text-center"
+                className="flex items-center gap-4 rounded-3xl bg-nv-surface p-4"
               >
-                <HeatBadge value={step.value} size="md" />
-                <p className="mt-4 text-sm leading-relaxed text-nv-muted">{step.text}</p>
+                <HeatBadge value={step.value} size="sm" hideLabel />
+                <p className="text-sm leading-relaxed text-nv-muted">{step.text}</p>
               </li>
             ))}
           </ol>
         </div>
+        <PhoneMockup screen="evento" />
       </Container>
     </section>
   );

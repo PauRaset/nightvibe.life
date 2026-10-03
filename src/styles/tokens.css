@@ -1,0 +1,34 @@
+/*
+ * NightVibe — tokens de diseño.
+ * FUENTE ÚNICA de los hex de marca. No añadas hex nuevos: deriva superficies
+ * y textos del fondo con blanco en opacidad. Los contextos sin CSS (next/og,
+ * themeColor) leen este archivo vía src/lib/tokens.ts.
+ */
+:root {
+  /* Marca */
+  --nv-cyan: #00E5FF;     /* inicio gradiente, lado frío */
+  --nv-violet: #7B5CFF;   /* centro, estado "subiendo", color de marca */
+  --nv-magenta: #FF2D9B;  /* final, "a reventar" */
+  --nv-bg: #0A0C12;       /* negro noche */
+  --nv-gradient: linear-gradient(135deg, #00E5FF 0%, #7B5CFF 50%, #FF2D9B 100%);
+
+  /* Superficies (derivadas del fondo) */
+  --nv-surface: rgba(255, 255, 255, 0.04);
+  --nv-surface-strong: rgba(255, 255, 255, 0.08);
+  --nv-line: rgba(255, 255, 255, 0.08);
+
+  /* Texto (derivado del fondo). 0.5 es el mínimo que cumple AA sobre --nv-bg;
+     0.4 solo para elementos decorativos, nunca para texto. */
+  --nv-text: rgba(255, 255, 255, 0.94);
+  --nv-text-muted: rgba(255, 255, 255, 0.6);
+  --nv-text-dim: rgba(255, 255, 255, 0.5);
+
+  /* El violeta puro da 4.49:1 sobre --nv-bg (AA exige 4.5 en texto pequeño).
+     Para texto pequeño se aclara con blanco; no es un hex nuevo. */
+  --nv-violet-text: color-mix(in srgb, var(--nv-violet) 78%, white);
+
+  /* Escala de calor (semántica) */
+  --nv-heat-low: var(--nv-cyan);
+  --nv-heat-mid: var(--nv-violet);
+  --nv-heat-high: var(--nv-magenta);
+}

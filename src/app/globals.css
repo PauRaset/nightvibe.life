@@ -1,0 +1,95 @@
+@import "tailwindcss";
+@import "../styles/tokens.css";
+
+@theme inline {
+  --color-nv-cyan: var(--nv-cyan);
+  --color-nv-violet: var(--nv-violet);
+  --color-nv-magenta: var(--nv-magenta);
+  --color-nv-bg: var(--nv-bg);
+  --color-nv-violet-text: var(--nv-violet-text);
+  --color-nv-surface: var(--nv-surface);
+  --color-nv-surface-strong: var(--nv-surface-strong);
+  --color-nv-line: var(--nv-line);
+  --color-nv-text: var(--nv-text);
+  --color-nv-muted: var(--nv-text-muted);
+  --color-nv-dim: var(--nv-text-dim);
+
+  --font-sans: var(--font-brand), ui-sans-serif, system-ui, sans-serif;
+
+  --animate-heat-pulse: heat-pulse 2.4s ease-in-out infinite;
+  --animate-float: float 6s ease-in-out infinite;
+  --animate-live-dot: live-dot 1.6s ease-in-out infinite;
+
+  @keyframes heat-pulse {
+    0%, 100% { box-shadow: 0 0 24px -6px var(--heat-color, var(--nv-violet)); }
+    50% { box-shadow: 0 0 44px -2px var(--heat-color, var(--nv-violet)); }
+  }
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+  }
+  @keyframes live-dot {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.35; }
+  }
+}
+
+@utility bg-nv-gradient {
+  background-image: var(--nv-gradient);
+}
+
+@utility text-nv-gradient {
+  background-image: var(--nv-gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Etiqueta de estado: MAYÚSCULAS pequeñas con tracking */
+@utility nv-label {
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+@layer base {
+  html {
+    background-color: var(--nv-bg);
+    color-scheme: dark;
+  }
+
+  body {
+    background-color: var(--nv-bg);
+    color: var(--nv-text);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--nv-cyan);
+    outline-offset: 3px;
+    border-radius: 6px;
+  }
+
+  ::selection {
+    background-color: var(--nv-violet);
+    color: white;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}

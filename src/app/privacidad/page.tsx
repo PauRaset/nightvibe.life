@@ -9,6 +9,7 @@ export const metadata: Metadata = pageMetadata({
   title: "Política de privacidad",
   description: `Cómo trata ${siteConfig.name} tus datos personales en la web y en la app.`,
   path: "/privacidad",
+  noindex: !siteConfig.legalPagesReady,
 });
 
 const { legal } = siteConfig;

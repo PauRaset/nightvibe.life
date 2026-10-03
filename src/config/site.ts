@@ -36,10 +36,11 @@ export const siteConfig = {
     lastUpdated: "[TODO: fecha de última actualización]",
   },
 
-  // Modelo económico para locales (B2B)
-  pricing: {
-    feePerTicketCents: 170,
-  },
+  // Mientras sea false, las páginas legales llevan noindex, salen del sitemap y
+  // no se enlazan desde el footer. Siguen accesibles por URL directa porque el
+  // formulario de /locales enlaza a /privacidad para el consentimiento RGPD.
+  // TODO: pasar a true cuando el asesor legal haya revisado los textos.
+  legalPagesReady: false,
 } as const;
 
 export const navLinks = [
@@ -57,11 +58,4 @@ export const legalLinks = [
 /** true si el valor sigue siendo un placeholder "[TODO: ...]". */
 export function isPlaceholder(value: string): boolean {
   return value.trim() === "" || value.startsWith("[TODO");
-}
-
-const euroFormatter = new Intl.NumberFormat("es-ES", { style: "currency", currency: "EUR" });
-
-/** Formatea céntimos como "1,70 €". */
-export function formatEuros(cents: number): string {
-  return euroFormatter.format(cents / 100);
 }

@@ -1,17 +1,16 @@
 import type { Metadata } from "next";
 import { Container } from "@/components/Container";
-import { GhostButton } from "@/components/GhostButton";
 import { GradientButton } from "@/components/GradientButton";
+import { BusinessModel } from "@/components/locales/BusinessModel";
 import { ContactForm } from "@/components/locales/ContactForm";
-import { Pricing } from "@/components/locales/Pricing";
 import { ValueProps } from "@/components/locales/ValueProps";
 import { SectionHeading } from "@/components/SectionHeading";
-import { formatEuros, siteConfig } from "@/config/site";
 import { pageMetadata } from "@/lib/metadata";
 
 export const metadata: Metadata = pageMetadata({
   title: "Para locales",
-  description: `Publica eventos, vende entradas y fideliza con promociones por niveles. Comisión fija de ${formatEuros(siteConfig.pricing.feePerTicketCents)} por entrada, sin otros cobros.`,
+  description:
+    "Publica eventos, vende entradas y fideliza con promociones por niveles. Hablemos de tu local.",
   path: "/locales",
 });
 
@@ -31,15 +30,14 @@ export default function LocalesPage() {
             NightVibe es la plataforma donde tu local publica eventos, vende entradas y premia a
             quien vuelve. Tú organizas; nosotros ponemos la tecnología y el escaparate.
           </p>
-          <div className="mt-9 flex flex-col gap-3 sm:flex-row">
+          <div className="mt-9">
             <GradientButton href="#contacto">Quiero información</GradientButton>
-            <GhostButton href="#precio-title">Ver precio</GhostButton>
           </div>
         </Container>
       </section>
 
       <ValueProps />
-      <Pricing />
+      <BusinessModel />
 
       <section id="contacto" aria-labelledby="contacto-title" className="scroll-mt-20 py-16 sm:py-24">
         <Container className="grid gap-12 lg:grid-cols-[1fr_1.4fr]">

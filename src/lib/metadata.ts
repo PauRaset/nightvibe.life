@@ -5,6 +5,7 @@ type PageMetaInput = {
   title: string;
   description: string;
   path: string;
+  noindex?: boolean;
 };
 
 // Definir openGraph/twitter en una página reemplaza los del layout, incluida la
@@ -16,12 +17,13 @@ const ogImage = {
   alt: `${siteConfig.name}: ${siteConfig.shortDescription}`,
 };
 
-export function pageMetadata({ title, description, path }: PageMetaInput): Metadata {
+export function pageMetadata({ title, description, path, noindex }: PageMetaInput): Metadata {
   const socialTitle = title.includes(siteConfig.name) ? title : `${title} · ${siteConfig.name}`;
   return {
     title,
     description,
     alternates: { canonical: path },
+    ...(noindex && { robots: { index: false, follow: true } }),
     openGraph: {
       title: socialTitle,
       description,

@@ -9,6 +9,7 @@ export const metadata: Metadata = pageMetadata({
   title: "Aviso legal",
   description: `Aviso legal e información del titular de ${siteConfig.name}.`,
   path: "/aviso-legal",
+  noindex: !siteConfig.legalPagesReady,
 });
 
 const { legal } = siteConfig;

@@ -37,7 +37,10 @@ export function Footer() {
             ))}
             {!isPlaceholder(siteConfig.contactEmail) && (
               <li>
-                <a href={`mailto:${siteConfig.contactEmail}`} className="text-nv-muted hover:text-white">
+                <a
+                  href={`mailto:${siteConfig.contactEmail}`}
+                  className="text-nv-muted hover:text-white"
+                >
                   Contacto
                 </a>
               </li>
@@ -57,18 +60,20 @@ export function Footer() {
           </ul>
         </nav>
 
-        <nav aria-label="Legal">
-          <h2 className="nv-label text-nv-dim">Legal</h2>
-          <ul className="mt-4 space-y-3 text-sm">
-            {legalLinks.map((link) => (
-              <li key={link.href}>
-                <Link href={link.href} className="text-nv-muted hover:text-white">
-                  {link.label}
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </nav>
+        {siteConfig.legalPagesReady && (
+          <nav aria-label="Legal">
+            <h2 className="nv-label text-nv-dim">Legal</h2>
+            <ul className="mt-4 space-y-3 text-sm">
+              {legalLinks.map((link) => (
+                <li key={link.href}>
+                  <Link href={link.href} className="text-nv-muted hover:text-white">
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </nav>
+        )}
       </Container>
       <Container className="border-t border-nv-line py-6">
         <p className="text-xs text-nv-dim">

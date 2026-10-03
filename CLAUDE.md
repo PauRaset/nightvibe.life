@@ -31,7 +31,8 @@ promociones son de cada local.
 - NO uses nombres de locales reales. En mockups: tipo de local + zona genérica
   ("Club techno", "Zona puerto").
 - Sin imágenes, stock photos ni fuentes de terceros (salvo `next/font`). Ilustraciones
-  en HTML/CSS/SVG inline.
+  en HTML/CSS/SVG inline. Excepción: capturas reales de la app en `public/screens/`,
+  dentro de `PhoneMockup` (1179×2556 px, sin nombres de locales reales).
 - Tono: directo, nocturno, frases cortas, sin exceso de exclamaciones. Español de España.
 - `/locales` es más sobrio: menos glow, más claridad. El lector es un gerente.
 
@@ -44,6 +45,7 @@ Fuente única de los hex: `src/styles/tokens.css`. **No inventes hex nuevos.**
 --nv-violet: #7B5CFF;   /* centro, estado "subiendo", color de marca */
 --nv-magenta: #FF2D9B;  /* final, "a reventar" */
 --nv-bg: #0A0C12;       /* negro noche */
+--nv-app-bg: #06060B;   /* fondo de la app; solo placeholder de capturas */
 --nv-gradient: linear-gradient(135deg, #00E5FF 0%, #7B5CFF 50%, #FF2D9B 100%);
 ```
 
@@ -72,7 +74,8 @@ Fuente única de los hex: `src/styles/tokens.css`. **No inventes hex nuevos.**
   `[TODO: ...]`.
 - Env vars (solo servidor): `SENDGRID_API_KEY`, `CONTACT_TO_EMAIL`, `CONTACT_FROM_EMAIL`.
   Ver `.env.example`.
-- Páginas legales: llevan el comentario "REVISAR POR ASESOR LEGAL ANTES DE PUBLICAR"
+- Páginas legales: mientras `siteConfig.legalPagesReady` sea false llevan noindex, no
+  salen en el sitemap ni en el footer. Llevan el comentario "REVISAR POR ASESOR LEGAL ANTES DE PUBLICAR"
   (nunca visible en la UI).
 
 ## Comandos

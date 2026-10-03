@@ -11,6 +11,7 @@
   --nv-magenta: #FF2D9B;  /* final, "a reventar" */
   --nv-bg: #0A0C12;       /* negro noche */
   --nv-gradient: linear-gradient(135deg, #00E5FF 0%, #7B5CFF 50%, #FF2D9B 100%);
+  --nv-app-bg: #06060B;   /* fondo de la app; solo para el hueco de las capturas */
 
   /* Superficies (derivadas del fondo) */
   --nv-surface: rgba(255, 255, 255, 0.04);

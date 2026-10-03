@@ -9,6 +9,7 @@ export const metadata: Metadata = pageMetadata({
   title: "Términos y condiciones",
   description: `Condiciones de uso de la app ${siteConfig.name} y de la compra de entradas.`,
   path: "/terminos",
+  noindex: !siteConfig.legalPagesReady,
 });
 
 const { legal } = siteConfig;

@@ -9,6 +9,7 @@ export const metadata: Metadata = pageMetadata({
   title: "Política de cookies",
   description: `Uso de cookies en el sitio web de ${siteConfig.name}.`,
   path: "/cookies",
+  noindex: !siteConfig.legalPagesReady,
 });
 
 // Fase 1: sin cookies no esenciales ni analytics. Si se añaden, hay que

@@ -13,5 +13,5 @@ export default function sitemap(): MetadataRoute.Sitemap {
     changeFrequency: "yearly",
     priority: 0.2,
   }));
-  return [...main, ...legal];
+  return siteConfig.legalPagesReady ? [...main, ...legal] : main;
 }

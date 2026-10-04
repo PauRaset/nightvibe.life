@@ -13,6 +13,11 @@
   --nv-gradient: linear-gradient(135deg, #00E5FF 0%, #7B5CFF 50%, #FF2D9B 100%);
   --nv-app-bg: #06060B;   /* fondo de la app; solo para el hueco de las capturas */
 
+  /* Aviso (fuera de la escala de calor). Ámbar saturado y luminoso, de la misma
+     familia neón que la marca: 10.7:1 sobre --nv-bg. Solo para estados de aviso
+     (p. ej. "entrada ya usada"), nunca decorativo. */
+  --nv-warning: #FFB020;
+
   /* Superficies (derivadas del fondo) */
   --nv-surface: rgba(255, 255, 255, 0.04);
   --nv-surface-strong: rgba(255, 255, 255, 0.08);

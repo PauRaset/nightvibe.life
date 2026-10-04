@@ -10,7 +10,7 @@ type PageMetaInput = {
 
 // Definir openGraph/twitter en una página reemplaza los del layout, incluida la
 // imagen generada en src/app/opengraph-image.tsx, así que se añade explícitamente.
-const ogImage = {
+export const ogImage = {
   url: "/opengraph-image",
   width: 1200,
   height: 630,

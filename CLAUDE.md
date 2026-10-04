@@ -7,15 +7,24 @@ para el mercado catalán: descubrimiento de locales en tiempo real con un sistem
 "calor", promociones por niveles con misiones y premios, componente social (a dónde van
 las personas que sigues) y compra fácil de entradas.
 
-Dos públicos: gente que sale (`/`) y locales/discotecas (`/locales`, B2B).
+Dos públicos: gente que sale (`/`) y locales/discotecas (`/locales`, B2B). Además,
+`/t/[token]`: la entrada que un comprador comparte con un acompañante (se enseña en la
+puerta del local).
 
 Stack: Next.js 16 (App Router, `src/`), TypeScript, Tailwind CSS v4 (`@theme`, sin
-`tailwind.config`), zod, @sendgrid/mail. Sin librerías de UI ni framer-motion.
+`tailwind.config`), zod, @sendgrid/mail, qrcode. Sin librerías de UI ni framer-motion.
 
 ## Fase actual: FASE 1
 
-- Sin backend de producción, sin Stripe ni pagos, sin eventos reales.
-- Única llamada a servidor: `POST /api/contacto` (formulario de locales → SendGrid).
+- Sin Stripe ni pagos en la web: las entradas se compran en la app.
+- Llamadas a servidor, todas desde el servidor de Next (nunca desde el navegador):
+  - `POST /api/contacto`: formulario de locales → SendGrid.
+  - `/t/[token]` (Server Component) → `GET {API_BASE}/api/tickets/claim/<token>` del
+    backend de NightVibe (público, sin auth). Lógica en `src/lib/ticketClaim.ts`;
+    404 del backend → `not-found.tsx` de la ruta. Sin caché (`no-store`).
+- `/t/[token]` lleva noindex y `referrer: no-referrer` (el token va en la URL). El QR se
+  genera en el servidor con `qrcode` (SVG, negro sobre blanco): la página no necesita
+  JavaScript para enseñarlo.
 - Las rutas de deep linking `/e`, `/c`, `/u` son FASE 2: no crearlas todavía.
 - Sin cookies no esenciales ni analytics → sin banner de cookies. Si se añaden, primero
   banner de consentimiento y actualizar `/cookies`.
@@ -45,7 +54,8 @@ Fuente única de los hex: `src/styles/tokens.css`. **No inventes hex nuevos.**
 --nv-violet: #7B5CFF;   /* centro, estado "subiendo", color de marca */
 --nv-magenta: #FF2D9B;  /* final, "a reventar" */
 --nv-bg: #0A0C12;       /* negro noche */
---nv-app-bg: #06060B;   /* fondo de la app; solo placeholder de capturas */
+--nv-app-bg: #06060B;   /* fondo de la app; placeholder de capturas e iconos */
+--nv-warning: #FFB020;  /* aviso, fuera de la escala de calor ("entrada ya usada") */
 --nv-gradient: linear-gradient(135deg, #00E5FF 0%, #7B5CFF 50%, #FF2D9B 100%);
 ```
 
@@ -61,6 +71,8 @@ Fuente única de los hex: `src/styles/tokens.css`. **No inventes hex nuevos.**
 - El gradiente es una ESCALA DE CALOR: úsalo con significado (intensidad, energía, CTA
   principal), no como relleno decorativo. Profundidad con gradiente, glows suaves y capas;
   NUNCA bordes neón cian alrededor de cards.
+- `--nv-warning` (`text-nv-warning`, `bg-nv-warning/10`) solo para estados de aviso.
+  No uses la paleta de colores de Tailwind (`amber-*`, etc.): todo color sale de tokens.
 - HeatBadge: <40 cian "TRANQUILO", 40–74 violeta "SUBIENDO", >=75 magenta "A REVENTAR"
   (lógica en `src/lib/heat.ts`).
 - Solo modo oscuro. Mobile-first (tráfico desde Instagram/WhatsApp, revisar a 375px).
@@ -72,7 +84,8 @@ Fuente única de los hex: `src/styles/tokens.css`. **No inventes hex nuevos.**
 - Todos los datos de contacto, URLs de stores, redes y datos legales viven en
   `src/config/site.ts`. Nada hardcodeado fuera de ahí. Los placeholders tienen la forma
   `[TODO: ...]`.
-- Env vars (solo servidor): `SENDGRID_API_KEY`, `CONTACT_TO_EMAIL`, `CONTACT_FROM_EMAIL`.
+- Env vars (solo servidor, nunca `NEXT_PUBLIC_`): `SENDGRID_API_KEY`, `CONTACT_TO_EMAIL`,
+  `CONTACT_FROM_EMAIL`, `API_BASE` (URL del backend, p. ej. `https://api.nightvibe.life`).
   Ver `.env.example`.
 - Páginas legales: mientras `siteConfig.legalPagesReady` sea false llevan noindex, no
   salen en el sitemap ni en el footer. Llevan el comentario "REVISAR POR ASESOR LEGAL ANTES DE PUBLICAR"

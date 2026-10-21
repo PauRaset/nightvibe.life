@@ -43,6 +43,9 @@ promociones son de cada local.
   su crédito). Nada decorativo: si no hay una imagen buena, mejor ninguna. Nada de stock de
   gente, caras reconocibles ni rótulos o marcas de locales. Sin fuentes de terceros (salvo
   `next/font`).
+- Botones de tiendas (`StoreButtons`): llevan los glifos de Apple y Android. El logo de
+  Apple solo se puede usar dentro de su insignia oficial: al publicar la app, cambiar
+  por las insignias oficiales de App Store y Google Play.
 - Pantallas de la app: `AppScreen` (`src/components/app/AppScreen.tsx`). Con
   `siteConfig.appScreensReviewed = true` muestra las capturas de `public/screens/`
   (home, evento, misiones, entrada; 1179×2556 px); si no, fragmentos de la app en HTML
@@ -87,7 +90,7 @@ Fuente única de los hex: `src/styles/tokens.css`. **No inventes hex nuevos.**
   (lógica en `src/lib/heat.ts`). El anillo se completa a los 50; late más rápido cuanta más
   gente (`beatSeconds`; con 0 no late). Tamaño en em: lo fija el font-size del contenedor.
 - Premium = quitar. UN SOLO FONDO (`bg-nv-bg`) en toda la página: las secciones se separan
-  por espacio (py-32 / sm:py-48), nunca por color; como mucho una superficie neutra
+  por espacio (py-20 en móvil, sm:py-36), nunca por color; como mucho una superficie neutra
   (`bg-nv-surface`). Un mensaje por pantalla.
 - El gradiente/escala de calor solo en TRES sitios: el badge de calor, el botón de acción
   principal (`GradientButton`, navbar "Descargar") y el logotipo. Todo lo demás en blanco,

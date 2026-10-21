@@ -12,7 +12,7 @@ const topics = [
 
 export function BusinessModel() {
   return (
-    <section aria-labelledby="modelo-title" className="py-24 sm:py-28">
+    <section aria-labelledby="modelo-title" className="py-16 sm:py-28">
       <Container className="grid gap-12 lg:grid-cols-12 lg:gap-8">
         <div className="lg:col-span-6">
           <h2

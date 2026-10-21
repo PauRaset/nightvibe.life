@@ -12,8 +12,8 @@ const levels = [
 
 export function Rewards() {
   return (
-    <section id="premios" aria-labelledby="premios-title" className="scroll-mt-16 py-32 sm:py-36">
-      <Container className="grid gap-16 lg:grid-cols-12 lg:gap-8">
+    <section id="premios" aria-labelledby="premios-title" className="scroll-mt-16 py-20 sm:py-36">
+      <Container className="grid gap-12 sm:gap-16 lg:grid-cols-12 lg:gap-8">
         <div className="lg:col-span-5">
           <h2
             id="premios-title"

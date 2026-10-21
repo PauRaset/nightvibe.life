@@ -14,7 +14,7 @@ export function Footer() {
   );
 
   return (
-    <footer className="mt-auto pt-32 pb-10 sm:pt-36">
+    <footer className="mt-auto pt-20 pb-10 sm:pt-36">
       <Container>
         <p
           aria-hidden="true"

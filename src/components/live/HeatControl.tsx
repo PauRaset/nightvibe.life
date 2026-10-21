@@ -23,7 +23,7 @@ export function HeatControl({ initial = 34 }: { initial?: number }) {
   const count = `${people} ${people === 1 ? "persona" : "personas"}`;
 
   return (
-    <div className="mx-auto grid w-full max-w-7xl items-center gap-16 px-5 sm:px-8 lg:grid-cols-12">
+    <div className="mx-auto grid w-full max-w-7xl items-center gap-12 px-5 sm:gap-16 sm:px-8 lg:grid-cols-12">
       <div className="lg:col-span-5">
         <h2
           id="calor-title"

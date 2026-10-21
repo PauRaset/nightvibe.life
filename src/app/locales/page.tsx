@@ -26,7 +26,7 @@ export default function LocalesPage() {
     <>
       <Reveal />
 
-      <section aria-labelledby="locales-title" className="pt-20 pb-32 sm:pt-28 lg:pt-32 lg:pb-36">
+      <section aria-labelledby="locales-title" className="pt-12 pb-20 sm:pt-28 sm:pb-32 lg:pt-32 lg:pb-36">
         <Container className="grid gap-14 lg:grid-cols-12 lg:gap-8">
           <div className="lg:col-span-7">
             <h1
@@ -63,7 +63,7 @@ export default function LocalesPage() {
       <section
         id="contacto"
         aria-labelledby="contacto-title"
-        className="scroll-mt-20 py-24 sm:py-28"
+        className="scroll-mt-20 py-16 sm:py-28"
       >
         <Container>
           <div className="grid gap-6 lg:grid-cols-12 lg:items-end lg:gap-8">

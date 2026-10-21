@@ -6,7 +6,7 @@ import { StoreButtons } from "../StoreButtons";
 export function Hero() {
   return (
     <section aria-labelledby="hero-title">
-      <Container className="grid items-center gap-20 pt-20 pb-32 sm:pt-28 lg:grid-cols-12 lg:gap-8 lg:pt-32 lg:pb-36">
+      <Container className="grid items-center gap-14 sm:gap-20 pt-12 pb-20 sm:pt-28 sm:pb-32 lg:grid-cols-12 lg:gap-8 lg:pt-32 lg:pb-36">
         <div className="lg:col-span-7">
           <h1
             id="hero-title"

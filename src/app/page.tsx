@@ -24,7 +24,7 @@ export default function HomePage() {
     <>
       <Reveal />
       <Hero />
-      <section id="calor" aria-labelledby="calor-title" className="scroll-mt-16 py-32 sm:py-36">
+      <section id="calor" aria-labelledby="calor-title" className="scroll-mt-16 py-20 sm:py-36">
         <HeatControl initial={34} />
       </section>
       <FeatureSheets />

@@ -10,9 +10,9 @@ export function FinalCta() {
     <section
       id="descargar"
       aria-labelledby="descargar-title"
-      className="scroll-mt-16 py-32 sm:py-36"
+      className="scroll-mt-16 py-20 sm:py-36"
     >
-      <Container className="grid items-center gap-16 lg:grid-cols-12 lg:gap-8">
+      <Container className="grid items-center gap-12 sm:gap-16 lg:grid-cols-12 lg:gap-8">
         <div className="min-w-0 text-center lg:col-span-7 lg:text-left">
           <h2
             id="descargar-title"

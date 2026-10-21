@@ -36,7 +36,7 @@ const screens: { screen: AppScreenName; caption: string }[] = [
 
 export function ValueProps() {
   return (
-    <section aria-labelledby="valor-title" className="py-24 sm:py-28">
+    <section aria-labelledby="valor-title" className="py-16 sm:py-28">
       <Container>
         <h2
           id="valor-title"
@@ -70,7 +70,7 @@ export function ValueProps() {
 
 export function ClientScreens() {
   return (
-    <section aria-labelledby="clientes-title" className="py-24 sm:py-28">
+    <section aria-labelledby="clientes-title" className="py-16 sm:py-28">
       <Container>
         <h2
           id="clientes-title"

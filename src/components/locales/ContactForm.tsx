@@ -26,6 +26,15 @@ const fields: {
   { name: "telefono", label: "Teléfono", type: "tel", autoComplete: "tel" },
 ];
 
+// Escritorio: tres campos por fila y luego dos; móvil: uno por fila.
+const fieldSpan: Record<(typeof fields)[number]["name"], string> = {
+  nombre: "lg:col-span-2",
+  local: "lg:col-span-2",
+  ciudad: "lg:col-span-2",
+  email: "lg:col-span-3",
+  telefono: "sm:col-span-2 lg:col-span-3",
+};
+
 const inputClass =
   "mt-2 block w-full rounded-xl bg-nv-surface-strong px-4 py-3 text-base text-white ring-1 ring-white/15 ring-inset placeholder:text-nv-dim focus:ring-2 focus:ring-nv-cyan focus:outline-none aria-[invalid=true]:ring-nv-magenta";
 
@@ -87,10 +96,10 @@ export function ContactForm() {
   const describedBy = (name: ContactField) => (errors[name] ? `${name}-error` : undefined);
 
   return (
-    <form onSubmit={handleSubmit} noValidate className="grid gap-5 sm:grid-cols-2">
+    <form onSubmit={handleSubmit} noValidate className="grid gap-6 sm:grid-cols-2 lg:grid-cols-6">
       {fields.map((f) => (
-        <div key={f.name} className={f.name === "telefono" ? "sm:col-span-2 lg:col-span-1" : ""}>
-          <label htmlFor={f.name} className="text-sm font-semibold text-white">
+        <div key={f.name} className={fieldSpan[f.name]}>
+          <label htmlFor={f.name} className="text-base font-semibold text-white">
             {f.label}
           </label>
           <input
@@ -104,15 +113,15 @@ export function ContactForm() {
             className={inputClass}
           />
           {errors[f.name] && (
-            <p id={`${f.name}-error`} className="mt-1.5 text-sm text-nv-magenta">
+            <p id={`${f.name}-error`} className="mt-1.5 text-base text-nv-magenta">
               {errors[f.name]}
             </p>
           )}
         </div>
       ))}
 
-      <div className="sm:col-span-2">
-        <label htmlFor="mensaje" className="text-sm font-semibold text-white">
+      <div className="sm:col-span-2 lg:col-span-6">
+        <label htmlFor="mensaje" className="text-base font-semibold text-white">
           Mensaje
         </label>
         <textarea
@@ -126,19 +135,19 @@ export function ContactForm() {
           placeholder="Tipo de local, aforo, qué te gustaría hacer con NightVibe…"
         />
         {errors.mensaje && (
-          <p id="mensaje-error" className="mt-1.5 text-sm text-nv-magenta">
+          <p id="mensaje-error" className="mt-1.5 text-base text-nv-magenta">
             {errors.mensaje}
           </p>
         )}
       </div>
 
       {/* Honeypot: oculto para personas y lectores de pantalla */}
-      <div aria-hidden="true" className="absolute -left-[9999px] h-px w-px overflow-hidden">
+      <div aria-hidden="true" className="pointer-events-none absolute h-px w-px overflow-hidden opacity-0 [clip-path:inset(50%)]">
         <label htmlFor={HONEYPOT_FIELD}>No rellenes este campo</label>
         <input id={HONEYPOT_FIELD} name={HONEYPOT_FIELD} type="text" tabIndex={-1} autoComplete="off" />
       </div>
 
-      <div className="sm:col-span-2">
+      <div className="sm:col-span-2 lg:col-span-6">
         <div className="flex items-start gap-3">
           <input
             id="privacidad"
@@ -149,7 +158,7 @@ export function ContactForm() {
             aria-describedby={describedBy("privacidad")}
             className="mt-0.5 size-5 shrink-0 accent-nv-violet"
           />
-          <label htmlFor="privacidad" className="text-sm leading-relaxed text-nv-muted">
+          <label htmlFor="privacidad" className="text-base leading-relaxed text-white">
             He leído y acepto la{" "}
             <Link href="/privacidad" className="font-semibold text-white underline underline-offset-2">
               política de privacidad
@@ -158,20 +167,20 @@ export function ContactForm() {
           </label>
         </div>
         {errors.privacidad && (
-          <p id="privacidad-error" className="mt-1.5 text-sm text-nv-magenta">
+          <p id="privacidad-error" className="mt-1.5 text-base text-nv-magenta">
             {errors.privacidad}
           </p>
         )}
       </div>
 
-      <div className="flex flex-col gap-4 sm:col-span-2 sm:flex-row sm:items-center">
+      <div className="flex flex-col gap-4 sm:col-span-2 sm:flex-row lg:col-span-6 sm:items-center">
         <GradientButton type="submit" disabled={status === "sending"}>
           {status === "sending" ? "Enviando…" : "Enviar"}
         </GradientButton>
         <p
           role="status"
           aria-live="polite"
-          className={`text-sm ${status === "success" ? "text-nv-cyan" : status === "error" ? "text-nv-magenta" : ""}`}
+          className={`text-base ${status === "success" ? "text-nv-cyan" : status === "error" ? "text-nv-magenta" : ""}`}
         >
           {status === "success" || status === "error" ? message : ""}
         </p>

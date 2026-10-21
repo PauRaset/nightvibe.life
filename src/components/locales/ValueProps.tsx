@@ -1,44 +1,85 @@
+import type { CSSProperties } from "react";
+import { AppScreen, type AppScreenName } from "../app/AppScreen";
 import { Container } from "../Container";
-import { SectionHeading } from "../SectionHeading";
 
+// Lo que el local tiene con NightVibe: lista de definición a gran escala,
+// sin tarjetas ni numeración. Los premios se ganan completando misiones.
 const props = [
   {
-    title: "Publica tus eventos",
-    text: "Crea el evento, pon precio y aforo, y queda visible en la app en minutos.",
+    title: "Publica tus eventos.",
+    text: "Creas el evento, pones precio y aforo, y aparece en la app en minutos. Lo editas cuando quieras.",
   },
   {
-    title: "Vende entradas",
-    text: "Venta desde el móvil con entrada QR. Control de acceso rápido en la puerta.",
+    title: "Vende entradas.",
+    text: "Venta desde el móvil con entrada QR. En la puerta se escanea y se pasa: control de acceso rápido, sin listas en papel.",
   },
   {
-    title: "Visibilidad esa misma noche",
-    text: "Llegas a gente que está decidiendo a dónde ir ahora, no dentro de un mes.",
+    title: "Visibilidad esa noche.",
+    text: "Tu local sale ante gente que está decidiendo ahora a dónde ir. No dentro de un mes: esta noche.",
   },
   {
-    title: "Promociones por niveles",
-    text: "Define niveles, misiones y premios. Tus clientes vuelven porque cada visita suma.",
+    title: "Niveles con misiones.",
+    text: "Tus clientes suben de nivel completando misiones: escanear el QR del local, subir una foto de la noche. Cada nivel desbloquea premios reales, como un chupito, entrada gratis, saltarse la cola o una mesa con botella. Tú decides las misiones, los niveles y los premios.",
   },
   {
-    title: "Panel web de gestión",
-    text: "Eventos, ventas, accesos y promociones desde un único panel en el navegador.",
+    title: "Panel web de gestión.",
+    text: "Eventos, ventas, accesos y promociones en un único panel, desde el navegador.",
   },
+];
+
+// Lo que ven tus clientes: las mismas pantallas de la app, a tamaño real.
+const screens: { screen: AppScreenName; caption: string }[] = [
+  { screen: "home", caption: "Tu local, ordenado por calor esta noche." },
+  { screen: "misiones", caption: "Las misiones y el premio que tú defines." },
+  { screen: "entrada", caption: "La entrada con QR que escaneas en la puerta." },
 ];
 
 export function ValueProps() {
   return (
-    <section aria-labelledby="valor-title" className="py-16 sm:py-24">
+    <section aria-labelledby="valor-title" className="bg-nv-field-deep py-16 sm:py-20 lg:py-32">
       <Container>
-        <SectionHeading
+        <h2
           id="valor-title"
-          eyebrow="Qué te da NightVibe"
-          title="Todo lo que necesitas para llenar la sala."
-        />
-        <ul className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          data-reveal-item
+          className="max-w-4xl text-4xl leading-none font-extrabold tracking-[-0.035em] text-balance text-white lg:text-6xl"
+        >
+          Lo que tienes con NightVibe.
+        </h2>
+        <dl className="mt-12 grid gap-10 sm:mt-16 lg:mt-24 lg:gap-16">
           {props.map((p, i) => (
-            <li key={p.title} className="rounded-2xl border border-nv-line bg-nv-surface p-6">
-              <p className="text-sm font-bold text-nv-dim tabular-nums">0{i + 1}</p>
-              <h3 className="mt-3 text-lg font-bold text-white">{p.title}</h3>
-              <p className="mt-2 text-[0.9375rem] leading-relaxed text-nv-muted">{p.text}</p>
+            <div
+              key={p.title}
+              data-reveal-item
+              style={{ "--reveal-delay": `${(i % 2) * 80}ms` } as CSSProperties}
+              className="grid gap-3 lg:grid-cols-12 lg:gap-8"
+            >
+              <dt className="text-2xl leading-tight font-extrabold tracking-[-0.025em] text-white lg:col-span-5 lg:text-3xl">
+                {p.title}
+              </dt>
+              <dd className="text-lg leading-relaxed text-pretty text-white lg:col-span-7 lg:text-xl">
+                {p.text}
+              </dd>
+            </div>
+          ))}
+        </dl>
+
+        <h3
+          data-reveal-item
+          className="mt-24 text-2xl leading-tight font-extrabold tracking-[-0.025em] text-white lg:mt-32 lg:text-3xl"
+        >
+          Lo que ven tus clientes.
+        </h3>
+        <ul className="mt-8 grid gap-10 sm:grid-cols-3 sm:gap-6">
+          {screens.map((s, i) => (
+            <li
+              key={s.screen}
+              data-reveal-item
+              style={{ "--reveal-delay": `${i * 80}ms` } as CSSProperties}
+            >
+              <figure>
+                <AppScreen screen={s.screen} className="mx-auto max-h-[460px] sm:mx-0" />
+                <figcaption className="mt-4 text-base text-white">{s.caption}</figcaption>
+              </figure>
             </li>
           ))}
         </ul>

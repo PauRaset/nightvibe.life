@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 import { navLinks } from "@/config/site";
 import { Container } from "./Container";
 import { Logo } from "./Logo";
+import { NightClock } from "./live/NightClock";
 
 export function Navbar() {
   const [open, setOpen] = useState(false);
@@ -23,9 +24,12 @@ export function Navbar() {
   const close = () => setOpen(false);
 
   return (
-    <header className="sticky top-0 z-50 border-b border-nv-line bg-nv-bg/80 backdrop-blur-lg">
+    <header className="sticky top-0 z-50 bg-nv-bg">
       <Container className="flex h-16 items-center justify-between gap-4">
-        <Logo />
+        <div className="flex items-center gap-8">
+          <Logo />
+          <NightClock />
+        </div>
 
         <nav aria-label="Principal" className="hidden items-center gap-8 md:flex">
           {navLinks.map((link) => (
@@ -33,14 +37,14 @@ export function Navbar() {
               key={link.href}
               href={link.href}
               aria-current={pathname === link.href ? "page" : undefined}
-              className="text-sm font-semibold text-nv-muted transition-colors hover:text-white aria-[current=page]:text-white"
+              className="text-base font-semibold text-nv-muted transition-colors hover:text-white aria-[current=page]:text-white"
             >
               {link.label}
             </Link>
           ))}
           <Link
             href="/#descargar"
-            className="rounded-full bg-nv-gradient px-5 py-2.5 text-sm font-extrabold text-black"
+            className="rounded-full bg-nv-gradient px-5 py-2.5 text-base font-extrabold text-black transition-transform active:scale-95"
           >
             Descargar
           </Link>
@@ -50,7 +54,7 @@ export function Navbar() {
           <Link
             href="/#descargar"
             onClick={close}
-            className="rounded-full bg-nv-gradient px-4 py-2 text-sm font-extrabold text-black"
+            className="rounded-full bg-nv-gradient px-4 py-2 text-base font-extrabold text-black transition-transform active:scale-95"
           >
             Descargar
           </Link>
@@ -74,7 +78,7 @@ export function Navbar() {
       </Container>
 
       {open && (
-        <nav id="menu-movil" aria-label="Principal" className="border-t border-nv-line md:hidden">
+        <nav id="menu-movil" aria-label="Principal" className="bg-nv-bg md:hidden">
           <Container className="flex flex-col py-3">
             {navLinks.map((link) => (
               <Link

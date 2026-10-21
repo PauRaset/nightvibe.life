@@ -36,6 +36,14 @@ export const siteConfig = {
     lastUpdated: "[TODO: fecha de última actualización]",
   },
 
+  // Capturas reales de la app en public/screens/ (home.png, evento.png,
+  // entrada.png; 1179×2556 px). Mientras sea false la web muestra los
+  // fragmentos de la app construidos en HTML con datos ficticios. Pásalo a true
+  // SOLO cuando las capturas estén hechas con datos de demo: sin locales,
+  // artistas, direcciones ni caras reales, y sin un QR o serial de una entrada
+  // válida.
+  appScreensReviewed: false,
+
   // Mientras sea false, las páginas legales llevan noindex, salen del sitemap y
   // no se enlazan desde el footer. Siguen accesibles por URL directa porque el
   // formulario de /locales enlaza a /privacidad para el consentimiento RGPD.
@@ -44,7 +52,9 @@ export const siteConfig = {
 } as const;
 
 export const navLinks = [
-  { href: "/#como-funciona", label: "Cómo funciona" },
+  { href: "/#calor", label: "Calor" },
+  { href: "/#misiones", label: "Misiones" },
+  { href: "/#entradas", label: "Entradas" },
   { href: "/locales", label: "Para locales" },
 ] as const;
 

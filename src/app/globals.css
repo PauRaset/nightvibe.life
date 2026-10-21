@@ -8,6 +8,10 @@
   --color-nv-bg: var(--nv-bg);
   --color-nv-app-bg: var(--nv-app-bg);
   --color-nv-warning: var(--nv-warning);
+  --color-nv-field-low: var(--nv-field-low);
+  --color-nv-field-mid: var(--nv-field-mid);
+  --color-nv-field-high: var(--nv-field-high);
+  --color-nv-field-deep: var(--nv-field-deep);
   --color-nv-violet-text: var(--nv-violet-text);
   --color-nv-surface: var(--nv-surface);
   --color-nv-surface-strong: var(--nv-surface-strong);
@@ -18,17 +22,22 @@
 
   --font-sans: var(--font-brand), ui-sans-serif, system-ui, sans-serif;
 
-  --animate-heat-pulse: heat-pulse 2.4s ease-in-out infinite;
-  --animate-float: float 6s ease-in-out infinite;
+  /* El badge late más rápido cuanta más gente hay: la duración llega en --beat. */
+  --animate-heat-beat: heat-beat var(--beat, 1.6s) ease-in-out infinite;
   --animate-live-dot: live-dot 1.6s ease-in-out infinite;
+  --animate-drift: nv-drift 24s ease-in-out infinite alternate;
 
-  @keyframes heat-pulse {
-    0%, 100% { box-shadow: 0 0 24px -6px var(--heat-color, var(--nv-violet)); }
-    50% { box-shadow: 0 0 44px -2px var(--heat-color, var(--nv-violet)); }
+  /* Doble golpe, como un corazón: crece, cede, vuelve a crecer y descansa. */
+  @keyframes heat-beat {
+    0%, 45%, 100% { transform: scale(1); }
+    12% { transform: scale(1.06); }
+    24% { transform: scale(1.01); }
+    34% { transform: scale(1.04); }
   }
-  @keyframes float {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-8px); }
+  /* Deriva lenta de la foto de la costa (la imagen que se mueve). */
+  @keyframes nv-drift {
+    from { transform: scale(1.04) translateX(0); }
+    to { transform: scale(1.1) translateX(-2%); }
   }
   @keyframes live-dot {
     0%, 100% { opacity: 1; }
@@ -40,16 +49,68 @@
   background-image: var(--nv-gradient);
 }
 
+/* taste-skill-ignore: el logotipo en gradiente es un activo de marca. */
 @utility text-nv-gradient {
   background-image: var(--nv-gradient);
-  -webkit-background-clip: text;
-  background-clip: text;
+  -webkit-background-clip: text; /* taste-skill-ignore */
+  background-clip: text; /* taste-skill-ignore */
   color: transparent;
 }
 
+/* Entrada de los elementos al llegar a pantalla. Solo se ocultan si el script
+   ha marcado <html data-reveal> (si JS falla, todo se ve) y con movimiento
+   permitido. El retraso escalonado llega en --reveal-delay. */
+@media (prefers-reduced-motion: no-preference) {
+  html[data-reveal] [data-reveal-item]:not([data-shown]) {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  html[data-reveal] [data-reveal-item] {
+    transition:
+      opacity 600ms cubic-bezier(0.2, 0.7, 0.2, 1) var(--reveal-delay, 0ms),
+      transform 600ms cubic-bezier(0.2, 0.7, 0.2, 1) var(--reveal-delay, 0ms);
+  }
+}
+
+/* Control deslizante del calor: pista de tono, pulgar grande para el pulgar. */
+.nv-range {
+  appearance: none;
+  height: 44px;
+  background: transparent;
+  cursor: pointer;
+}
+.nv-range::-webkit-slider-runnable-track {
+  height: 8px;
+  border-radius: 999px;
+  background: var(--nv-gradient);
+}
+.nv-range::-moz-range-track {
+  height: 8px;
+  border-radius: 999px;
+  background: var(--nv-gradient);
+}
+.nv-range::-webkit-slider-thumb {
+  appearance: none;
+  width: 32px;
+  height: 32px;
+  margin-top: -12px;
+  border-radius: 999px;
+  background: white;
+  transition: transform 150ms ease;
+}
+.nv-range::-moz-range-thumb {
+  width: 32px;
+  height: 32px;
+  border: 0;
+  border-radius: 999px;
+  background: white;
+}
+.nv-range:active::-webkit-slider-thumb { transform: scale(1.12); }
+.nv-range:focus-visible { outline-offset: 6px; }
+
 /* Etiqueta de estado: MAYÚSCULAS pequeñas con tracking */
 @utility nv-label {
-  font-size: 0.6875rem;
+  font-size: 0.8125rem;
   font-weight: 700;
   letter-spacing: 0.14em;
   text-transform: uppercase;

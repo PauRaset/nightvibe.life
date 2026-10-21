@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 export default function NotFound() {
   return (
     <Container size="narrow" className="flex flex-col items-center py-24 text-center sm:py-32">
-      <HeatBadge value={0} size="lg" />
+      <HeatBadge value={0} size="lg" static />
       <p className="nv-label mt-8 text-nv-muted">Error 404</p>
       <h1 className="mt-3 text-balance text-4xl font-extrabold tracking-tight text-white sm:text-6xl">
         Aquí no hay nadie.

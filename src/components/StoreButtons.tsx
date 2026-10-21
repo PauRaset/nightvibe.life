@@ -31,7 +31,7 @@ export function StoreButtons({ className = "", align = "left" }: StoreButtonsPro
           <>
             <PhoneIcon />
             <span className="flex flex-col text-left leading-tight">
-              <span className="text-xs font-medium text-nv-muted">
+              <span className="text-[13px] font-medium text-nv-muted">
                 {url ? `Descárgala para ${store.platform}` : "Próximamente en"}
               </span>
               <span className="text-base font-bold text-white">{store.name}</span>
@@ -39,7 +39,7 @@ export function StoreButtons({ className = "", align = "left" }: StoreButtonsPro
           </>
         );
         const classes =
-          "flex min-h-14 min-w-44 items-center gap-3 rounded-2xl bg-nv-surface-strong px-4 py-2.5 ring-1 ring-white/12 ring-inset";
+          "flex min-h-14 min-w-44 items-center gap-3 rounded-full bg-nv-surface-strong py-2.5 pr-6 pl-5";
         return (
           <li key={store.key}>
             {url ? (
@@ -47,7 +47,7 @@ export function StoreButtons({ className = "", align = "left" }: StoreButtonsPro
                 href={url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className={`${classes} transition-colors hover:bg-white/12`}
+                className={`${classes} transition-[background-color,transform] hover:bg-white/14 active:scale-[0.97]`}
               >
                 {content}
               </a>

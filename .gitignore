@@ -25,3 +25,7 @@ npm-debug.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# herramientas de diseño/QA
+.taste-skill/
+.playwright-cli/

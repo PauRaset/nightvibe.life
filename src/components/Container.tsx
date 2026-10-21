@@ -7,6 +7,6 @@ type ContainerProps = {
 };
 
 export function Container({ children, className = "", size = "default" }: ContainerProps) {
-  const width = size === "narrow" ? "max-w-3xl" : "max-w-6xl";
+  const width = size === "narrow" ? "max-w-3xl" : "max-w-7xl";
   return <div className={`mx-auto w-full ${width} px-5 sm:px-8 ${className}`}>{children}</div>;
 }

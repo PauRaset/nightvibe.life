@@ -39,9 +39,19 @@ promociones son de cada local.
 
 - NO uses nombres de locales reales. En mockups: tipo de local + zona genérica
   ("Club techno", "Zona puerto").
-- Sin imágenes, stock photos ni fuentes de terceros (salvo `next/font`). Ilustraciones
-  en HTML/CSS/SVG inline. Excepción: capturas reales de la app en `public/screens/`,
-  dentro de `PhoneMockup` (1179×2556 px, sin nombres de locales reales).
+- Imágenes: solo nuestras o libres de derechos (dominio público / CC0 / CC BY con
+  crédito), en `public/images/`, registradas en `src/config/credits.ts` (el footer
+  muestra el crédito). Nada de stock de gente, ni caras reconocibles, ni rótulos o
+  marcas de locales. Sin fuentes de terceros (salvo `next/font`).
+- Pantallas de la app: `AppScreen` (`src/components/app/AppScreen.tsx`). Con
+  `siteConfig.appScreensReviewed = true` muestra las capturas de `public/screens/`
+  (home, evento, misiones, entrada; 1179×2556 px); si no, fragmentos de la app en HTML
+  con datos ficticios. Las capturas deben hacerse con datos de demo: sin locales,
+  artistas, direcciones ni caras reales, y sin el QR/serial de una entrada válida.
+- Recompensas = MISIONES ("2 de 3 misiones"), nunca puntos. Ni "puntos", ni "pts", ni
+  "acumula/suma".
+- `/locales` no habla de precio, comisión ni cuotas: las condiciones se hablan en una
+  reunión.
 - Tono: directo, nocturno, frases cortas, sin exceso de exclamaciones. Español de España.
 - `/locales` es más sobrio: menos glow, más claridad. El lector es un gerente.
 
@@ -53,8 +63,7 @@ Fuente única de los hex: `src/styles/tokens.css`. **No inventes hex nuevos.**
 --nv-cyan: #00E5FF;     /* inicio gradiente, lado frío */
 --nv-violet: #7B5CFF;   /* centro, estado "subiendo", color de marca */
 --nv-magenta: #FF2D9B;  /* final, "a reventar" */
---nv-bg: #0A0C12;       /* negro noche */
---nv-app-bg: #06060B;   /* fondo de la app; placeholder de capturas e iconos */
+--nv-bg: #06060B;       /* casi negro con un punto de azul (fondo de web y app) */
 --nv-warning: #FFB020;  /* aviso, fuera de la escala de calor ("entrada ya usada") */
 --nv-gradient: linear-gradient(135deg, #00E5FF 0%, #7B5CFF 50%, #FF2D9B 100%);
 ```
@@ -73,8 +82,18 @@ Fuente única de los hex: `src/styles/tokens.css`. **No inventes hex nuevos.**
   NUNCA bordes neón cian alrededor de cards.
 - `--nv-warning` (`text-nv-warning`, `bg-nv-warning/10`) solo para estados de aviso.
   No uses la paleta de colores de Tailwind (`amber-*`, etc.): todo color sale de tokens.
-- HeatBadge: <40 cian "TRANQUILO", 40–74 violeta "SUBIENDO", >=75 magenta "A REVENTAR"
-  (lógica en `src/lib/heat.ts`).
+- HeatBadge: <40 cian "EMPIEZA", 40–74 violeta "SUBIENDO", >=75 magenta "A REVENTAR"
+  (lógica en `src/lib/heat.ts`). Late siempre, más rápido cuanta más gente
+  (`beatSeconds`). Tamaño en em: lo fija el font-size del contenedor.
+- Dirección visual: "capítulos de color". Cada sección es un campo oscuro a sangre
+  teñido por la escala de calor (`bg-nv-field-low|mid|high|deep`, derivados con
+  color-mix), sin separadores; la home es una noche entera (empieza → a reventar).
+- Sin etiquetas encima de los títulos (eyebrows), sin bordes finos ni cards con
+  contorno, sin numeraciones 01/02, sin glass/blur, sin sombras en reposo. Las
+  MAYÚSCULAS con tracking quedan solo para estados en vivo ("EN VIVO", "SUBIENDO").
+- Nada por debajo de 13px. Titulares de 2 líneas máximo a 390/768/1440.
+- Entradas al hacer scroll: atributo `data-reveal-item` + `<Reveal />` montado en la
+  página (no en el layout). Sin JS o con reduced-motion todo se ve.
 - Solo modo oscuro. Mobile-first (tráfico desde Instagram/WhatsApp, revisar a 375px).
 - Toda animación en CSS, con `motion-safe:` y desactivada por `prefers-reduced-motion`.
 - Tipografía provisional: Plus Jakarta Sans, definida SOLO en `src/lib/fonts.ts`.

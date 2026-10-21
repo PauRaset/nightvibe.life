@@ -10,8 +10,9 @@ type LegalLayoutProps = {
   sections: LegalSection[];
 };
 
+// taste-skill-ignore: las líneas son de tablas reales (th/td) de los textos legales.
 const prose =
-  "text-[0.9375rem] leading-relaxed text-nv-muted [&_a]:font-semibold [&_a]:text-white [&_a]:underline [&_a]:underline-offset-2 [&_h3]:mt-6 [&_h3]:font-bold [&_h3]:text-white [&_li]:mt-2 [&_p]:mt-4 [&_strong]:text-white [&_ul]:mt-4 [&_ul]:list-disc [&_ul]:pl-5 [&_table]:mt-4 [&_table]:w-full [&_table]:text-left [&_table]:text-sm [&_th]:border-b [&_th]:border-nv-line [&_th]:py-2 [&_th]:pr-3 [&_th]:text-white [&_td]:border-b [&_td]:border-nv-line [&_td]:py-2 [&_td]:pr-3 [&_td]:align-top";
+  "text-[0.9375rem] leading-relaxed text-nv-muted [&_a]:font-semibold [&_a]:text-white [&_a]:underline [&_a]:underline-offset-2 [&_h3]:mt-6 [&_h3]:font-bold [&_h3]:text-white [&_li]:mt-2 [&_p]:mt-4 [&_strong]:text-white [&_ul]:mt-4 [&_ul]:list-disc [&_ul]:pl-5 [&_table]:mt-4 [&_table]:w-full [&_table]:text-left [&_table]:text-sm [&_th]:border-b [&_th]:border-nv-line [&_th]:py-2 [&_th]:pr-3 [&_th]:text-white [&_td]:border-b [&_td]:border-nv-line [&_td]:py-2 [&_td]:pr-3 [&_td]:align-top"; // taste-skill-ignore
 
 export function LegalLayout({ title, intro, sections }: LegalLayoutProps) {
   return (

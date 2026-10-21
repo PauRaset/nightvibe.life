@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
+import { FeatureSheets } from "@/components/home/FeatureSheets";
 import { FinalCta } from "@/components/home/FinalCta";
-import { HeatSection } from "@/components/home/HeatSection";
 import { Hero } from "@/components/home/Hero";
-import { LevelsSection } from "@/components/home/LevelsSection";
-import { SocialSection } from "@/components/home/SocialSection";
-import { TicketsSection } from "@/components/home/TicketsSection";
+import { RewardTiles } from "@/components/home/RewardTiles";
+import { HeatControl } from "@/components/live/HeatControl";
+import { Reveal } from "@/components/live/Reveal";
 import { siteConfig } from "@/config/site";
 import { pageMetadata } from "@/lib/metadata";
 
@@ -18,14 +18,18 @@ export const metadata: Metadata = {
   title: { absolute: `${siteConfig.name} · ${siteConfig.shortDescription}` },
 };
 
+// La home es una noche entera: cada sección es un capítulo y su color dice
+// cuánto calor hay (empieza → subiendo → a reventar).
 export default function HomePage() {
   return (
     <>
+      <Reveal />
       <Hero />
-      <HeatSection />
-      <LevelsSection />
-      <SocialSection />
-      <TicketsSection />
+      <section id="calor" aria-labelledby="calor-title" className="scroll-mt-16">
+        <HeatControl initial={62} />
+      </section>
+      <FeatureSheets />
+      <RewardTiles />
       <FinalCta />
     </>
   );

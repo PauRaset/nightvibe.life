@@ -1,20 +1,26 @@
 import type { CSSProperties } from "react";
-import { clampHeat, getHeatLevel, heatLevels } from "@/lib/heat";
+import { beatSeconds, clampHeat, getHeatLevel, heatLevels } from "@/lib/heat";
+
+// El elemento más reconocible de la app: un número dentro de un anillo que se
+// llena con el calor, una etiqueta de estado debajo, y un latido que se acelera
+// cuanta más gente hay. Todo en em: el tamaño lo pone el font-size.
 
 type HeatBadgeProps = {
   value: number;
-  size?: "sm" | "md" | "lg";
-  /** Oculta la etiqueta de texto (p. ej. dentro de cards pequeñas). */
+  size?: "sm" | "md" | "lg" | "xl";
+  /** Oculta la etiqueta de texto (p. ej. dentro de listas pequeñas). */
   hideLabel?: boolean;
-  /** Desactiva el pulso animado (el pulso solo existe en "A reventar"). */
+  /** Sin latido (p. ej. páginas de error). */
   static?: boolean;
   className?: string;
 };
 
 const sizes = {
-  sm: { ring: "size-12", number: "text-base", inset: "inset-[3px]" },
-  md: { ring: "size-20", number: "text-2xl", inset: "inset-[4px]" },
-  lg: { ring: "size-28 sm:size-32", number: "text-4xl sm:text-5xl", inset: "inset-[5px]" },
+  sm: "text-[12px]",
+  md: "text-[18px]",
+  lg: "text-[26px] sm:text-[30px]",
+  // Para el control a tamaño póster: lo escala quien lo usa.
+  xl: "text-[1em]",
 };
 
 export function HeatBadge({
@@ -27,31 +33,35 @@ export function HeatBadge({
   const heat = clampHeat(value);
   const level = getHeatLevel(heat);
   const { label, color, textClass } = heatLevels[level];
-  const s = sizes[size];
-  const pulse = level === "high" && !isStatic ? "motion-safe:animate-heat-pulse" : "";
 
   const ringStyle = {
-    "--heat-color": color,
-    background: `conic-gradient(${color} ${heat * 3.6}deg, rgba(255,255,255,0.08) 0deg)`,
-    boxShadow: `0 0 32px -8px ${color}`,
+    "--beat": `${beatSeconds(heat)}s`,
+    // taste-skill-ignore: el anillo que se llena es el badge de la app (marca).
+    background: `conic-gradient(${color} ${heat * 3.6}deg, rgba(255,255,255,0.1) 0deg)`, // taste-skill-ignore
+    boxShadow: `0 0 1.4em -0.4em ${color}`,
   } as CSSProperties;
 
   return (
     <div
-      className={`inline-flex flex-col items-center gap-2 ${className}`}
+      className={`inline-flex flex-col items-center gap-[0.45em] ${sizes[size]} ${className}`}
       role="img"
       aria-label={`Calor ${heat} de 100: ${label}`}
     >
-      <div className={`relative rounded-full ${s.ring} ${pulse}`} style={ringStyle}>
-        <div
-          className={`absolute ${s.inset} flex items-center justify-center rounded-full bg-nv-bg`}
-        >
-          <span className={`${s.number} font-extrabold tabular-nums tracking-tight text-white`}>
+      <div
+        className={`relative size-[4.2em] rounded-full ${isStatic ? "" : "motion-safe:animate-heat-beat"}`}
+        style={ringStyle}
+      >
+        <div className="absolute inset-[0.22em] flex items-center justify-center rounded-full bg-nv-bg">
+          <span className="text-[1.55em] leading-none font-extrabold tracking-tight text-white tabular-nums">
             {heat}
           </span>
         </div>
       </div>
-      {!hideLabel && <span className={`nv-label ${textClass}`}>{label}</span>}
+      {!hideLabel && (
+        <span className={`text-[max(13px,0.62em)] font-bold tracking-[0.14em] uppercase ${textClass}`}>
+          {label}
+        </span>
+      )}
     </div>
   );
 }

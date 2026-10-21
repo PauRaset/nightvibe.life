@@ -3,7 +3,6 @@ import { join } from "node:path";
 import Image from "next/image";
 import type { ReactNode } from "react";
 import { siteConfig } from "@/config/site";
-import { heatLevels, getHeatLevel } from "@/lib/heat";
 import { HeatBadge } from "../HeatBadge";
 import { TicketQr } from "../ticket/TicketQr";
 
@@ -52,7 +51,7 @@ export function AppScreen({ screen, preload = false, className = "" }: AppScreen
 
   return (
     <div
-      className={`relative w-full max-w-[360px] overflow-hidden rounded-[2.25rem] bg-nv-bg ${className}`}
+      className={`relative w-full max-w-[360px] overflow-hidden rounded-[2.25rem] bg-nv-surface ${className}`}
     >
       {useCapture ? (
         <Image
@@ -88,30 +87,21 @@ function LiveDot() {
 }
 
 const tonight = [
-  { kind: "Club techno", zone: "Zona puerto", heat: 91, time: "23:59", going: 34 },
-  { kind: "Sala de conciertos", zone: "Casco antiguo", heat: 58, time: "22:30", going: 12 },
-  { kind: "Bar de copas", zone: "Paseo marítimo", heat: 27, time: "23:00", going: 5 },
+  { kind: "Club techno", zone: "Zona puerto", heat: 86, time: "23:59", going: 34 },
+  { kind: "Sala de conciertos", zone: "Casco antiguo", heat: 23, time: "22:30", going: 12 },
+  { kind: "Bar de copas", zone: "Paseo marítimo", heat: 6, time: "23:00", going: 5 },
 ];
 
-/** Hueco de la foto del evento: campo oscuro teñido por su calor, con luz. */
-function EventLight({ heat, className = "" }: { heat: number; className?: string }) {
-  const { color } = heatLevels[getHeatLevel(heat)];
-  return (
-    <div
-      className={`absolute inset-0 ${className}`}
-      style={{
-        // taste-skill-ignore: luz del hueco de foto dentro del fragmento de la app (data-ui).
-        background: `radial-gradient(120% 90% at 70% 0%, color-mix(in srgb, ${color} 55%, transparent), transparent 70%), color-mix(in srgb, ${color} 14%, var(--nv-bg))`, // taste-skill-ignore
-      }}
-    />
-  );
+/** Hueco de la foto del evento: superficie plana, un escalón más clara. */
+function EventLight({ className = "" }: { heat?: number; className?: string }) {
+  return <div className={`absolute inset-0 bg-nv-surface-strong ${className}`} />;
 }
 
 function HomeFragment() {
   return (
     <div className="px-5 pt-6 pb-7">
       <div className="flex items-center justify-between">
-        <span className="text-lg font-extrabold tracking-tight text-nv-gradient">NightVibe</span>
+        <span className="text-lg font-extrabold tracking-tight text-white">NightVibe</span>
         <span className="flex items-center gap-2 rounded-full bg-nv-surface-strong px-3 py-1.5">
           <LiveDot />
           <StatusLabel className="text-white">En vivo</StatusLabel>
@@ -120,10 +110,10 @@ function HomeFragment() {
       <p className="mt-6 text-[28px] leading-none font-extrabold tracking-tight">Ahora mismo</p>
       <div className="mt-3 flex items-baseline justify-between text-[15px]">
         <span className="font-semibold text-nv-muted">La noche va subiendo</span>
-        <span className="text-xl font-extrabold text-nv-violet-text tabular-nums">62%</span>
+        <span className="text-xl font-extrabold text-white tabular-nums">62%</span>
       </div>
       <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-white/10">
-        <div className="h-full w-[62%] rounded-full bg-nv-gradient" />
+        <div className="h-full w-[62%] rounded-full bg-white" />
       </div>
       <p className="mt-2 text-[13px] text-nv-dim">3 sitios calientes ahora · por calor</p>
 
@@ -152,12 +142,12 @@ function EventoFragment() {
   return (
     <div>
       <div className="relative h-56">
-        <EventLight heat={91} />
+        <EventLight />
         <div className="absolute right-5 bottom-5">
-          <HeatBadge value={91} size="sm" />
+          <HeatBadge value={86} size="sm" />
         </div>
         <div className="absolute bottom-5 left-5">
-          <StatusLabel className="text-nv-magenta">Techno</StatusLabel>
+          <StatusLabel className="text-nv-muted">Techno</StatusLabel>
           <p className="mt-1 text-[26px] leading-none font-extrabold tracking-tight">
             Club techno
           </p>
@@ -183,17 +173,17 @@ function EventoFragment() {
           <p className="text-[13px] text-nv-muted">3 personas que sigues</p>
         </div>
         <div className="flex -space-x-2">
-          {["var(--nv-cyan)", "var(--nv-violet)", "var(--nv-magenta)"].map((c) => (
+          {["0.55", "0.4", "0.25"].map((c) => (
             <span
               key={c}
               className="size-8 rounded-full ring-2 ring-nv-bg"
-              style={{ background: `color-mix(in srgb, ${c} 70%, var(--nv-bg))` }}
+              style={{ background: `rgba(255,255,255,${c})` }}
             />
           ))}
         </div>
       </div>
       <div className="px-5 pt-4 pb-7">
-        <p className="rounded-full bg-nv-gradient py-3.5 text-center font-extrabold text-black">
+        <p className="rounded-full bg-white py-3.5 text-center font-extrabold text-black">
           Comprar entrada
         </p>
       </div>
@@ -209,7 +199,7 @@ export const missions = [
 
 function Check({ done }: { done: boolean }) {
   return done ? (
-    <span className="flex size-7 shrink-0 items-center justify-center rounded-full bg-nv-gradient">
+    <span className="flex size-7 shrink-0 items-center justify-center rounded-full bg-white">
       <svg viewBox="0 0 16 16" className="size-4" fill="none">
         <path d="M3.5 8.5l3 3 6-7" stroke="black" strokeWidth="2.2" strokeLinecap="round" />
       </svg>
@@ -232,7 +222,7 @@ function MisionesFragment() {
       </div>
       <div className="mt-3 h-2 overflow-hidden rounded-full bg-white/10">
         <div
-          className="h-full rounded-full bg-nv-gradient"
+          className="h-full rounded-full bg-white"
           style={{ width: `${(done / missions.length) * 100}%` }}
         />
       </div>
@@ -243,14 +233,14 @@ function MisionesFragment() {
             <span className={`flex-1 text-[15px] font-bold ${m.done ? "text-nv-muted" : ""}`}>
               {m.title}
             </span>
-            <StatusLabel className={m.done ? "text-nv-dim" : "text-nv-violet-text"}>
+            <StatusLabel className={m.done ? "text-nv-dim" : "text-white"}>
               {m.done ? "Hecha" : "Pendiente"}
             </StatusLabel>
           </li>
         ))}
       </ul>
-      <div className="mt-5 rounded-2xl bg-nv-field-mid p-4">
-        <StatusLabel className="text-nv-violet-text">Al completar el nivel</StatusLabel>
+      <div className="mt-5 rounded-2xl bg-nv-surface-strong p-4">
+        <StatusLabel className="text-nv-muted">Al completar el nivel</StatusLabel>
         <p className="mt-1 text-lg font-extrabold">Entras sin cola</p>
       </div>
     </div>

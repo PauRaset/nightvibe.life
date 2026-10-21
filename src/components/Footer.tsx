@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { imageCredits } from "@/config/credits";
 import { isPlaceholder, legalLinks, navLinks, siteConfig } from "@/config/site";
 import { Container } from "./Container";
 
@@ -8,42 +7,6 @@ const socialLabels: Record<keyof typeof siteConfig.social, string> = {
   tiktok: "TikTok",
 };
 
-// Color de cada bloque a lo largo de la escala de calor (cian → violeta →
-// magenta), mezclado desde los tokens: sin hex nuevos.
-function heatStop(t: number): string {
-  if (t <= 0.5) {
-    const p = Math.round((t / 0.5) * 100);
-    return `color-mix(in oklab, var(--nv-violet) ${p}%, var(--nv-cyan))`;
-  }
-  const p = Math.round(((t - 0.5) / 0.5) * 100);
-  return `color-mix(in oklab, var(--nv-magenta) ${p}%, var(--nv-violet))`;
-}
-
-/** La marca como un medidor: cada letra en su bloque, más alto y más caliente. */
-function BlockMark() {
-  const letters = siteConfig.name.toUpperCase().split("");
-  const last = letters.length - 1;
-  return (
-    <div
-      aria-hidden="true"
-      className="flex h-[22svh] items-end gap-1 sm:h-[34svh] sm:max-h-[360px]"
-    >
-      {letters.map((letter, i) => {
-        const t = last > 0 ? i / last : 1;
-        return (
-          <span
-            key={i}
-            className="flex flex-1 items-end justify-center pb-[0.08em] text-[clamp(28px,8.4vw,128px)] leading-none font-extrabold tracking-tight text-black"
-            style={{ height: `${60 + t * 40}%`, background: heatStop(t) }}
-          >
-            {letter}
-          </span>
-        );
-      })}
-    </div>
-  );
-}
-
 export function Footer() {
   const year = new Date().getFullYear();
   const socials = (Object.keys(siteConfig.social) as (keyof typeof siteConfig.social)[]).filter(
@@ -51,10 +14,14 @@ export function Footer() {
   );
 
   return (
-    <footer className="mt-auto bg-nv-bg pt-24 pb-8 sm:pt-32">
+    <footer className="mt-auto pt-32 pb-10 sm:pt-36">
       <Container>
-        <p className="sr-only">{siteConfig.name}</p>
-        <BlockMark />
+        <p
+          aria-hidden="true"
+          className="text-[19vw] leading-[0.8] font-extrabold tracking-[-0.06em] text-white sm:text-[17vw] xl:text-[208px]"
+        >
+          {siteConfig.name}
+        </p>
 
         <div className="mt-14 grid gap-10 sm:grid-cols-12">
           <p className="max-w-sm text-base leading-relaxed text-white sm:col-span-5">
@@ -118,20 +85,9 @@ export function Footer() {
         </div>
 
         <div className="mt-16 flex items-center justify-between gap-4">
-          <div className="space-y-1 text-[13px] text-nv-dim">
-            <p>
-              © {year} {siteConfig.name}
-            </p>
-            {imageCredits.map((c) => (
-              <p key={c.file}>
-                Foto:{" "}
-                <a href={c.source} target="_blank" rel="noopener noreferrer" className="underline-offset-2 hover:text-white hover:underline">
-                  {c.author}
-                </a>{" "}
-                ({c.licence})
-              </p>
-            ))}
-          </div>
+          <p className="text-[13px] text-nv-dim">
+            © {year} {siteConfig.name}
+          </p>
           <Link
             href="/#descargar"
             className="rounded-full bg-nv-surface-strong px-4 py-2 text-base font-bold text-white transition-[background-color,transform] hover:bg-white/14 active:scale-[0.97]"

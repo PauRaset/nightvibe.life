@@ -6,7 +6,6 @@ import { usePathname } from "next/navigation";
 import { navLinks } from "@/config/site";
 import { Container } from "./Container";
 import { Logo } from "./Logo";
-import { NightClock } from "./live/NightClock";
 
 export function Navbar() {
   const [open, setOpen] = useState(false);
@@ -26,10 +25,7 @@ export function Navbar() {
   return (
     <header className="sticky top-0 z-50 bg-nv-bg">
       <Container className="flex h-16 items-center justify-between gap-4">
-        <div className="flex items-center gap-8">
-          <Logo />
-          <NightClock />
-        </div>
+        <Logo />
 
         <nav aria-label="Principal" className="hidden items-center gap-8 md:flex">
           {navLinks.map((link) => (

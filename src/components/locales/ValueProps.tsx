@@ -36,7 +36,7 @@ const screens: { screen: AppScreenName; caption: string }[] = [
 
 export function ValueProps() {
   return (
-    <section aria-labelledby="valor-title" className="bg-nv-field-deep py-16 sm:py-20 lg:py-32">
+    <section aria-labelledby="valor-title" className="py-24 sm:py-28">
       <Container>
         <h2
           id="valor-title"
@@ -63,13 +63,23 @@ export function ValueProps() {
           ))}
         </dl>
 
-        <h3
+      </Container>
+    </section>
+  );
+}
+
+export function ClientScreens() {
+  return (
+    <section aria-labelledby="clientes-title" className="py-24 sm:py-28">
+      <Container>
+        <h2
+          id="clientes-title"
           data-reveal-item
-          className="mt-24 text-2xl leading-tight font-extrabold tracking-[-0.025em] text-white lg:mt-32 lg:text-3xl"
+          className="max-w-4xl text-4xl leading-none font-extrabold tracking-[-0.035em] text-balance text-white lg:text-6xl"
         >
           Lo que ven tus clientes.
-        </h3>
-        <ul className="mt-8 grid gap-10 sm:grid-cols-3 sm:gap-6">
+        </h2>
+        <ul className="mt-16 grid lg:mt-24 gap-10 sm:grid-cols-3 sm:gap-6">
           {screens.map((s, i) => (
             <li
               key={s.screen}

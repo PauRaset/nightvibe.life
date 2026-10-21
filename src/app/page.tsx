@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { FeatureSheets } from "@/components/home/FeatureSheets";
 import { FinalCta } from "@/components/home/FinalCta";
 import { Hero } from "@/components/home/Hero";
-import { RewardTiles } from "@/components/home/RewardTiles";
+import { Rewards } from "@/components/home/Rewards";
 import { HeatControl } from "@/components/live/HeatControl";
 import { Reveal } from "@/components/live/Reveal";
 import { siteConfig } from "@/config/site";
@@ -18,18 +18,17 @@ export const metadata: Metadata = {
   title: { absolute: `${siteConfig.name} · ${siteConfig.shortDescription}` },
 };
 
-// La home es una noche entera: cada sección es un capítulo y su color dice
-// cuánto calor hay (empieza → subiendo → a reventar).
+// Un solo fondo y un mensaje por pantalla: las secciones las separa el aire.
 export default function HomePage() {
   return (
     <>
       <Reveal />
       <Hero />
-      <section id="calor" aria-labelledby="calor-title" className="scroll-mt-16">
-        <HeatControl initial={62} />
+      <section id="calor" aria-labelledby="calor-title" className="scroll-mt-16 py-32 sm:py-36">
+        <HeatControl initial={34} />
       </section>
       <FeatureSheets />
-      <RewardTiles />
+      <Rewards />
       <FinalCta />
     </>
   );

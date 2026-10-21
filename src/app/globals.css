@@ -8,10 +8,6 @@
   --color-nv-bg: var(--nv-bg);
   --color-nv-app-bg: var(--nv-app-bg);
   --color-nv-warning: var(--nv-warning);
-  --color-nv-field-low: var(--nv-field-low);
-  --color-nv-field-mid: var(--nv-field-mid);
-  --color-nv-field-high: var(--nv-field-high);
-  --color-nv-field-deep: var(--nv-field-deep);
   --color-nv-violet-text: var(--nv-violet-text);
   --color-nv-surface: var(--nv-surface);
   --color-nv-surface-strong: var(--nv-surface-strong);
@@ -82,12 +78,12 @@
 .nv-range::-webkit-slider-runnable-track {
   height: 8px;
   border-radius: 999px;
-  background: var(--nv-gradient);
+  background: rgba(255, 255, 255, 0.16);
 }
 .nv-range::-moz-range-track {
   height: 8px;
   border-radius: 999px;
-  background: var(--nv-gradient);
+  background: rgba(255, 255, 255, 0.16);
 }
 .nv-range::-webkit-slider-thumb {
   appearance: none;

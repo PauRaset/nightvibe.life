@@ -34,14 +34,6 @@
      Para texto pequeño se aclara con blanco; no es un hex nuevo. */
   --nv-violet-text: color-mix(in srgb, var(--nv-violet) 78%, white);
 
-  /* Capítulos: campos oscuros teñidos por la escala de calor. Derivados de los
-     tokens de marca (no son hex nuevos). Cada sección es un momento de la noche
-     y su tinte dice cuánto calor hay. Vecinos con luminosidad distinta. */
-  --nv-field-low: color-mix(in srgb, var(--nv-cyan) 12%, var(--nv-bg));
-  --nv-field-mid: color-mix(in srgb, var(--nv-violet) 19%, var(--nv-bg));
-  --nv-field-high: color-mix(in srgb, var(--nv-magenta) 16%, var(--nv-bg));
-  --nv-field-deep: color-mix(in srgb, var(--nv-violet) 9%, var(--nv-bg));
-
   /* Escala de calor (semántica) */
   --nv-heat-low: var(--nv-cyan);
   --nv-heat-mid: var(--nv-violet);

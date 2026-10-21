@@ -7,7 +7,7 @@ import { Reveal } from "@/components/live/Reveal";
 import { BusinessModel } from "@/components/locales/BusinessModel";
 import { ContactForm } from "@/components/locales/ContactForm";
 import { HowItWorks } from "@/components/locales/HowItWorks";
-import { ValueProps } from "@/components/locales/ValueProps";
+import { ClientScreens, ValueProps } from "@/components/locales/ValueProps";
 import { pageMetadata } from "@/lib/metadata";
 
 export const metadata: Metadata = pageMetadata({
@@ -20,17 +20,13 @@ export const metadata: Metadata = pageMetadata({
 const delay = (ms: number) => ({ "--reveal-delay": `${ms}ms` }) as CSSProperties;
 
 // Reparto de papeles: NightVibe es una plataforma intermediaria.
-const roles = [
-  { who: "Tu local", what: "Organiza la noche, pone los precios y decide los premios." },
-  { who: "NightVibe", what: "Pone la app, la venta de entradas y el escaparate." },
-];
 
 export default function LocalesPage() {
   return (
     <>
       <Reveal />
 
-      <section aria-labelledby="locales-title" className="bg-nv-bg pt-14 pb-16 sm:pt-20 sm:pb-20 lg:pt-28 lg:pb-32">
+      <section aria-labelledby="locales-title" className="pt-20 pb-32 sm:pt-28 lg:pt-32 lg:pb-36">
         <Container className="grid gap-14 lg:grid-cols-12 lg:gap-8">
           <div className="lg:col-span-7">
             <h1
@@ -43,26 +39,14 @@ export default function LocalesPage() {
             <p
               data-reveal-item
               style={delay(80)}
-              className="mt-8 max-w-xl text-lg leading-relaxed text-pretty text-white lg:mt-10 lg:text-xl"
+              className="mt-8 max-w-[38ch] text-lg leading-relaxed text-pretty text-nv-muted lg:mt-10 lg:text-xl"
             >
-              NightVibe es la app donde tu local publica eventos, vende entradas y premia a quien
-              vuelve. Llegas a la gente que está decidiendo ahora a dónde ir.
+              Tú organizas la noche. NightVibe pone la app, la venta de entradas y el escaparate
+              ante la gente que está decidiendo ahora a dónde ir.
             </p>
-            <div data-reveal-item style={delay(160)} className="mt-8 lg:mt-10">
+            <div data-reveal-item style={delay(160)} className="mt-12">
               <GradientButton href="#contacto">Quiero información</GradientButton>
             </div>
-            <dl className="mt-14 grid gap-8 sm:grid-cols-2 lg:mt-20">
-              {roles.map((r, i) => (
-                <div key={r.who} data-reveal-item style={delay(160 + i * 80)}>
-                  <dt className="text-2xl leading-tight font-extrabold tracking-[-0.025em] text-white lg:text-3xl">
-                    {r.who}
-                  </dt>
-                  <dd className="mt-2 max-w-sm text-lg leading-relaxed text-pretty text-nv-muted lg:text-xl">
-                    {r.what}
-                  </dd>
-                </div>
-              ))}
-            </dl>
           </div>
           <figure data-reveal-item style={delay(120)} className="lg:col-span-5 lg:flex lg:justify-end">
             <AppScreen screen="evento" preload />
@@ -72,13 +56,14 @@ export default function LocalesPage() {
       </section>
 
       <ValueProps />
+      <ClientScreens />
       <HowItWorks />
       <BusinessModel />
 
       <section
         id="contacto"
         aria-labelledby="contacto-title"
-        className="scroll-mt-20 bg-nv-field-deep py-16 sm:py-20 lg:py-32"
+        className="scroll-mt-20 py-24 sm:py-28"
       >
         <Container>
           <div className="grid gap-6 lg:grid-cols-12 lg:items-end lg:gap-8">

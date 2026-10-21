@@ -80,7 +80,7 @@ const sections: LegalSection[] = [
         <p>
           Ubicación aproximada o precisa del dispositivo, solo si concedes el permiso. Finalidad:
           mostrarte locales cercanos, calcular distancias y validar misiones en el local.
-          Contribuye de forma agregada al nivel de calor de los locales. Base legal: tu
+          Contribuye, de forma agregada y anónima, al número de asistentes que muestra cada local. Base legal: tu
           consentimiento (art. 6.1.a RGPD), que puedes retirar en cualquier momento desde los
           ajustes del dispositivo. [TODO: confirmar si la ubicación se usa en segundo plano, con qué
           precisión y durante cuánto tiempo se conserva.]

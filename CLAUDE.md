@@ -39,10 +39,10 @@ promociones son de cada local.
 
 - NO uses nombres de locales reales. En mockups: tipo de local + zona genérica
   ("Club techno", "Zona puerto").
-- Imágenes: solo nuestras o libres de derechos (dominio público / CC0 / CC BY con
-  crédito), en `public/images/`, registradas en `src/config/credits.ts` (el footer
-  muestra el crédito). Nada de stock de gente, ni caras reconocibles, ni rótulos o
-  marcas de locales. Sin fuentes de terceros (salvo `next/font`).
+- Imágenes: solo de la app o de ambiente de noche real (nuestras o libres de derechos, con
+  su crédito). Nada decorativo: si no hay una imagen buena, mejor ninguna. Nada de stock de
+  gente, caras reconocibles ni rótulos o marcas de locales. Sin fuentes de terceros (salvo
+  `next/font`).
 - Pantallas de la app: `AppScreen` (`src/components/app/AppScreen.tsx`). Con
   `siteConfig.appScreensReviewed = true` muestra las capturas de `public/screens/`
   (home, evento, misiones, entrada; 1179×2556 px); si no, fragmentos de la app en HTML
@@ -82,12 +82,16 @@ Fuente única de los hex: `src/styles/tokens.css`. **No inventes hex nuevos.**
   NUNCA bordes neón cian alrededor de cards.
 - `--nv-warning` (`text-nv-warning`, `bg-nv-warning/10`) solo para estados de aviso.
   No uses la paleta de colores de Tailwind (`amber-*`, etc.): todo color sale de tokens.
-- HeatBadge: <40 cian "EMPIEZA", 40–74 violeta "SUBIENDO", >=75 magenta "A REVENTAR"
-  (lógica en `src/lib/heat.ts`). Late siempre, más rápido cuanta más gente
-  (`beatSeconds`). Tamaño en em: lo fija el font-size del contenedor.
-- Dirección visual: "capítulos de color". Cada sección es un campo oscuro a sangre
-  teñido por la escala de calor (`bg-nv-field-low|mid|high|deep`, derivados con
-  color-mix), sin separadores; la home es una noche entera (empieza → a reventar).
+- HeatBadge: muestra el NÚMERO REAL DE ASISTENTES (no una escala 0–100): 0 gris "SÉ EL
+  PRIMERO" · 1–9 cian "EMPIEZA" · 10–49 violeta "SUBIENDO" · 50+ magenta "A REVENTAR"
+  (lógica en `src/lib/heat.ts`). El anillo se completa a los 50; late más rápido cuanta más
+  gente (`beatSeconds`; con 0 no late). Tamaño en em: lo fija el font-size del contenedor.
+- Premium = quitar. UN SOLO FONDO (`bg-nv-bg`) en toda la página: las secciones se separan
+  por espacio (py-32 / sm:py-48), nunca por color; como mucho una superficie neutra
+  (`bg-nv-surface`). Un mensaje por pantalla.
+- El gradiente/escala de calor solo en TRES sitios: el badge de calor, el botón de acción
+  principal (`GradientButton`, navbar "Descargar") y el logotipo. Todo lo demás en blanco,
+  gris o un color plano (también dentro de los fragmentos de la app).
 - Sin etiquetas encima de los títulos (eyebrows), sin bordes finos ni cards con
   contorno, sin numeraciones 01/02, sin glass/blur, sin sombras en reposo. Las
   MAYÚSCULAS con tracking quedan solo para estados en vivo ("EN VIVO", "SUBIENDO").

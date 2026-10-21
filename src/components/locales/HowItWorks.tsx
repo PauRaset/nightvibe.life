@@ -22,7 +22,7 @@ const offsets = ["", "lg:mt-20", "lg:mt-40"];
 
 export function HowItWorks() {
   return (
-    <section aria-labelledby="como-title" className="bg-nv-field-mid py-16 sm:py-20 lg:py-32">
+    <section aria-labelledby="como-title" className="py-24 sm:py-28">
       <Container>
         <h2
           id="como-title"

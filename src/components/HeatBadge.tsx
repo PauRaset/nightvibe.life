@@ -39,7 +39,8 @@ export function HeatBadge({
     "--beat": `${beatSeconds(people)}s`,
     // taste-skill-ignore: el anillo que se llena es el badge de la app (marca).
     background: `conic-gradient(${color} ${ringFill(people) * 360}deg, rgba(255,255,255,0.1) 0deg)`, // taste-skill-ignore
-    boxShadow: level === "zero" ? "none" : `0 0 1.4em -0.4em ${color}`,
+    // Halo del color del estado, como en la app: marca dónde mirar.
+    boxShadow: level === "zero" ? "none" : `0 0 2.2em 0.1em color-mix(in srgb, ${color} 38%, transparent)`,
   } as CSSProperties;
 
   return (

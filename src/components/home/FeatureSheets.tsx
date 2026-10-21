@@ -8,6 +8,8 @@ import { Container } from "../Container";
 type Feature = {
   id: string;
   screen: AppScreenName;
+  /** El único punto de color de la sección: el halo y el acento de su pantalla. */
+  glow: "cyan" | "violet";
   title: string;
   body: ReactNode;
 };
@@ -16,18 +18,21 @@ const features: Feature[] = [
   {
     id: "los-tuyos",
     screen: "evento",
+    glow: "cyan",
     title: "Mira a dónde van los tuyos.",
     body: "Sigue a tus amigos y ve en qué local están esta noche. Te apuntas o cambias de plan, sin grupos ni mensajes perdidos.",
   },
   {
     id: "misiones",
     screen: "misiones",
+    glow: "violet",
     title: "Sube de nivel en cada local.",
     body: "Completas misiones, como escanear el QR del local o subir una foto de la noche. Al completar un nivel, el local te da su premio.",
   },
   {
     id: "entradas",
     screen: "entrada",
+    glow: "cyan",
     title: "Compra fácil. Entra con el móvil.",
     body: "Compras la entrada del evento que publica cada local en segundos. Es un QR: lo enseñas en la puerta y entras.",
   },
@@ -67,7 +72,7 @@ export function FeatureSheets() {
                 style={{ "--reveal-delay": "160ms" } as CSSProperties}
                 className={`flex justify-center lg:col-span-5 ${flip ? "lg:order-1 lg:col-start-1 lg:justify-start" : "lg:col-start-8 lg:justify-end"}`}
               >
-                <AppScreen screen={f.screen} />
+                <AppScreen screen={f.screen} glow={f.glow} />
               </div>
             </Container>
           </section>

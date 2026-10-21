@@ -38,20 +38,22 @@ export type AppScreenName = keyof typeof appScreens;
 
 type AppScreenProps = {
   screen: AppScreenName;
+  /** Halo suave del color de la escala detrás de la pantalla (no un fondo). */
+  glow?: "cyan" | "violet" | "magenta";
   /** Solo para la pantalla visible al cargar. */
   preload?: boolean;
   className?: string;
 };
 
-export function AppScreen({ screen, preload = false, className = "" }: AppScreenProps) {
+export function AppScreen({ screen, glow, preload = false, className = "" }: AppScreenProps) {
   const { file, alt } = appScreens[screen];
   const src = `/screens/${file}`;
   const useCapture =
     siteConfig.appScreensReviewed && existsSync(join(process.cwd(), "public", src));
 
-  return (
+  const screenEl = (
     <div
-      className={`relative w-full max-w-[360px] overflow-hidden rounded-[2.25rem] bg-nv-surface ${className}`}
+      className={`relative w-full max-w-[360px] overflow-hidden rounded-[2.25rem] bg-[color-mix(in_srgb,white_4%,var(--nv-bg))] ${className}`}
     >
       {useCapture ? (
         <Image
@@ -68,6 +70,21 @@ export function AppScreen({ screen, preload = false, className = "" }: AppScreen
           <div aria-hidden="true">{fragments[screen]}</div>
         </div>
       )}
+    </div>
+  );
+
+  if (!glow) return screenEl;
+  return (
+    <div className="relative isolate w-full max-w-[360px]">
+      {/* Halo: un degradado radial estático (sin filter: blur), barato en móvil. */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute -inset-[18%] -z-10 max-sm:inset-x-0"
+        style={{
+          background: `radial-gradient(closest-side, color-mix(in srgb, var(--nv-${glow}) 26%, transparent), transparent)`, // taste-skill-ignore
+        }}
+      />
+      {screenEl}
     </div>
   );
 }
@@ -169,7 +186,7 @@ function EventoFragment() {
       </dl>
       <div className="mx-5 mt-5 flex items-center justify-between rounded-2xl bg-nv-surface-strong p-4">
         <div>
-          <p className="font-extrabold">+34 van esta noche</p>
+          <p className="font-extrabold"><span className="text-nv-cyan">+34 van</span> esta noche</p>
           <p className="text-[13px] text-nv-muted">3 personas que sigues</p>
         </div>
         <div className="flex -space-x-2">
@@ -217,12 +234,12 @@ function MisionesFragment() {
       <div className="mt-1 flex items-baseline justify-between">
         <p className="text-[28px] leading-none font-extrabold tracking-tight">Nivel 2</p>
         <p className="text-[15px] text-nv-muted">
-          <span className="font-extrabold text-white">{done} de {missions.length}</span> misiones
+          <span className="font-extrabold text-nv-violet-text">{done} de {missions.length}</span> misiones
         </p>
       </div>
       <div className="mt-3 h-2 overflow-hidden rounded-full bg-white/10">
         <div
-          className="h-full rounded-full bg-white"
+          className="h-full rounded-full bg-nv-violet"
           style={{ width: `${(done / missions.length) * 100}%` }}
         />
       </div>
@@ -256,7 +273,7 @@ function EntradaFragment() {
         {/* QR de demostración: no corresponde a ninguna entrada. */}
         <TicketQr payload="NIGHTVIBE · ENTRADA DE DEMOSTRACIÓN" />
       </div>
-      <p className="mx-auto mt-4 inline-block rounded-full bg-nv-surface-strong px-5 py-2.5 text-lg font-extrabold tracking-[0.12em] tabular-nums">
+      <p className="mx-auto mt-4 inline-block rounded-full bg-nv-surface-strong px-5 py-2.5 text-lg font-extrabold tracking-[0.12em] text-nv-cyan tabular-nums">
         NV-DEMO-0000
       </p>
       <p className="mt-3 text-[13px] text-nv-dim">Enséñala en la puerta</p>

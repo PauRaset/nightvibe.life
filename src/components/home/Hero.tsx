@@ -20,7 +20,7 @@ export function Hero() {
           <StoreButtons className="mt-12" />
         </div>
         <div className="flex justify-center lg:col-span-5 lg:justify-end">
-          <AppScreen screen="home" preload />
+          <AppScreen screen="home" glow="violet" preload />
         </div>
       </Container>
     </section>

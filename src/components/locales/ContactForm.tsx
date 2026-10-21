@@ -156,7 +156,7 @@ export function ContactForm() {
             required
             aria-invalid={errors.privacidad ? true : undefined}
             aria-describedby={describedBy("privacidad")}
-            className="mt-0.5 size-5 shrink-0 accent-nv-violet"
+            className="mt-0.5 size-6 shrink-0 accent-nv-violet"
           />
           <label htmlFor="privacidad" className="text-base leading-relaxed text-white">
             He leído y acepto la{" "}

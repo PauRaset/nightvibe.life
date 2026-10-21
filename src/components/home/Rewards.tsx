@@ -32,7 +32,7 @@ export function Rewards() {
           </p>
         </div>
 
-        <ol className="space-y-3 lg:col-span-6 lg:col-start-7">
+        <ol className="space-y-4 lg:col-span-6 lg:col-start-7">
           {levels.map((l, i) => (
             <li
               key={l.level}
@@ -40,7 +40,9 @@ export function Rewards() {
               style={{ "--reveal-delay": `${i * 70}ms` } as CSSProperties}
               className="grid grid-cols-[4.5rem_1fr] items-baseline gap-x-4 rounded-3xl bg-nv-surface px-6 py-7 sm:px-8"
             >
-              <span className="text-base text-nv-dim tabular-nums">Nivel {l.level}</span>
+              <span className={`text-base tabular-nums ${l.level === levels.length ? "font-bold text-nv-magenta" : "text-nv-dim"}`}>
+                Nivel {l.level}
+              </span>
               <div>
                 <h3 className="text-2xl leading-tight font-bold tracking-[-0.02em] text-white sm:text-[28px]">
                   {l.reward}

@@ -29,9 +29,12 @@ export function HeatControl({ initial = 34 }: { initial?: number }) {
           id="calor-title"
           className="text-[40px] leading-[0.98] font-extrabold tracking-[-0.035em] text-white sm:text-[64px]"
         >
-          Ahora está <span className="block">{headlineWord[level]}.</span>
+          Ahora está{" "}
+          <span className={`block transition-colors duration-300 ${heatLevels[level].textClass}`}>
+            {headlineWord[level]}.
+          </span>
         </h2>
-        <p className="mt-8 max-w-md text-lg leading-relaxed text-white">
+        <p className="mt-8 max-w-md text-lg leading-relaxed text-nv-muted">
           Cada local muestra cuánta gente hay dentro ahora mismo. Cuanta más gente, más rápido late.
           Un vistazo y sabes a dónde ir.
         </p>

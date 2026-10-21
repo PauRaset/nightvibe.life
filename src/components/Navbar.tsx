@@ -40,7 +40,7 @@ export function Navbar() {
           ))}
           <Link
             href="/#descargar"
-            className="rounded-full bg-nv-gradient px-5 py-2.5 text-base font-extrabold text-black transition-transform active:scale-95"
+            className="inline-flex min-h-11 items-center rounded-full bg-nv-gradient px-5 text-base font-extrabold text-black transition-transform active:scale-95"
           >
             Descargar
           </Link>
@@ -50,7 +50,7 @@ export function Navbar() {
           <Link
             href="/#descargar"
             onClick={close}
-            className="rounded-full bg-nv-gradient px-4 py-2 text-base font-extrabold text-black transition-transform active:scale-95"
+            className="inline-flex min-h-11 items-center rounded-full bg-nv-gradient px-5 text-base font-extrabold text-black transition-transform active:scale-95"
           >
             Descargar
           </Link>

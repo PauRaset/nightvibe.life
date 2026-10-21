@@ -31,10 +31,10 @@ export function Footer() {
 
           <nav aria-label="Secciones" className="sm:col-span-3 sm:col-start-7">
             <h2 className="text-base font-bold text-white">La app</h2>
-            <ul className="mt-4 space-y-3 text-base">
+            <ul className="mt-2 text-base">
               {navLinks.map((link) => (
                 <li key={link.href}>
-                  <Link href={link.href} className="text-nv-muted transition-colors hover:text-white">
+                  <Link href={link.href} className="inline-block py-2.5 text-nv-muted transition-colors hover:text-white">
                     {link.label}
                   </Link>
                 </li>
@@ -45,7 +45,7 @@ export function Footer() {
                     href={siteConfig.social[key]}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-nv-muted transition-colors hover:text-white"
+                    className="inline-block py-2.5 text-nv-muted transition-colors hover:text-white"
                   >
                     {socialLabels[key]}
                   </a>
@@ -56,9 +56,9 @@ export function Footer() {
 
           <div className="sm:col-span-3">
             <h2 className="text-base font-bold text-white">Contacto</h2>
-            <ul className="mt-4 space-y-3 text-base">
+            <ul className="mt-2 text-base">
               <li>
-                <Link href="/locales#contacto" className="text-nv-muted transition-colors hover:text-white">
+                <Link href="/locales#contacto" className="inline-block py-2.5 text-nv-muted transition-colors hover:text-white">
                   Tengo un local
                 </Link>
               </li>
@@ -66,7 +66,7 @@ export function Footer() {
                 <li>
                   <a
                     href={`mailto:${siteConfig.contactEmail}`}
-                    className="text-nv-muted transition-colors hover:text-white"
+                    className="inline-block py-2.5 text-nv-muted transition-colors hover:text-white"
                   >
                     {siteConfig.contactEmail}
                   </a>
@@ -75,7 +75,7 @@ export function Footer() {
               {siteConfig.legalPagesReady &&
                 legalLinks.map((link) => (
                   <li key={link.href}>
-                    <Link href={link.href} className="text-nv-muted transition-colors hover:text-white">
+                    <Link href={link.href} className="inline-block py-2.5 text-nv-muted transition-colors hover:text-white">
                       {link.label}
                     </Link>
                   </li>
@@ -90,7 +90,7 @@ export function Footer() {
           </p>
           <Link
             href="/#descargar"
-            className="rounded-full bg-nv-surface-strong px-4 py-2 text-base font-bold text-white transition-[background-color,transform] hover:bg-white/14 active:scale-[0.97]"
+            className="inline-flex min-h-11 items-center rounded-full bg-nv-surface-strong px-5 text-base font-bold text-white transition-[background-color,transform] hover:bg-white/14 active:scale-[0.97]"
           >
             Descargar
           </Link>

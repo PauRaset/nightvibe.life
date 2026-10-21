@@ -49,7 +49,7 @@ export default function LocalesPage() {
             </div>
           </div>
           <figure data-reveal-item style={delay(120)} className="lg:col-span-5 lg:flex lg:justify-end">
-            <AppScreen screen="evento" preload />
+            <AppScreen screen="evento" glow="cyan" preload />
             <figcaption className="sr-only">Así ve la gente el evento de un local en la app.</figcaption>
           </figure>
         </Container>

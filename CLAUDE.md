@@ -48,11 +48,15 @@ promociones son de cada local.
   por las insignias oficiales de App Store y Google Play.
 - Pantallas de la app: `AppScreen` (`src/components/app/AppScreen.tsx`). Con
   `siteConfig.appScreensReviewed = true` muestra las capturas de `public/screens/`
-  (home, evento, misiones, entrada; 1179×2556 px); si no, fragmentos de la app en HTML
-  con datos ficticios. Las capturas deben hacerse con datos de demo: sin locales,
+  (home, evento, misiones, entrada, panel; 1179×2556 px); si no, fragmentos de la app en
+  HTML (estilo true-black-flat adaptado) con los datos de demo de `src/lib/demo.ts`: cada
+  cifra que se repite es una sola variable (los 86 asistentes del evento protagonista). Las capturas deben hacerse con datos de demo: sin locales,
   artistas, direcciones ni caras reales, y sin el QR/serial de una entrada válida.
-- Recompensas = MISIONES ("2 de 3 misiones"), nunca puntos. Ni "puntos", ni "pts", ni
-  "acumula/suma".
+- Recompensas = MISIONES ("2 de 3 misiones"), nunca puntos. Cada local tiene 10 NIVELES;
+  el premio del nivel 10 es mesa con botella. Los premios de la web son un ejemplo
+  (márcalo visible): cada local define los suyos. El número del badge es gente que VA
+  (asistentes confirmados), nunca gente "dentro" ni aforo.
+  Ni "puntos", ni "pts", ni "acumula/suma".
 - `/locales` no habla de precio, comisión ni cuotas: las condiciones se hablan en una
   reunión.
 - Tono: directo, nocturno, frases cortas, sin exceso de exclamaciones. Español de España.
@@ -71,8 +75,10 @@ Fuente única de los hex: `src/styles/tokens.css`. **No inventes hex nuevos.**
 --nv-gradient: linear-gradient(135deg, #00E5FF 0%, #7B5CFF 50%, #FF2D9B 100%);
 ```
 
-- Superficies y textos se derivan del fondo con blanco en opacidad (`--nv-surface`,
-  `--nv-text-muted`, etc.). Texto atenuado mínimo 0.5 de opacidad (AA).
+- Superficies (`--nv-surface`, `-strong`, `-raised`): escalones opacos del fondo TEÑIDOS
+  DE AZUL de marca (color-mix), nunca gris neutro; elevación solo por luminosidad, sin
+  bordes ni sombras en cards. Textos: blanco en opacidad, atenuado mínimo 0.5 (AA).
+- Curvas de movimiento: `--ease-out` / `--ease-in-out` de tokens.css (no inventar otras).
 - El violeta puro no llega a AA en texto pequeño: usa `text-nv-violet-text`.
 - Sobre el gradiente, texto negro (`text-black`): es el único que cumple AA en todo el
   recorrido.
@@ -85,22 +91,29 @@ Fuente única de los hex: `src/styles/tokens.css`. **No inventes hex nuevos.**
   NUNCA bordes neón cian alrededor de cards.
 - `--nv-warning` (`text-nv-warning`, `bg-nv-warning/10`) solo para estados de aviso.
   No uses la paleta de colores de Tailwind (`amber-*`, etc.): todo color sale de tokens.
-- HeatBadge: muestra el NÚMERO REAL DE ASISTENTES (no una escala 0–100): 0 gris "SÉ EL
+- HeatBadge (componente de marca intocable): ASISTENTES CONFIRMADOS: 0 cian "SÉ EL
   PRIMERO" · 1–9 cian "EMPIEZA" · 10–49 violeta "SUBIENDO" · 50+ magenta "A REVENTAR"
-  (lógica en `src/lib/heat.ts`). El anillo se completa a los 50; late más rápido cuanta más
-  gente (`beatSeconds`; con 0 no late). Tamaño en em: lo fija el font-size del contenedor.
+  (lógica en `src/lib/heat.ts`). Latido: (1600 − asistentes × 18) ms, mínimo 700 ms
+  (`beatMs`). El anillo se completa a los 50. Tamaño en em (lo fija el font-size).
 - Premium = quitar. UN SOLO FONDO (`bg-nv-bg`) en toda la página: las secciones se separan
   por espacio (py-20 en móvil, sm:py-36), nunca por color; como mucho una superficie neutra
   (`bg-nv-surface`). Un mensaje por pantalla.
-- El gradiente/escala de calor solo en TRES sitios: el badge de calor, el botón de acción
-  principal (`GradientButton`, navbar "Descargar") y el logotipo. Todo lo demás en blanco,
-  gris o un color plano (también dentro de los fragmentos de la app).
+- El gradiente/escala de calor solo donde manda: el badge (halos y anillos), el logotipo,
+  el CTA principal (`GradientButton`), los botones de acción circulares de la app ("Voy")
+  y las barras de progreso (niveles, misiones). Nada más; nunca en fondos de sección.
+- La app aún no está publicada: nada de "Descargar"; la cabecera dice "Próximamente"
+  (enlace de texto al cierre) y las tiendas salen como "Próximamente en".
 - Sin etiquetas encima de los títulos (eyebrows), sin bordes finos ni cards con
   contorno, sin numeraciones 01/02, sin glass/blur, sin sombras en reposo. Las
   MAYÚSCULAS con tracking quedan solo para estados en vivo ("EN VIVO", "SUBIENDO").
 - Nada por debajo de 13px. Titulares de 2 líneas máximo a 390/768/1440.
-- Entradas al hacer scroll: atributo `data-reveal-item` + `<Reveal />` montado en la
-  página (no en el layout). Sin JS o con reduced-motion todo se ve.
+- Entradas al hacer scroll: atributo `data-reveal-item` (o `data-reveal-grow` para barras)
+  + `<Reveal />` montado en la página (no en el layout). Sin JS o con reduced-motion todo
+  se ve.
+- Momentos animados de la home: `HeatScroll` (sección fijada en svh; rAF + scroll pasivo,
+  escribe en el DOM, nunca estado React por frame) y el universo (`UniverseCanvas`, Canvas
+  que se pausa fuera de pantalla, sobre un SVG estático de `src/lib/universe.ts`). Sin JS
+  o con reduced-motion: estado final estático.
 - Solo modo oscuro. Mobile-first (tráfico desde Instagram/WhatsApp, revisar a 375px).
 - Toda animación en CSS, con `motion-safe:` y desactivada por `prefers-reduced-motion`.
 - Tipografía provisional: Plus Jakarta Sans, definida SOLO en `src/lib/fonts.ts`.

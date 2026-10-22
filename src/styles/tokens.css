@@ -1,7 +1,7 @@
 /*
  * NightVibe — tokens de diseño.
- * FUENTE ÚNICA de los hex de marca. No añadas hex nuevos: deriva superficies
- * y textos del fondo con blanco en opacidad. Los contextos sin CSS (next/og,
+ * FUENTE ÚNICA de los hex de marca. No añadas hex nuevos: las superficies se
+ * derivan del fondo con un tinte azul de marca, y los textos con blanco. Los contextos sin CSS (next/og,
  * themeColor) leen este archivo vía src/lib/tokens.ts.
  */
 :root {
@@ -19,10 +19,18 @@
      (p. ej. "entrada ya usada"), nunca decorativo. */
   --nv-warning: #FFB020;
 
-  /* Superficies (derivadas del fondo) */
-  --nv-surface: rgba(255, 255, 255, 0.04);
-  --nv-surface-strong: rgba(255, 255, 255, 0.08);
+  /* Superficies: escalones de luminosidad TEÑIDOS DE AZUL (nunca gris neutro),
+     opacos, derivados del fondo con el azul-violeta de marca. Elevación solo por
+     luminosidad: sin bordes ni sombras en las cards. */
+  --nv-tint: color-mix(in srgb, var(--nv-violet) 72%, var(--nv-cyan));
+  --nv-surface: color-mix(in srgb, var(--nv-tint) 7%, var(--nv-bg));
+  --nv-surface-strong: color-mix(in srgb, var(--nv-tint) 12%, var(--nv-bg));
+  --nv-surface-raised: color-mix(in srgb, var(--nv-tint) 18%, var(--nv-bg));
   --nv-line: rgba(255, 255, 255, 0.08);
+
+  /* Movimiento (curvas de la skill animate; no inventar otras) */
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
 
   /* Texto (derivado del fondo). 0.5 es el mínimo que cumple AA sobre --nv-bg;
      0.4 solo para elementos decorativos, nunca para texto. */
@@ -34,7 +42,7 @@
      Para texto pequeño se aclara con blanco; no es un hex nuevo. */
   --nv-violet-text: color-mix(in srgb, var(--nv-violet) 78%, white);
 
-  /* Escala de calor (semántica) */
+  /* Escala de calor (semántica): 0 y 1–9 cian, 10–49 violeta, 50+ magenta */
   --nv-heat-low: var(--nv-cyan);
   --nv-heat-mid: var(--nv-violet);
   --nv-heat-high: var(--nv-magenta);

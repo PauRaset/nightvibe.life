@@ -53,8 +53,8 @@ export const siteConfig = {
 
 export const navLinks = [
   { href: "/#calor", label: "Calor" },
-  { href: "/#misiones", label: "Misiones" },
-  { href: "/#entradas", label: "Entradas" },
+  { href: "/#los-tuyos", label: "Los tuyos" },
+  { href: "/#niveles", label: "Niveles" },
   { href: "/locales", label: "Para locales" },
 ] as const;
 

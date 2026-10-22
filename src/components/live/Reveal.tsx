@@ -22,7 +22,7 @@ export function Reveal() {
       },
       { rootMargin: "0px 0px -8% 0px", threshold: 0.05 },
     );
-    const items = document.querySelectorAll("[data-reveal-item]");
+    const items = document.querySelectorAll("[data-reveal-item], [data-reveal-grow]");
     // Lo que ya está en pantalla al cargar no se anima.
     items.forEach((el) => {
       if (el.getBoundingClientRect().top < window.innerHeight) el.setAttribute("data-shown", "");

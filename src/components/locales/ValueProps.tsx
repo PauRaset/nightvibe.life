@@ -1,98 +1,84 @@
 import type { CSSProperties } from "react";
+import { levels } from "@/lib/demo";
 import { AppScreen, type AppScreenName } from "../app/AppScreen";
 import { Container } from "../Container";
 
-// Lo que el local tiene con NightVibe: lista de definición a gran escala,
-// sin tarjetas ni numeración. Los premios se ganan completando misiones.
-const props = [
+// Lo que el local tiene con NightVibe: filas sobre un eje (columna 5), cada una
+// con la pantalla de la app que la demuestra en el margen derecho, a tamaños
+// desiguales. Sin tarjetas ni numeración.
+
+type Row = { title: string; text: string; screen?: AppScreenName; rows?: number; width?: number; phone?: string };
+
+const items: Row[] = [
   {
     title: "Publica tus eventos.",
-    text: "Creas el evento, pones precio y aforo, y aparece en la app en minutos. Lo editas cuando quieras.",
+    text: "Creas el evento, pones el precio de tus entradas y el aforo, y aparece en la app en minutos. La gente confirma que va y lo ves en tu panel.",
+    screen: "evento",
+    width: 320,
+    phone: "w-full",
   },
   {
-    title: "Vende entradas.",
-    text: "Venta desde el móvil con entrada QR. En la puerta se escanea y se pasa: control de acceso rápido, sin listas en papel.",
+    title: "Vende entradas con QR.",
+    text: "Venta desde el móvil. En la puerta se escanea y se pasa: control de acceso rápido, sin listas en papel.",
+    screen: "entrada",
+    width: 300,
+    phone: "ml-auto w-[82%]",
   },
   {
-    title: "Visibilidad esa noche.",
-    text: "Tu local sale ante gente que está decidiendo ahora a dónde ir. No dentro de un mes: esta noche.",
+    title: "Visibilidad esa misma noche.",
+    text: "Tu local sale ante gente que está decidiendo ahora a dónde ir, ordenado por cuántos van. No dentro de un mes: esta noche.",
+    screen: "home",
+    rows: 3,
+    width: 340,
+    phone: "w-full",
   },
   {
     title: "Niveles con misiones.",
-    text: "Tus clientes suben de nivel completando misiones: escanear el QR del local, subir una foto de la noche. Cada nivel desbloquea premios reales, como un chupito, entrada gratis, saltarse la cola o una mesa con botella. Tú decides las misiones, los niveles y los premios.",
+    text: `Tus clientes suben ${levels.length} niveles en tu local completando misiones, como escanear tu QR o subir una foto de la noche, y canjean el premio de cada nivel. Tú decides las misiones y los premios; el último puede ser una mesa con botella.`,
+    screen: "misiones",
+    width: 310,
+    phone: "ml-auto w-[88%]",
   },
   {
     title: "Panel web de gestión.",
-    text: "Eventos, ventas, accesos y promociones en un único panel, desde el navegador.",
+    text: "Eventos, confirmados, ventas, accesos y misiones en un único panel, desde el navegador.",
   },
-];
-
-// Lo que ven tus clientes: las mismas pantallas de la app, a tamaño real.
-const screens: { screen: AppScreenName; caption: string }[] = [
-  { screen: "home", caption: "Tu local, ordenado por calor esta noche." },
-  { screen: "misiones", caption: "Las misiones y el premio que tú defines." },
-  { screen: "entrada", caption: "La entrada con QR que escaneas en la puerta." },
 ];
 
 export function ValueProps() {
   return (
     <section aria-labelledby="valor-title" className="py-16 sm:py-28">
-      <Container>
+      <Container className="grid gap-y-14 lg:grid-cols-12 lg:gap-x-8 lg:gap-y-24">
         <h2
           id="valor-title"
           data-reveal-item
-          className="max-w-4xl text-4xl leading-none font-extrabold tracking-[-0.035em] text-balance text-white lg:text-6xl"
+          className="text-4xl leading-none font-extrabold tracking-[-0.035em] text-white lg:col-span-8 lg:col-start-5 lg:text-6xl"
         >
           Lo que tienes con NightVibe.
         </h2>
-        <dl className="mt-12 grid gap-10 sm:mt-16 lg:mt-24 lg:gap-16">
-          {props.map((p, i) => (
-            <div
-              key={p.title}
-              data-reveal-item
-              style={{ "--reveal-delay": `${(i % 2) * 80}ms` } as CSSProperties}
-              className="grid gap-3 lg:grid-cols-12 lg:gap-8"
-            >
-              <dt className="text-2xl leading-tight font-extrabold tracking-[-0.025em] text-white lg:col-span-5 lg:text-3xl">
-                {p.title}
-              </dt>
-              <dd className="text-lg leading-relaxed text-pretty text-white lg:col-span-7 lg:text-xl">
-                {p.text}
-              </dd>
+        {items.map((it) => (
+          <article key={it.title} className="grid gap-8 lg:col-span-8 lg:col-start-5 lg:grid-cols-8 lg:gap-8">
+            <div className={it.screen ? "lg:col-span-4" : "lg:col-span-6"}>
+              <h3 data-reveal-item className="text-2xl leading-tight font-extrabold tracking-[-0.025em] text-white lg:text-[32px]">
+                {it.title}
+              </h3>
+              <p
+                data-reveal-item
+                style={{ "--reveal-delay": "80ms" } as CSSProperties}
+                className="mt-3 max-w-[38ch] text-lg leading-relaxed text-nv-muted"
+              >
+                {it.text}
+              </p>
             </div>
-          ))}
-        </dl>
-
-      </Container>
-    </section>
-  );
-}
-
-export function ClientScreens() {
-  return (
-    <section aria-labelledby="clientes-title" className="py-16 sm:py-28">
-      <Container>
-        <h2
-          id="clientes-title"
-          data-reveal-item
-          className="max-w-4xl text-4xl leading-none font-extrabold tracking-[-0.035em] text-balance text-white lg:text-6xl"
-        >
-          Lo que ven tus clientes.
-        </h2>
-        <ul className="mt-16 grid lg:mt-24 gap-10 sm:grid-cols-3 sm:gap-6">
-          {screens.map((s, i) => (
-            <li
-              key={s.screen}
-              data-reveal-item
-              style={{ "--reveal-delay": `${i * 80}ms` } as CSSProperties}
-            >
-              <figure>
-                <AppScreen screen={s.screen} className="mx-auto max-h-[460px] sm:mx-0" />
-                <figcaption className="mt-4 text-base text-white">{s.caption}</figcaption>
-              </figure>
-            </li>
-          ))}
-        </ul>
+            {it.screen && (
+              <div data-reveal-item style={{ "--reveal-delay": "140ms" } as CSSProperties} className={`${it.phone} lg:col-span-4 lg:w-full`}>
+                <div className="lg:ml-auto" style={{ maxWidth: it.width }}>
+                  <AppScreen screen={it.screen} rows={it.rows} width={it.width} />
+                </div>
+              </div>
+            )}
+          </article>
+        ))}
       </Container>
     </section>
   );

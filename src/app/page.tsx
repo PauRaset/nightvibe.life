@@ -1,9 +1,11 @@
 import type { Metadata } from "next";
-import { FeatureSheets } from "@/components/home/FeatureSheets";
+import { FeatureRows } from "@/components/home/FeatureRows";
 import { FinalCta } from "@/components/home/FinalCta";
 import { Hero } from "@/components/home/Hero";
-import { Rewards } from "@/components/home/Rewards";
-import { HeatControl } from "@/components/live/HeatControl";
+import { Levels } from "@/components/home/Levels";
+import { Tonight } from "@/components/home/Tonight";
+import { Universe } from "@/components/home/Universe";
+import { HeatScroll } from "@/components/live/HeatScroll";
 import { Reveal } from "@/components/live/Reveal";
 import { siteConfig } from "@/config/site";
 import { pageMetadata } from "@/lib/metadata";
@@ -18,17 +20,19 @@ export const metadata: Metadata = {
   title: { absolute: `${siteConfig.name} · ${siteConfig.shortDescription}` },
 };
 
-// Un solo fondo y un mensaje por pantalla: las secciones las separa el aire.
+// "La frase es la composición": cada sección es una frase con su prueba al lado,
+// alternando escalas. Dos momentos protagonistas a ancho completo: el calor con
+// scroll y el universo de los tuyos.
 export default function HomePage() {
   return (
     <>
       <Reveal />
       <Hero />
-      <section id="calor" aria-labelledby="calor-title" className="scroll-mt-16 py-20 sm:py-36">
-        <HeatControl initial={34} />
-      </section>
-      <FeatureSheets />
-      <Rewards />
+      <HeatScroll />
+      <Tonight />
+      <Universe />
+      <FeatureRows />
+      <Levels />
       <FinalCta />
     </>
   );

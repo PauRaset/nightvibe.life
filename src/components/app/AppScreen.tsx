@@ -3,85 +3,69 @@ import { join } from "node:path";
 import Image from "next/image";
 import type { ReactNode } from "react";
 import { siteConfig } from "@/config/site";
+import { featured, friends, levels, progress, ticket, tonight, venuePanel } from "@/lib/demo";
 import { HeatBadge } from "../HeatBadge";
 import { TicketQr } from "../ticket/TicketQr";
 
-// Pantallas de la app. Con siteConfig.appScreensReviewed = true y el PNG en
-// public/screens/ se muestra la CAPTURA REAL (1179×2556 px, iPhone 15/16 Pro).
-// Si no, un fragmento de la app construido en HTML con datos ficticios y tipos
-// de local genéricos (regla de contenido: nada de locales reales).
-// Sin marco de móvil: la pantalla sola, recortada como una fotografía.
+// Fragmentos REALES de la app (estilo true-black-flat adaptado a la marca):
+// elevación solo por luminosidad con superficies teñidas de azul, sin bordes ni
+// sombras, color solo en los datos (badges, progreso) y en el botón de acción.
+// Datos de src/lib/demo.ts. Con siteConfig.appScreensReviewed = true y el PNG en
+// public/screens/ se muestra la captura real (1179×2556 px).
 
 const SCREEN_WIDTH = 1179;
 const SCREEN_HEIGHT = 2556;
 
 export const appScreens = {
-  home: {
-    file: "home.png",
-    alt: "Inicio de la app NightVibe: los locales de esta noche ordenados por calor en tiempo real",
-  },
-  evento: {
-    file: "evento.png",
-    alt: "Detalle de un evento en la app NightVibe con su calor y quién va",
-  },
-  misiones: {
-    file: "misiones.png",
-    alt: "Misiones de un local en la app NightVibe: dos de tres completadas",
-  },
-  entrada: {
-    file: "entrada.png",
-    alt: "Entrada digital con código QR en la app NightVibe",
-  },
+  home: { file: "home.png", alt: "Ahora mismo en la app NightVibe: locales de esta noche por asistentes confirmados" },
+  evento: { file: "evento.png", alt: "Evento en la app NightVibe: quién va y el botón para confirmar que vas" },
+  misiones: { file: "misiones.png", alt: "Nivel 3 de 10 en un local: dos de tres misiones completadas" },
+  entrada: { file: "entrada.png", alt: "Entrada con código QR en la app NightVibe" },
+  panel: { file: "panel.png", alt: "Panel del local en NightVibe: confirmados, entradas vendidas y misiones de esta noche" },
 } as const;
 
 export type AppScreenName = keyof typeof appScreens;
 
 type AppScreenProps = {
   screen: AppScreenName;
+  /** Ancho máximo de la pantalla (por defecto 360). */
+  width?: number;
   /** Halo suave del color de la escala detrás de la pantalla (no un fondo). */
   glow?: "cyan" | "violet" | "magenta";
-  /** Solo para la pantalla visible al cargar. */
+  /** Para "home": cuántos locales enteros se muestran (nunca uno cortado). */
+  rows?: number;
   preload?: boolean;
   className?: string;
 };
 
-export function AppScreen({ screen, glow, preload = false, className = "" }: AppScreenProps) {
+export function AppScreen({ screen, glow, width = 360, rows = 3, preload = false, className = "" }: AppScreenProps) {
   const { file, alt } = appScreens[screen];
   const src = `/screens/${file}`;
-  const useCapture =
-    siteConfig.appScreensReviewed && existsSync(join(process.cwd(), "public", src));
+  const useCapture = siteConfig.appScreensReviewed && existsSync(join(process.cwd(), "public", src));
 
   const screenEl = (
     <div
-      className={`relative w-full max-w-[360px] overflow-hidden rounded-[2.25rem] bg-[color-mix(in_srgb,white_4%,var(--nv-bg))] ${className}`}
+      className={`relative w-full overflow-hidden rounded-[1.75rem] bg-nv-surface ${className}`}
+      style={{ maxWidth: width }}
     >
       {useCapture ? (
-        <Image
-          src={src}
-          alt={alt}
-          width={SCREEN_WIDTH}
-          height={SCREEN_HEIGHT}
-          sizes="360px"
-          preload={preload}
-          className="block h-auto w-full"
-        />
+        <Image src={src} alt={alt} width={SCREEN_WIDTH} height={SCREEN_HEIGHT} sizes={`${width}px`} preload={preload} className="block h-auto w-full" />
       ) : (
         <div data-ui role="img" aria-label={alt} className="text-white">
-          <div aria-hidden="true">{fragments[screen]}</div>
+          <div aria-hidden="true">{screen === "home" ? <HomeFragment rows={rows} /> : fragments[screen]}</div>
         </div>
       )}
     </div>
   );
-
   if (!glow) return screenEl;
   return (
-    <div className="relative isolate w-full max-w-[360px]">
-      {/* Halo: un degradado radial estático (sin filter: blur), barato en móvil. */}
+    <div className="relative isolate w-full" style={{ maxWidth: width }}>
+      {/* Halo: degradado radial estático (sin filter: blur), barato en móvil. */}
       <div
         aria-hidden="true"
         className="pointer-events-none absolute -inset-[18%] -z-10 max-sm:inset-x-0"
         style={{
-          background: `radial-gradient(closest-side, color-mix(in srgb, var(--nv-${glow}) 26%, transparent), transparent)`, // taste-skill-ignore
+          background: `radial-gradient(closest-side, color-mix(in srgb, var(--nv-${glow}) 22%, transparent), transparent)`, // taste-skill-ignore
         }}
       />
       {screenEl}
@@ -89,65 +73,51 @@ export function AppScreen({ screen, glow, preload = false, className = "" }: App
   );
 }
 
-// ─── Fragmentos ────────────────────────────────────────────────────────────
+// ─── Piezas ────────────────────────────────────────────────────────────────
 
 function StatusLabel({ children, className = "" }: { children: ReactNode; className?: string }) {
+  return <span className={`text-[13px] font-bold tracking-[0.14em] uppercase ${className}`}>{children}</span>;
+}
+
+/** Persona: su inicial sobre un tinte pálido de su propio tono (identidad, no datos). */
+export function Avatar({ name, hue, size = 32 }: { name: string; hue: "cyan" | "violet" | "magenta"; size?: number }) {
   return (
-    <span className={`text-[13px] font-bold tracking-[0.14em] uppercase ${className}`}>
-      {children}
+    <span
+      className="inline-flex shrink-0 items-center justify-center rounded-full font-extrabold ring-2 ring-nv-surface-strong"
+      style={{
+        width: size,
+        height: size,
+        fontSize: size * 0.42,
+        background: `color-mix(in srgb, var(--nv-${hue}) 22%, var(--nv-bg))`,
+        color: `color-mix(in srgb, var(--nv-${hue}) 70%, white)`,
+      }}
+    >
+      {name[0]}
     </span>
   );
 }
 
-function LiveDot() {
-  return <span className="size-2 rounded-full bg-nv-magenta motion-safe:animate-live-dot" />;
-}
-
-const tonight = [
-  { kind: "Club techno", zone: "Zona puerto", heat: 86, time: "23:59", going: 34 },
-  { kind: "Sala de conciertos", zone: "Casco antiguo", heat: 23, time: "22:30", going: 12 },
-  { kind: "Bar de copas", zone: "Paseo marítimo", heat: 6, time: "23:00", going: 5 },
-];
-
-/** Hueco de la foto del evento: superficie plana, un escalón más clara. */
-function EventLight({ className = "" }: { heat?: number; className?: string }) {
-  return <div className={`absolute inset-0 bg-nv-surface-strong ${className}`} />;
-}
-
-function HomeFragment() {
+function HomeFragment({ rows }: { rows: number }) {
   return (
-    <div className="px-5 pt-6 pb-7">
+    <div className="px-5 pt-6 pb-6">
       <div className="flex items-center justify-between">
         <span className="text-lg font-extrabold tracking-tight text-white">NightVibe</span>
         <span className="flex items-center gap-2 rounded-full bg-nv-surface-strong px-3 py-1.5">
-          <LiveDot />
+          <span className="size-2 rounded-full bg-nv-magenta motion-safe:animate-live-dot" />
           <StatusLabel className="text-white">En vivo</StatusLabel>
         </span>
       </div>
-      <p className="mt-6 text-[28px] leading-none font-extrabold tracking-tight">Ahora mismo</p>
-      <div className="mt-3 flex items-baseline justify-between text-[15px]">
-        <span className="font-semibold text-nv-muted">La noche va subiendo</span>
-        <span className="text-xl font-extrabold text-white tabular-nums">62%</span>
-      </div>
-      <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-white/10">
-        <div className="h-full w-[62%] rounded-full bg-white" />
-      </div>
-      <p className="mt-2 text-[13px] text-nv-dim">3 sitios calientes ahora · por calor</p>
-
-      <ul className="mt-5 space-y-3">
-        {tonight.map((v) => (
-          <li key={v.kind} className="relative overflow-hidden rounded-3xl">
-            <EventLight heat={v.heat} />
-            <div className="relative flex items-end justify-between gap-3 p-4 pt-14">
-              <div className="min-w-0">
-                <p className="text-[13px] font-semibold text-nv-muted">Hoy · {v.time}</p>
-                <p className="mt-1 text-lg leading-tight font-extrabold">{v.kind}</p>
-                <p className="text-[13px] text-nv-muted">
-                  {v.zone} · <span className="font-bold text-white">+{v.going} van</span>
-                </p>
-              </div>
-              <HeatBadge value={v.heat} size="sm" />
+      <p className="mt-6 text-[26px] leading-none font-extrabold tracking-tight">Ahora mismo</p>
+      <p className="mt-2 text-[13px] text-nv-muted">{tonight.length} locales esta noche · por asistentes</p>
+      <ul className="mt-5 space-y-2">
+        {tonight.slice(0, rows).map((v) => (
+          <li key={v.kind} className="flex items-center justify-between gap-3 rounded-2xl bg-nv-surface-strong p-4">
+            <div className="min-w-0">
+              <p className="text-[13px] text-nv-muted tabular-nums">Hoy · {v.opens}</p>
+              <p className="mt-0.5 truncate text-[17px] leading-tight font-extrabold">{v.kind}</p>
+              <p className="text-[13px] text-nv-muted">{v.zone}</p>
             </div>
+            <HeatBadge value={v.attendees} size="sm" />
           </li>
         ))}
       </ul>
@@ -158,61 +128,48 @@ function HomeFragment() {
 function EventoFragment() {
   return (
     <div>
-      <div className="relative h-56">
-        <EventLight />
-        <div className="absolute right-5 bottom-5">
-          <HeatBadge value={86} size="sm" />
-        </div>
-        <div className="absolute bottom-5 left-5">
-          <StatusLabel className="text-nv-muted">Techno</StatusLabel>
-          <p className="mt-1 text-[26px] leading-none font-extrabold tracking-tight">
-            Club techno
-          </p>
-          <p className="mt-1 text-[15px] text-nv-muted">Zona puerto</p>
+      <div className="bg-nv-surface-raised px-5 pt-14 pb-5">
+        <div className="flex items-end justify-between gap-3">
+          <div>
+            <StatusLabel className="text-nv-muted">{featured.genre}</StatusLabel>
+            <p className="mt-1 text-[26px] leading-none font-extrabold tracking-tight">{featured.kind}</p>
+            <p className="mt-1 text-[15px] text-nv-muted">{featured.zone}</p>
+          </div>
+          <HeatBadge value={featured.attendees} size="sm" />
         </div>
       </div>
       <dl className="grid grid-cols-2 gap-x-4 gap-y-4 px-5 pt-5 text-[15px]">
         {[
-          ["Fecha", "Sáb 24 oct"],
-          ["Horario", "23:59 – 06:00"],
-          ["Edad", "18+"],
-          ["Dress", "Libre"],
+          ["Fecha", featured.date],
+          ["Horario", featured.hours],
+          ["Edad", featured.age],
+          ["Van", `${featured.attendees} personas`],
         ].map(([k, v]) => (
           <div key={k}>
-            <dt className="text-[13px] text-nv-dim">{k}</dt>
-            <dd className="font-bold">{v}</dd>
+            <dt className="text-[13px] text-nv-muted">{k}</dt>
+            <dd className="font-bold tabular-nums">{v}</dd>
           </div>
         ))}
       </dl>
-      <div className="mx-5 mt-5 flex items-center justify-between rounded-2xl bg-nv-surface-strong p-4">
-        <div>
-          <p className="font-extrabold"><span className="text-nv-cyan">+34 van</span> esta noche</p>
-          <p className="text-[13px] text-nv-muted">3 personas que sigues</p>
+      <div className="mx-5 mt-5 mb-6 flex items-center justify-between gap-3 rounded-2xl bg-nv-surface-strong p-4">
+        <div className="min-w-0">
+          <div className="flex -space-x-2">
+            {friends.slice(0, 4).map((f) => (
+              <Avatar key={f.name} name={f.name} hue={f.hue} />
+            ))}
+          </div>
+          <p className="mt-2 text-[13px] text-nv-muted">
+            <span className="font-bold text-white">{friends.length} de los tuyos</span> van
+          </p>
         </div>
-        <div className="flex -space-x-2">
-          {["0.55", "0.4", "0.25"].map((c) => (
-            <span
-              key={c}
-              className="size-8 rounded-full ring-2 ring-nv-bg"
-              style={{ background: `rgba(255,255,255,${c})` }}
-            />
-          ))}
-        </div>
-      </div>
-      <div className="px-5 pt-4 pb-7">
-        <p className="rounded-full bg-white py-3.5 text-center font-extrabold text-black">
-          Comprar entrada
-        </p>
+        {/* Botón de acción circular de la app: gradiente permitido por la marca. */}
+        <span className="flex size-14 shrink-0 items-center justify-center rounded-full bg-nv-gradient text-[13px] font-extrabold text-black">
+          Voy
+        </span>
       </div>
     </div>
   );
 }
-
-export const missions = [
-  { title: "Escanea el QR del local", done: true },
-  { title: "Sube una foto de la noche", done: true },
-  { title: "Escanea el QR otra noche", done: false },
-];
 
 function Check({ done }: { done: boolean }) {
   return done ? (
@@ -222,43 +179,44 @@ function Check({ done }: { done: boolean }) {
       </svg>
     </span>
   ) : (
-    <span className="size-7 shrink-0 rounded-full bg-white/10" />
+    <span className="size-7 shrink-0 rounded-full bg-nv-surface-raised" />
   );
 }
 
 function MisionesFragment() {
-  const done = missions.filter((m) => m.done).length;
+  const done = progress.missions.filter((m) => m.done).length;
+  const reward = levels[progress.level - 1].reward;
   return (
-    <div className="px-5 pt-6 pb-7">
-      <p className="text-[13px] font-semibold text-nv-muted">Club techno · Zona puerto</p>
+    <div className="px-5 pt-6 pb-6">
+      <p className="text-[13px] text-nv-muted">
+        {featured.kind} · {featured.zone}
+      </p>
       <div className="mt-1 flex items-baseline justify-between">
-        <p className="text-[28px] leading-none font-extrabold tracking-tight">Nivel 2</p>
-        <p className="text-[15px] text-nv-muted">
-          <span className="font-extrabold text-nv-violet-text">{done} de {missions.length}</span> misiones
+        <p className="text-[26px] leading-none font-extrabold tracking-tight">
+          Nivel {progress.level} <span className="text-[15px] font-bold text-nv-muted">de {levels.length}</span>
+        </p>
+        <p className="text-[15px] text-nv-muted tabular-nums">
+          <span className="font-extrabold text-nv-violet-text">
+            {done} de {progress.missions.length}
+          </span>{" "}
+          misiones
         </p>
       </div>
-      <div className="mt-3 h-2 overflow-hidden rounded-full bg-white/10">
-        <div
-          className="h-full rounded-full bg-nv-violet"
-          style={{ width: `${(done / missions.length) * 100}%` }}
-        />
+      {/* Barra de progreso: gradiente permitido por la marca. */}
+      <div className="mt-3 h-2 overflow-hidden rounded-full bg-nv-surface-raised">
+        <div className="h-full rounded-full bg-nv-gradient" style={{ width: `${(done / progress.missions.length) * 100}%` }} />
       </div>
       <ul className="mt-5 space-y-2">
-        {missions.map((m) => (
+        {progress.missions.map((m) => (
           <li key={m.title} className="flex items-center gap-3 rounded-2xl bg-nv-surface-strong p-3.5">
             <Check done={m.done} />
-            <span className={`flex-1 text-[15px] font-bold ${m.done ? "text-nv-muted" : ""}`}>
-              {m.title}
-            </span>
-            <StatusLabel className={m.done ? "text-nv-dim" : "text-white"}>
-              {m.done ? "Hecha" : "Pendiente"}
-            </StatusLabel>
+            <span className={`flex-1 text-[15px] font-bold ${m.done ? "text-nv-muted" : ""}`}>{m.title}</span>
           </li>
         ))}
       </ul>
-      <div className="mt-5 rounded-2xl bg-nv-surface-strong p-4">
-        <StatusLabel className="text-nv-muted">Al completar el nivel</StatusLabel>
-        <p className="mt-1 text-lg font-extrabold">Entras sin cola</p>
+      <div className="mt-5 rounded-2xl bg-nv-surface-raised p-4">
+        <p className="text-[13px] text-nv-muted">Premio del nivel {progress.level}</p>
+        <p className="mt-0.5 text-lg font-extrabold">{reward}</p>
       </div>
     </div>
   );
@@ -267,23 +225,57 @@ function MisionesFragment() {
 function EntradaFragment() {
   return (
     <div className="px-6 pt-8 pb-8 text-center">
-      <p className="text-[22px] font-extrabold tracking-tight">Club techno</p>
-      <p className="mt-1 text-[13px] text-nv-muted">Zona puerto · sáb 24 oct · 23:59</p>
+      <p className="text-[22px] font-extrabold tracking-tight">{featured.kind}</p>
+      <p className="mt-1 text-[13px] text-nv-muted">
+        {featured.zone} · {featured.date} · {featured.opens}
+      </p>
       <div className="mx-auto mt-5 w-[78%] rounded-2xl bg-white p-3">
-        {/* QR de demostración: no corresponde a ninguna entrada. */}
-        <TicketQr payload="NIGHTVIBE · ENTRADA DE DEMOSTRACIÓN" />
+        <TicketQr payload={ticket.payload} />
       </div>
       <p className="mx-auto mt-4 inline-block rounded-full bg-nv-surface-strong px-5 py-2.5 text-lg font-extrabold tracking-[0.12em] text-nv-cyan tabular-nums">
-        NV-DEMO-0000
+        {ticket.serial}
       </p>
-      <p className="mt-3 text-[13px] text-nv-dim">Enséñala en la puerta</p>
+      <p className="mt-3 text-[13px] text-nv-muted">Enséñala en la puerta</p>
     </div>
   );
 }
 
-const fragments: Record<AppScreenName, ReactNode> = {
-  home: <HomeFragment />,
+/** Panel del local (para /locales): la noche desde el lado del club. */
+function PanelFragment() {
+  const p = venuePanel;
+  return (
+    <div className="px-5 pt-6 pb-6">
+      <div className="flex items-baseline justify-between gap-3">
+        <p className="text-[15px] font-bold">{featured.kind}</p>
+        <p className="text-[13px] text-nv-muted">Esta noche · {featured.date}</p>
+      </div>
+      <div className="mt-5 flex items-center gap-4 rounded-2xl bg-nv-surface-strong p-4">
+        <HeatBadge value={p.confirmed} size="sm" />
+        <div>
+          <p className="text-[26px] leading-none font-extrabold tabular-nums">{p.confirmed}</p>
+          <p className="mt-1 text-[13px] text-nv-muted">confirmados en la app</p>
+        </div>
+      </div>
+      <dl className="mt-2 grid grid-cols-3 gap-2 text-center">
+        {[
+          ["Entradas", p.ticketsSold],
+          ["En puerta", p.checkedIn],
+          ["Misiones", p.activeMissions],
+        ].map(([k, v]) => (
+          <div key={k} className="flex flex-col-reverse rounded-2xl bg-nv-surface-strong px-2 py-3">
+            <dt className="mt-0.5 text-[13px] text-nv-muted">{k}</dt>
+            <dd className="text-xl font-extrabold tabular-nums">{v}</dd>
+          </div>
+        ))}
+      </dl>
+      <p className="mt-4 text-[13px] text-nv-muted">Abre a las {featured.opens}. Aún no ha entrado nadie.</p>
+    </div>
+  );
+}
+
+const fragments: Record<Exclude<AppScreenName, "home">, ReactNode> = {
   evento: <EventoFragment />,
   misiones: <MisionesFragment />,
   entrada: <EntradaFragment />,
+  panel: <PanelFragment />,
 };

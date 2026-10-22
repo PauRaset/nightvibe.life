@@ -7,6 +7,24 @@ import { navLinks } from "@/config/site";
 import { Container } from "./Container";
 import { Logo } from "./Logo";
 
+// CTA honesto: la app aún no está publicada. Un enlace de texto al cierre
+// ("próximamente"), no un botón que prometa una descarga.
+function ComingSoon({ onClick }: { onClick?: () => void }) {
+  return (
+    <Link
+      href="/#descargar"
+      onClick={onClick}
+      className="group inline-flex min-h-11 items-center gap-2 text-base font-bold text-white"
+    >
+      <span aria-hidden="true" className="size-2 rounded-full bg-nv-cyan" />
+      Próximamente
+      <span aria-hidden="true" className="transition-transform duration-200 ease-[var(--ease-out)] group-hover:translate-x-0.5">
+        →
+      </span>
+    </Link>
+  );
+}
+
 export function Navbar() {
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
@@ -38,22 +56,11 @@ export function Navbar() {
               {link.label}
             </Link>
           ))}
-          <Link
-            href="/#descargar"
-            className="inline-flex min-h-11 items-center rounded-full bg-nv-gradient px-5 text-base font-extrabold text-black transition-transform active:scale-95"
-          >
-            Descargar
-          </Link>
+          <ComingSoon />
         </nav>
 
         <div className="flex items-center gap-2 md:hidden">
-          <Link
-            href="/#descargar"
-            onClick={close}
-            className="inline-flex min-h-11 items-center rounded-full bg-nv-gradient px-5 text-base font-extrabold text-black transition-transform active:scale-95"
-          >
-            Descargar
-          </Link>
+          <ComingSoon onClick={close} />
           <button
             type="button"
             className="flex size-11 items-center justify-center rounded-full text-white hover:bg-nv-surface"

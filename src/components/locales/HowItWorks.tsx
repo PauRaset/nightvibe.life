@@ -1,24 +1,17 @@
 import type { CSSProperties } from "react";
+import { heatStop } from "@/lib/heatScale";
 import { Container } from "../Container";
 
-// Tres etapas. El orden se lee por la escalera (cada paso más abajo) y por las
-// palabras, no con números.
-const stages = [
-  {
-    title: "Primero, hablamos.",
-    text: "Nos cuentas cómo es tu local y qué quieres conseguir. Vemos si NightVibe encaja.",
-  },
-  {
-    title: "Luego, das de alta tu local.",
-    text: "Subes tu local y tus eventos desde el panel. Defines entradas, misiones y premios.",
-  },
-  {
-    title: "Y a partir de ahí, vendes.",
-    text: "La gente compra desde la app, entra con su QR y tú ves quién vuelve noche tras noche.",
-  },
-];
+// "Así se empieza" como UNA barra: tres tramos cuyo ancho sigue lo que dura cada
+// etapa (darse de alta es poco; vender es cada noche). Es la barra de progreso de
+// la app (gradiente permitido por la marca). Movimiento discreto: los tramos
+// crecen al entrar en pantalla (transform, una vez).
 
-const offsets = ["", "lg:mt-20", "lg:mt-40"];
+const stages = [
+  { when: "Una llamada", title: "Primero, hablamos.", text: "Nos cuentas cómo es tu local y qué quieres conseguir.", grow: 1.2 },
+  { when: "Un par de días", title: "Luego, das de alta tu local.", text: "Subes tu local y tus eventos. Defines entradas, misiones y premios.", grow: 2 },
+  { when: "Cada noche", title: "Y a partir de ahí, vendes.", text: "La gente confirma, compra y entra con su QR. Tú ves quién vuelve.", grow: 4 },
+];
 
 export function HowItWorks() {
   return (
@@ -27,24 +20,24 @@ export function HowItWorks() {
         <h2
           id="como-title"
           data-reveal-item
-          className="max-w-4xl text-4xl leading-none font-extrabold tracking-[-0.035em] text-balance text-white lg:text-6xl"
+          className="text-4xl leading-none font-extrabold tracking-[-0.035em] text-white lg:text-6xl"
         >
           Así se empieza.
         </h2>
-        <ol className="mt-12 grid gap-10 sm:mt-16 lg:mt-24 lg:grid-cols-3 lg:gap-8">
+        <ol data-ui className="mt-14 flex flex-col gap-1.5 md:flex-row lg:mt-16">
           {stages.map((s, i) => (
-            <li
-              key={s.title}
-              data-reveal-item
-              style={{ "--reveal-delay": `${i * 90}ms` } as CSSProperties}
-              className={offsets[i]}
-            >
-              <h3 className="text-2xl leading-tight font-extrabold tracking-[-0.025em] text-balance text-white lg:text-3xl">
-                {s.title}
-              </h3>
-              <p className="mt-3 max-w-md text-lg leading-relaxed text-pretty text-white lg:mt-4 lg:text-xl">
-                {s.text}
-              </p>
+            <li key={s.title} className="md:min-w-0" style={{ flexGrow: s.grow, flexBasis: 0 } as CSSProperties}>
+              <div
+                data-reveal-grow
+                style={{ "--reveal-delay": `${i * 120}ms`, background: heatStop(i / (stages.length - 1)) } as CSSProperties}
+                className="flex min-h-[72px] origin-left items-start rounded-xl px-5 py-4 text-black md:h-[22vh] md:min-h-[140px]"
+              >
+                <span className="text-xl font-extrabold tracking-[-0.02em] lg:text-[26px]">{s.when}</span>
+              </div>
+              <div className="mt-4 mb-8 max-w-[30ch] md:mb-0 md:pr-4">
+                <h3 className="text-lg font-bold text-white">{s.title}</h3>
+                <p className="mt-1 text-base leading-relaxed text-nv-muted">{s.text}</p>
+              </div>
             </li>
           ))}
         </ol>

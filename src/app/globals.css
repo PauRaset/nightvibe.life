@@ -11,6 +11,7 @@
   --color-nv-violet-text: var(--nv-violet-text);
   --color-nv-surface: var(--nv-surface);
   --color-nv-surface-strong: var(--nv-surface-strong);
+  --color-nv-surface-raised: var(--nv-surface-raised);
   --color-nv-line: var(--nv-line);
   --color-nv-text: var(--nv-text);
   --color-nv-muted: var(--nv-text-muted);
@@ -18,8 +19,9 @@
 
   --font-sans: var(--font-brand), ui-sans-serif, system-ui, sans-serif;
 
-  /* El badge late más rápido cuanta más gente hay: la duración llega en --beat. */
-  --animate-heat-beat: heat-beat var(--beat, 1.6s) ease-in-out infinite;
+  /* El badge late más rápido cuanta más gente va: la duración llega en --beat,
+     fijada en el propio anillo (nunca heredada de un padre). */
+  --animate-heat-beat: heat-beat var(--beat, 1600ms) ease-in-out infinite;
   --animate-live-dot: live-dot 1.6s ease-in-out infinite;
   --animate-drift: nv-drift 24s ease-in-out infinite alternate;
 
@@ -63,8 +65,8 @@
   }
   html[data-reveal] [data-reveal-item] {
     transition:
-      opacity 600ms cubic-bezier(0.2, 0.7, 0.2, 1) var(--reveal-delay, 0ms),
-      transform 600ms cubic-bezier(0.2, 0.7, 0.2, 1) var(--reveal-delay, 0ms);
+      opacity 600ms var(--ease-out) var(--reveal-delay, 0ms),
+      transform 600ms var(--ease-out) var(--reveal-delay, 0ms);
   }
 }
 
@@ -103,6 +105,29 @@
 }
 .nv-range:active::-webkit-slider-thumb { transform: scale(1.12); }
 .nv-range:focus-visible { outline-offset: 6px; }
+
+/* Crecer en horizontal al entrar (barras de /locales). Solo con JS y movimiento
+   permitido; si no, se ven completas. */
+@media (prefers-reduced-motion: no-preference) {
+  html[data-reveal] [data-reveal-grow]:not([data-shown]) {
+    transform: scaleX(0.06);
+  }
+  html[data-reveal] [data-reveal-grow] {
+    transition: transform 900ms var(--ease-out) var(--reveal-delay, 0ms);
+  }
+}
+
+/* Entrada del titular del hero: cada línea sube y aparece (CSS, sin JS).
+   900ms con --ease-out: momento de marketing, una vez por visita. */
+@keyframes nv-rise {
+  from { opacity: 0; transform: translateY(0.32em); }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .nv-rise {
+    animation: nv-rise 900ms var(--ease-out) both;
+    animation-delay: var(--rise-delay, 0ms);
+  }
+}
 
 /* Etiqueta de estado: MAYÚSCULAS pequeñas con tracking */
 @utility nv-label {

@@ -7,7 +7,7 @@ import { Reveal } from "@/components/live/Reveal";
 import { BusinessModel } from "@/components/locales/BusinessModel";
 import { ContactForm } from "@/components/locales/ContactForm";
 import { HowItWorks } from "@/components/locales/HowItWorks";
-import { ClientScreens, ValueProps } from "@/components/locales/ValueProps";
+import { ValueProps } from "@/components/locales/ValueProps";
 import { pageMetadata } from "@/lib/metadata";
 
 export const metadata: Metadata = pageMetadata({
@@ -26,7 +26,7 @@ export default function LocalesPage() {
     <>
       <Reveal />
 
-      <section aria-labelledby="locales-title" className="pt-12 pb-20 sm:pt-28 sm:pb-32 lg:pt-32 lg:pb-36">
+      <section aria-labelledby="locales-title" className="pt-12 pb-16 sm:pt-28 sm:pb-28 lg:pt-32">
         <Container className="grid gap-14 lg:grid-cols-12 lg:gap-8">
           <div className="lg:col-span-7">
             <h1
@@ -48,15 +48,15 @@ export default function LocalesPage() {
               <GradientButton href="#contacto">Quiero información</GradientButton>
             </div>
           </div>
+          {/* El panel del local esta noche: sin botones que compitan con el CTA. */}
           <figure data-reveal-item style={delay(120)} className="lg:col-span-5 lg:flex lg:justify-end">
-            <AppScreen screen="evento" glow="cyan" preload />
-            <figcaption className="sr-only">Así ve la gente el evento de un local en la app.</figcaption>
+            <AppScreen screen="panel" glow="cyan" width={360} preload />
+            <figcaption className="sr-only">El panel de tu local en NightVibe la noche de un evento.</figcaption>
           </figure>
         </Container>
       </section>
 
       <ValueProps />
-      <ClientScreens />
       <HowItWorks />
       <BusinessModel />
 

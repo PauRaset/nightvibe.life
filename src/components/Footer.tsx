@@ -14,7 +14,8 @@ export function Footer() {
   );
 
   return (
-    <footer className="mt-auto pt-20 pb-10 sm:pt-36">
+    // "El nombre primero": la marca abre el footer a todo el ancho.
+    <footer className="mt-auto overflow-hidden bg-nv-surface pt-16 pb-10 sm:pt-20">
       <Container>
         <p
           aria-hidden="true"
@@ -24,10 +25,13 @@ export function Footer() {
         </p>
 
         <div className="mt-14 grid gap-10 sm:grid-cols-12">
-          <p className="max-w-sm text-base leading-relaxed text-white sm:col-span-5">
-            {siteConfig.name} es una plataforma para descubrir la noche y comprar entradas. Los
-            eventos, las misiones y los premios son de cada local.
-          </p>
+          <div className="sm:col-span-5">
+            <p className="text-2xl font-extrabold tracking-[-0.02em] text-white">La noche, en directo.</p>
+            <p className="mt-3 max-w-sm text-base leading-relaxed text-nv-muted">
+              {siteConfig.name} es una plataforma para descubrir la noche y comprar entradas. Los
+              eventos, las misiones y los premios son de cada local.
+            </p>
+          </div>
 
           <nav aria-label="Secciones" className="sm:col-span-3 sm:col-start-7">
             <h2 className="text-base font-bold text-white">La app</h2>
@@ -92,7 +96,7 @@ export function Footer() {
             href="/#descargar"
             className="inline-flex min-h-11 items-center rounded-full bg-nv-surface-strong px-5 text-base font-bold text-white transition-[background-color,transform] hover:bg-white/14 active:scale-[0.97]"
           >
-            Descargar
+            Próximamente
           </Link>
         </div>
       </Container>

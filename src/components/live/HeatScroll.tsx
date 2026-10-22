@@ -15,6 +15,22 @@ import { beatMs, getHeatLevel, heatLevels, type HeatLevel } from "@/lib/heat";
 
 const TOP = 60;
 
+// Mapeo NO lineal: cada uno de los 4 estados ocupa el mismo tramo de scroll
+// (un cuarto del recorrido), aunque sus rangos de asistentes sean muy distintos.
+// Dentro de cada tramo, interpolación lineal de su rango.
+const BANDS: [number, number][] = [
+  [0, 0], // SÉ EL PRIMERO
+  [1, 9], // EMPIEZA
+  [10, 49], // SUBIENDO
+  [50, TOP], // A REVENTAR
+];
+function attendeesAt(p: number): number {
+  const t = Math.min(0.9999, Math.max(0, p)) * BANDS.length;
+  const band = Math.floor(t);
+  const [from, to] = BANDS[band];
+  return Math.round(from + (to - from) * (t - band));
+}
+
 const states: { level: HeatLevel; range: string; line: string }[] = [
   { level: "zero", range: "0", line: "Nadie ha confirmado todavía. La noche es tuya." },
   { level: "low", range: "1–9", line: "Los primeros ya van. Buen momento para llegar con calma." },
@@ -74,9 +90,7 @@ export function HeatScroll() {
       const r = el.getBoundingClientRect();
       const span = r.height - window.innerHeight;
       const p = span > 0 ? Math.min(1, Math.max(0, -r.top / span)) : 1;
-      // Pequeñas pausas al principio (0) y al final (TOP) para leer el estado.
-      const t = Math.min(1, Math.max(0, (p - 0.06) / 0.82));
-      const n = Math.round(t * TOP);
+      const n = attendeesAt(p);
       if (n !== shown) {
         shown = n;
         paint(n);
@@ -115,7 +129,7 @@ export function HeatScroll() {
       id="calor"
       aria-labelledby="calor-title"
       data-scrub={scrub ? "" : undefined}
-      className="relative scroll-mt-16 data-scrub:h-[240svh]"
+      className="relative scroll-mt-16 data-scrub:h-[280svh]"
     >
       <div className="py-20 sm:py-36 in-data-scrub:sticky in-data-scrub:top-0 in-data-scrub:flex in-data-scrub:h-svh in-data-scrub:items-center in-data-scrub:py-0">
         <div className="mx-auto grid w-full max-w-7xl items-center gap-10 px-5 sm:gap-16 sm:px-8 lg:grid-cols-12 lg:gap-8">

@@ -48,37 +48,44 @@ const items: Row[] = [
 export function ValueProps() {
   return (
     <section aria-labelledby="valor-title" className="py-16 sm:py-28">
-      <Container className="grid gap-y-14 lg:grid-cols-12 lg:gap-x-8 lg:gap-y-24">
-        <h2
-          id="valor-title"
-          data-reveal-item
-          className="text-4xl leading-none font-extrabold tracking-[-0.035em] text-white lg:col-span-8 lg:col-start-5 lg:text-6xl"
-        >
-          Lo que tienes con NightVibe.
-        </h2>
-        {items.map((it) => (
-          <article key={it.title} className="grid gap-8 lg:col-span-8 lg:col-start-5 lg:grid-cols-8 lg:gap-8">
-            <div className={it.screen ? "lg:col-span-4" : "lg:col-span-6"}>
-              <h3 data-reveal-item className="text-2xl leading-tight font-extrabold tracking-[-0.025em] text-white lg:text-[32px]">
-                {it.title}
-              </h3>
-              <p
-                data-reveal-item
-                style={{ "--reveal-delay": "80ms" } as CSSProperties}
-                className="mt-3 max-w-[38ch] text-lg leading-relaxed text-nv-muted"
-              >
-                {it.text}
-              </p>
-            </div>
-            {it.screen && (
-              <div data-reveal-item style={{ "--reveal-delay": "140ms" } as CSSProperties} className={`${it.phone} lg:col-span-4 lg:w-full`}>
-                <div className="lg:ml-auto" style={{ maxWidth: it.width }}>
+      <Container className="grid gap-y-14 lg:grid-cols-12 lg:gap-x-8">
+        {/* Titular fijo en la columna izquierda mientras las filas pasan a la derecha. */}
+        <div className="lg:col-span-5">
+          <h2
+            id="valor-title"
+            data-reveal-item
+            className="text-4xl leading-none font-extrabold tracking-[-0.035em] text-balance text-white sm:text-[56px] lg:sticky lg:top-28 lg:text-[clamp(44px,3.8vw,56px)]"
+          >
+            Lo que tienes con NightVibe.
+          </h2>
+        </div>
+        <div className="grid gap-y-14 lg:col-span-6 lg:col-start-7 lg:gap-y-24">
+          {items.map((it) => (
+            <article key={it.title} className="flex flex-col gap-8">
+              <div>
+                <h3 data-reveal-item className="text-2xl leading-tight font-extrabold tracking-[-0.025em] text-white lg:text-[32px]">
+                  {it.title}
+                </h3>
+                <p
+                  data-reveal-item
+                  style={{ "--reveal-delay": "80ms" } as CSSProperties}
+                  className="mt-3 max-w-[38ch] text-lg leading-relaxed text-nv-muted"
+                >
+                  {it.text}
+                </p>
+              </div>
+              {it.screen && (
+                <div
+                  data-reveal-item
+                  style={{ "--reveal-delay": "140ms", maxWidth: it.width } as CSSProperties}
+                  className={`${it.phone} lg:ml-0 lg:w-full`}
+                >
                   <AppScreen screen={it.screen} rows={it.rows} width={it.width} />
                 </div>
-              </div>
-            )}
-          </article>
-        ))}
+              )}
+            </article>
+          ))}
+        </div>
       </Container>
     </section>
   );

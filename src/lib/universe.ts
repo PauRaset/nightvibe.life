@@ -9,7 +9,8 @@ export const GOLDEN_ANGLE = 2.39996;
 export type Hue = "cyan" | "violet" | "magenta";
 export type Star = {
   i: number;
-  /** Posición en un disco unidad (x, y entre -1 y 1). */
+  /** Posición en un disco unidad (x, y entre -1 y 1); se estira a una elipse que
+   *  ocupa todo el campo (a sangre). */
   x: number;
   y: number;
   /** Radio del núcleo en px a escala 1. */
@@ -54,7 +55,8 @@ export function buildStars(): Star[] {
       i,
       x: Math.cos(a) * r,
       y: Math.sin(a) * r,
-      size: kind === "friend" ? 13 : kind === "private" ? 5 + rand() * 4 : 1.4 + rand() * 2.8,
+      // Tamaños variados (sesgados hacia pequeños); los tuyos, grandes para leer su inicial.
+      size: kind === "friend" ? 17 : kind === "private" ? 7 + rand() * 6 : 1.6 + Math.pow(rand(), 1.8) * 4.4,
       kind,
       hue: f ? f.hue : HUES[i % 3],
       initial: f?.name[0],

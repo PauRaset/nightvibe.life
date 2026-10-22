@@ -37,42 +37,44 @@ const rows: Row[] = [
 
 export function FeatureRows() {
   return (
-    <section aria-labelledby="movil-title" className="py-20 sm:py-36">
-      <Container className="grid gap-y-16 lg:grid-cols-12 lg:gap-x-8 lg:gap-y-28">
-        <h2
-          id="movil-title"
-          data-reveal-item
-          className="text-[40px] leading-[0.98] font-extrabold tracking-[-0.035em] text-white sm:text-[64px] lg:col-span-8 lg:col-start-5"
-        >
-          Y luego, todo en el móvil.
-        </h2>
+    <section aria-labelledby="movil-title" className="pt-12 pb-20 sm:pt-20 sm:pb-36">
+      <Container className="grid gap-y-16 lg:grid-cols-12 lg:gap-x-8">
+        {/* Titular fijo en la columna izquierda mientras las filas pasan a la derecha. */}
+        <div className="lg:col-span-5">
+          <h2
+            id="movil-title"
+            data-reveal-item
+            className="text-[40px] leading-[0.98] font-extrabold tracking-[-0.035em] text-balance text-white sm:text-[56px] lg:sticky lg:top-28 lg:text-[clamp(44px,3.8vw,56px)]"
+          >
+            Y luego, todo en el móvil.
+          </h2>
+        </div>
 
-        {rows.map((r) => (
-          <article key={r.id} id={r.id} className="grid scroll-mt-16 gap-8 lg:col-span-8 lg:col-start-5 lg:grid-cols-8 lg:gap-8">
-            <div className="lg:col-span-4">
-              <h3 data-reveal-item className="text-[28px] leading-[1.05] font-extrabold tracking-[-0.03em] text-white sm:text-[40px]">
-                {r.title}
-              </h3>
-              <p
+        <div className="grid gap-y-16 lg:col-span-6 lg:col-start-7 lg:gap-y-28">
+          {rows.map((r) => (
+            <article key={r.id} id={r.id} className="flex scroll-mt-16 flex-col gap-8">
+              <div>
+                <h3 data-reveal-item className="text-[28px] leading-[1.05] font-extrabold tracking-[-0.03em] text-white sm:text-[36px]">
+                  {r.title}
+                </h3>
+                <p
+                  data-reveal-item
+                  style={{ "--reveal-delay": "80ms" } as CSSProperties}
+                  className="mt-4 max-w-[34ch] text-lg leading-relaxed text-nv-muted"
+                >
+                  {r.body}
+                </p>
+              </div>
+              <div
                 data-reveal-item
-                style={{ "--reveal-delay": "80ms" } as CSSProperties}
-                className="mt-4 max-w-[34ch] text-lg leading-relaxed text-nv-muted"
+                style={{ "--reveal-delay": "140ms", maxWidth: r.width } as CSSProperties}
+                className={`${r.phone} lg:ml-0 lg:w-full`}
               >
-                {r.body}
-              </p>
-            </div>
-            <div
-              data-reveal-item
-              style={{ "--reveal-delay": "140ms" } as CSSProperties}
-              className={`${r.phone} lg:col-span-4 lg:ml-auto lg:w-full`}
-             
-            >
-              <div className="lg:ml-auto" style={{ maxWidth: r.width }}>
                 <AppScreen screen={r.screen} width={r.width} />
               </div>
-            </div>
-          </article>
-        ))}
+            </article>
+          ))}
+        </div>
       </Container>
     </section>
   );

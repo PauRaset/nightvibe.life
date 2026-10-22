@@ -24,17 +24,39 @@ export function HowItWorks() {
         >
           Así se empieza.
         </h2>
-        <ol data-ui className="mt-14 flex flex-col gap-1.5 md:flex-row lg:mt-16">
+        {/* Móvil: barra fina de 3 tramos y cada paso en texto debajo. */}
+        <div className="mt-12 md:hidden">
+          <div data-reveal-grow className="flex h-2 origin-left gap-1 overflow-hidden rounded-full" aria-hidden="true">
+            {stages.map((s, i) => (
+              <span key={s.title} className="h-full" style={{ flexGrow: s.grow, background: heatStop(i / (stages.length - 1)) }} />
+            ))}
+          </div>
+          <ol className="mt-8 space-y-8">
+            {stages.map((s, i) => (
+              <li key={s.title} className="grid grid-cols-[0.75rem_1fr] gap-x-4">
+                <span aria-hidden="true" className="mt-2 size-3 rounded-full" style={{ background: heatStop(i / (stages.length - 1)) }} />
+                <div>
+                  <p className="text-[13px] font-bold tracking-[0.14em] text-nv-muted uppercase">{s.when}</p>
+                  <h3 className="mt-1 text-lg font-bold text-white">{s.title}</h3>
+                  <p className="mt-1 text-base leading-relaxed text-nv-muted">{s.text}</p>
+                </div>
+              </li>
+            ))}
+          </ol>
+        </div>
+
+        {/* Escritorio: los tres tramos grandes, como estaban. */}
+        <ol data-ui className="mt-16 hidden gap-1.5 md:flex">
           {stages.map((s, i) => (
-            <li key={s.title} className="md:min-w-0" style={{ flexGrow: s.grow, flexBasis: 0 } as CSSProperties}>
+            <li key={s.title} className="min-w-0" style={{ flexGrow: s.grow, flexBasis: 0 } as CSSProperties}>
               <div
                 data-reveal-grow
                 style={{ "--reveal-delay": `${i * 120}ms`, background: heatStop(i / (stages.length - 1)) } as CSSProperties}
-                className="flex min-h-[72px] origin-left items-start rounded-xl px-5 py-4 text-black md:h-[22vh] md:min-h-[140px]"
+                className="flex h-[22vh] min-h-[140px] origin-left items-start rounded-xl px-5 py-4 text-black"
               >
                 <span className="text-xl font-extrabold tracking-[-0.02em] lg:text-[26px]">{s.when}</span>
               </div>
-              <div className="mt-4 mb-8 max-w-[30ch] md:mb-0 md:pr-4">
+              <div className="mt-4 max-w-[30ch] pr-4">
                 <h3 className="text-lg font-bold text-white">{s.title}</h3>
                 <p className="mt-1 text-base leading-relaxed text-nv-muted">{s.text}</p>
               </div>

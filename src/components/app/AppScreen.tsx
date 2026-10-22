@@ -251,10 +251,8 @@ function PanelFragment() {
       </div>
       <div className="mt-5 flex items-center gap-4 rounded-2xl bg-nv-surface-strong p-4">
         <HeatBadge value={p.confirmed} size="sm" />
-        <div>
-          <p className="text-[26px] leading-none font-extrabold tabular-nums">{p.confirmed}</p>
-          <p className="mt-1 text-[13px] text-nv-muted">confirmados en la app</p>
-        </div>
+        {/* El badge ya da la cifra: el texto no la repite. */}
+        <p className="text-[17px] leading-snug font-bold">confirmados en la app esta noche</p>
       </div>
       <dl className="mt-2 grid grid-cols-3 gap-2 text-center">
         {[

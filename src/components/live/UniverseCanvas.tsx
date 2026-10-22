@@ -4,7 +4,7 @@ import { useEffect, useRef } from "react";
 import { buildStars } from "@/lib/universe";
 
 // EL UNIVERSO (momento protagonista 2), parte animada.
-// Canvas 2D a sangre sobre la sección. Las estrellas se encienden en cascada al
+// Canvas 2D a sangre: ocupa todo el campo (ancho completo del viewport). Las estrellas se encienden en cascada al
 // entrar en pantalla y derivan en vertical. Coste por frame: un drawImage por
 // halo (sprites pre-renderizados una vez por color, sin degradados ni blur por
 // frame) y un círculo por núcleo. Se pausa fuera de pantalla y con la pestaña
@@ -20,8 +20,8 @@ export function UniverseCanvas() {
   useEffect(() => {
     const cv = canvas.current;
     const section = cv?.closest("section");
-    const slot = section?.querySelector<HTMLElement>("[data-universe-disc]");
-    if (!cv || !section || !slot) return;
+    const field = cv?.parentElement;
+    if (!cv || !section || !field) return;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     const ctx = cv.getContext("2d");
     if (!ctx) return;
@@ -35,7 +35,9 @@ export function UniverseCanvas() {
       bg: css.getPropertyValue("--nv-bg").trim(),
     };
     const font = getComputedStyle(document.body).fontFamily;
-    const dpr = Math.min(2, window.devicePixelRatio || 1);
+    // Densidad de píxel: 2 como mucho, 1.5 en lienzos grandes (coste por frame).
+    const fieldArea = field.clientWidth * field.clientHeight;
+    const dpr = Math.min(fieldArea > 700_000 ? 1.5 : 2, window.devicePixelRatio || 1);
 
     // Sprites de halo: uno por tono, dibujados una sola vez.
     const sprite = (rgb: string, alpha: number) => {
@@ -52,24 +54,24 @@ export function UniverseCanvas() {
       return s;
     };
     const halos = {
-      cyan: sprite(color.cyan, 0.55),
-      violet: sprite(color.violet, 0.6),
-      magenta: sprite(color.magenta, 0.55),
+      cyan: sprite(color.cyan, 0.42),
+      violet: sprite(color.violet, 0.5),
+      magenta: sprite(color.magenta, 0.42),
       private: sprite("#ffffff", 0.16),
     };
 
-    let W = 0, H = 0, cx = 0, cy = 0, R = 0, scale = 1;
+    // Elipse a sangre: 94 % del ancho y 88 % del alto del campo.
+    let W = 0, H = 0, cx = 0, cy = 0, RX = 0, RY = 0, scale = 1;
     const layout = () => {
-      const sr = section.getBoundingClientRect();
-      const dr = slot.getBoundingClientRect();
-      W = sr.width;
-      H = sr.height;
+      W = field.clientWidth;
+      H = field.clientHeight;
       cv.width = Math.round(W * dpr);
       cv.height = Math.round(H * dpr);
-      cx = dr.left - sr.left + dr.width / 2;
-      cy = dr.top - sr.top + dr.height / 2;
-      R = Math.min(dr.width, dr.height) / 2 / 1.25; // mismo radio que el SVG (viewBox ±1.25)
-      scale = R / 300; // misma escala que el SVG (tamaños en px para un radio de 300)
+      cx = W / 2;
+      cy = H / 2;
+      RX = (W / 2) * 0.94;
+      RY = (H / 2) * 0.88;
+      scale = H / 600; // misma escala que el SVG (tamaños en px para medio alto de 300)
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     };
 
@@ -83,11 +85,12 @@ export function UniverseCanvas() {
       for (const s of stars) {
         const lit = easeOut(Math.min(1, Math.max(0, (since - s.i * STAGGER) / FADE)));
         if (lit <= 0) continue;
-        const x = cx + s.x * R;
-        const y = cy + s.y * R + Math.sin(now * 0.001 * s.speed + s.phase) * s.amp;
+        const x = cx + s.x * RX;
+        const y = cy + s.y * RY + Math.sin(now * 0.001 * s.speed + s.phase) * s.amp;
         const r = s.size * scale;
         const halo = s.kind === "private" ? halos.private : halos[s.hue];
-        const hs = (s.kind === "friend" ? r * 4.2 : s.kind === "private" ? r * 3 : r * 7) * (0.85 + 0.15 * lit);
+        // Halos difusos, como en la app: grandes y suaves.
+        const hs = (s.kind === "friend" ? r * 6.5 : s.kind === "private" ? r * 3.5 : r * 13) * (0.85 + 0.15 * lit);
         ctx.globalAlpha = lit;
         ctx.drawImage(halo, x - hs / 2, y - hs / 2, hs, hs);
         if (s.kind === "star") {
@@ -113,7 +116,7 @@ export function UniverseCanvas() {
           ctx.arc(x, y, r, 0, Math.PI * 2);
           ctx.fill();
           ctx.fillStyle = color.bg;
-          ctx.font = `800 ${Math.round(r * 1.05)}px ${font}`;
+          ctx.font = `800 ${Math.round(r * 1.15)}px ${font}`;
           ctx.textAlign = "center";
           ctx.textBaseline = "middle";
           ctx.fillText(s.initial ?? "", x, y + r * 0.06);
@@ -143,7 +146,7 @@ export function UniverseCanvas() {
       if (visible && !document.hidden) start();
       else stop();
     }, { threshold: 0.15 });
-    io.observe(section);
+    io.observe(field);
 
     const onVisibility = () => (document.hidden || !visible ? stop() : start());
     document.addEventListener("visibilitychange", onVisibility);
@@ -151,13 +154,13 @@ export function UniverseCanvas() {
     // Solo relayout si cambia el ancho (la barra de URL del móvil cambia el alto).
     let lastW = W;
     const ro = new ResizeObserver(() => {
-      const w = section.getBoundingClientRect().width;
+      const w = field.clientWidth;
       if (Math.abs(w - lastW) > 1) {
         lastW = w;
         layout();
       }
     });
-    ro.observe(section);
+    ro.observe(field);
 
     return () => {
       stop();

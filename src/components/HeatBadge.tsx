@@ -11,6 +11,9 @@ type HeatBadgeProps = {
   value: number;
   size?: "sm" | "md" | "lg" | "xl";
   layout?: "stack" | "inline";
+  /** La etiqueta cuelga bajo el anillo sin ocupar ancho (para ir dentro de una
+   *  frase: así la puntuación queda pegada al anillo). */
+  floatLabel?: boolean;
   /** Oculta la etiqueta de texto (p. ej. dentro de listas pequeñas). */
   hideLabel?: boolean;
   /** Sin latido (p. ej. páginas de error). */
@@ -41,6 +44,7 @@ export function HeatBadge({
   value,
   size = "md",
   layout = "stack",
+  floatLabel = false,
   hideLabel = false,
   static: isStatic = false,
   className = "",
@@ -52,7 +56,7 @@ export function HeatBadge({
 
   return (
     <span
-      className={`inline-flex items-center ${inline ? "flex-row gap-[0.32em] align-middle" : "flex-col gap-[0.45em]"} ${sizes[size]} ${className}`}
+      className={`inline-flex items-center ${floatLabel ? "relative" : inline ? "flex-row gap-[0.32em] align-middle" : "flex-col gap-[0.45em]"} ${sizes[size]} ${className}`}
       role="img"
       aria-label={`${people} ${people === 1 ? "persona va" : "personas van"}: ${label}`}
     >
@@ -68,7 +72,7 @@ export function HeatBadge({
       </span>
       {!hideLabel && (
         <span
-          className={`font-bold tracking-[0.14em] uppercase ${inline ? "max-w-[6em] text-[max(13px,0.9em)] leading-[1.05]" : "text-[max(13px,0.62em)]"} ${textClass}`}
+          className={`font-bold tracking-[0.14em] uppercase ${floatLabel ? "absolute top-full left-1/2 mt-[0.45em] -translate-x-1/2 text-[max(13px,0.62em)] leading-none whitespace-nowrap" : inline ? "max-w-[6em] text-[max(13px,0.9em)] leading-[1.05]" : "text-[max(13px,0.62em)] whitespace-nowrap"} ${textClass}`}
         >
           {label}
         </span>

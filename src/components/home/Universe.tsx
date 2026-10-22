@@ -5,36 +5,31 @@ import { Avatar } from "../app/AppScreen";
 import { Container } from "../Container";
 import { UniverseCanvas } from "../live/UniverseCanvas";
 
-// EL UNIVERSO (momento protagonista 2): los asistentes confirmados de un evento
-// como estrellas. El servidor pinta un SVG estático con las mismas estrellas
-// (estado final: reduced-motion y sin JS); con JS lo sustituye el Canvas animado.
+// EL UNIVERSO (momento protagonista 2), a sangre: los asistentes confirmados de
+// un evento como estrellas repartidas en una elipse que ocupa todo el ancho del
+// viewport. El servidor pinta un SVG estático con las mismas estrellas (estado
+// final: reduced-motion y sin JS); con JS lo sustituye el Canvas animado.
 
 const stars = buildStars();
-const VB = 1.25; // margen del viewBox alrededor del disco unidad
-const PX = 300; // px de referencia del radio del disco para escalar los tamaños
+// Campo del SVG: 3.2 × 2 unidades; las estrellas ocupan el 94 % × 88 %.
+const AX = 1.6;
+const RX = AX * 0.94;
+const RY = 0.88;
+const PX = 300; // px de referencia para medio alto del campo
 
 export function Universe() {
   return (
-    <section
-      id="los-tuyos"
-      aria-labelledby="los-tuyos-title"
-      className="relative scroll-mt-16 overflow-hidden py-20 sm:py-36"
-    >
-      <UniverseCanvas />
-      <Container className="relative grid items-center gap-10 lg:grid-cols-12 lg:gap-8">
-        <div className="lg:col-span-5">
-          <h2
-            id="los-tuyos-title"
-            data-reveal-item
-            className="text-[40px] leading-[0.98] font-extrabold tracking-[-0.035em] text-white sm:text-[64px]"
-          >
-            Mira a dónde van los tuyos.
-          </h2>
-          <p
-            data-reveal-item
-            style={{ "--reveal-delay": "80ms" } as CSSProperties}
-            className="mt-6 max-w-[38ch] text-lg leading-relaxed text-nv-muted"
-          >
+    <section id="los-tuyos" aria-labelledby="los-tuyos-title" className="scroll-mt-16 pt-20 sm:pt-36">
+      <Container className="grid gap-6 lg:grid-cols-12 lg:items-end lg:gap-8">
+        <h2
+          id="los-tuyos-title"
+          data-reveal-item
+          className="text-[40px] leading-[0.98] font-extrabold tracking-[-0.035em] text-white sm:text-[64px] lg:col-span-6"
+        >
+          Mira a dónde van los tuyos.
+        </h2>
+        <div className="lg:col-span-5 lg:col-start-8">
+          <p data-reveal-item style={{ "--reveal-delay": "80ms" } as CSSProperties} className="max-w-[40ch] text-lg leading-relaxed text-nv-muted">
             Cada punto es alguien que ha confirmado que va esta noche a {featured.kind}.{" "}
             <span className="text-white">
               {featured.attendees} personas, {friends.length} de los tuyos.
@@ -44,7 +39,7 @@ export function Universe() {
           <ul
             data-reveal-item
             style={{ "--reveal-delay": "160ms" } as CSSProperties}
-            className="mt-8 flex flex-wrap gap-x-6 gap-y-3 text-[15px] text-nv-muted"
+            className="mt-6 flex flex-wrap gap-x-6 gap-y-3 text-[15px] text-nv-muted"
           >
             <li className="flex items-center gap-2">
               <span className="flex -space-x-1.5">
@@ -64,46 +59,48 @@ export function Universe() {
             </li>
           </ul>
         </div>
-
-        {/* El hueco del disco: el Canvas centra las estrellas aquí. */}
-        <div data-universe-disc className="relative mx-auto aspect-square w-full max-w-[min(100%,82svh)] lg:col-span-7">
-          <svg
-            viewBox={`${-VB} ${-VB} ${VB * 2} ${VB * 2}`}
-            role="img"
-            aria-label={`${featured.attendees} personas confirmadas como estrellas; ${friends.length} de los tuyos con su inicial y ${privateAttendees} perfiles privados sin nombre`}
-            className="absolute inset-0 size-full overflow-visible in-data-live:hidden"
-          >
-            <defs>
-              {(["cyan", "violet", "magenta"] as const).map((h) => (
-                <radialGradient key={h} id={`halo-${h}`}>
-                  <stop offset="0%" stopColor={`var(--nv-${h})`} stopOpacity="0.55" />
-                  <stop offset="100%" stopColor={`var(--nv-${h})`} stopOpacity="0" />
-                </radialGradient>
-              ))}
-            </defs>
-            {stars.map((s) => {
-              const r = s.size / PX;
-              const cx = s.x;
-              const cy = s.y;
-              if (s.kind === "private")
-                return (
-                  <circle key={s.i} cx={cx} cy={cy} r={r} fill="white" fillOpacity="0.2" stroke="white" strokeOpacity="0.35" strokeWidth={1 / PX} />
-                );
-              return (
-                <g key={s.i}>
-                  <circle cx={cx} cy={cy} r={r * (s.kind === "friend" ? 2.1 : 3.5)} fill={`url(#halo-${s.hue})`} />
-                  <circle cx={cx} cy={cy} r={r} fill={`var(--nv-${s.hue})`} />
-                  {s.kind === "friend" && (
-                    <text x={cx} y={cy} dy="0.35em" textAnchor="middle" fontSize={r * 1.05} fontWeight="800" fill="var(--nv-bg)">
-                      {s.initial}
-                    </text>
-                  )}
-                </g>
-              );
-            })}
-          </svg>
-        </div>
       </Container>
+
+      {/* El campo, a sangre: todo el ancho del viewport. */}
+      <div data-universe-field className="relative mt-4 h-[70svh] w-full overflow-hidden sm:mt-8 lg:h-[78svh]">
+        <svg
+          viewBox={`${-AX} -1 ${AX * 2} 2`}
+          preserveAspectRatio="xMidYMid slice"
+          role="img"
+          aria-label={`${featured.attendees} personas confirmadas como estrellas; ${friends.length} de los tuyos con su inicial y ${privateAttendees} perfiles privados sin nombre`}
+          className="absolute inset-0 size-full in-data-live:hidden"
+        >
+          <defs>
+            {(["cyan", "violet", "magenta"] as const).map((h) => (
+              <radialGradient key={h} id={`halo-${h}`}>
+                <stop offset="0%" stopColor={`var(--nv-${h})`} stopOpacity="0.45" />
+                <stop offset="100%" stopColor={`var(--nv-${h})`} stopOpacity="0" />
+              </radialGradient>
+            ))}
+          </defs>
+          {stars.map((s) => {
+            const r = s.size / PX;
+            const cx = s.x * RX;
+            const cy = s.y * RY;
+            if (s.kind === "private")
+              return (
+                <circle key={s.i} cx={cx} cy={cy} r={r} fill="white" fillOpacity="0.18" stroke="white" strokeOpacity="0.35" strokeWidth={1 / PX} />
+              );
+            return (
+              <g key={s.i}>
+                <circle cx={cx} cy={cy} r={r * (s.kind === "friend" ? 3.25 : 6.5)} fill={`url(#halo-${s.hue})`} />
+                <circle cx={cx} cy={cy} r={r} fill={`var(--nv-${s.hue})`} />
+                {s.kind === "friend" && (
+                  <text x={cx} y={cy} dy="0.36em" textAnchor="middle" fontSize={r * 1.15} fontWeight="800" fill="var(--nv-bg)">
+                    {s.initial}
+                  </text>
+                )}
+              </g>
+            );
+          })}
+        </svg>
+        <UniverseCanvas />
+      </div>
     </section>
   );
 }

@@ -29,15 +29,24 @@ const sizes = {
   xl: "text-[1em]",
 };
 
-/** Estilo del anillo: color, parte llena, halo y duración del latido. */
-export function ringStyle(people: number): CSSProperties {
+/** Anillo: color y parte llena. Lleno del todo = color sólido (un conic-gradient
+ *  a 360° deja una costura de antialiasing a las 12). */
+function ringBackground(people: number): string {
   const { color } = heatLevels[getHeatLevel(people)];
-  return {
-    "--beat": `${beatMs(people)}ms`,
-    background: `conic-gradient(${color} ${ringFill(people) * 360}deg, rgba(255,255,255,0.1) 0deg)`, // taste-skill-ignore
-    // Halo del color del estado, como en la app: marca dónde mirar.
-    boxShadow: `0 0 2.2em 0.1em color-mix(in srgb, ${color} ${people === 0 ? 18 : 38}%, transparent)`,
-  } as CSSProperties;
+  const fill = ringFill(people);
+  if (fill >= 1) return color;
+  return `conic-gradient(${color} ${fill * 360}deg, rgba(255,255,255,0.1) 0deg)`; // taste-skill-ignore
+}
+
+/** Halo: degradado radial que llega a transparente dentro de su propia caja. */
+export function haloBackground(people: number): string {
+  const { color } = heatLevels[getHeatLevel(people)];
+  return `radial-gradient(closest-side, color-mix(in srgb, ${color} ${people === 0 ? 22 : 42}%, transparent), transparent)`; // taste-skill-ignore
+}
+
+/** Estilo del anillo: color, parte llena y duración del latido. */
+export function ringStyle(people: number): CSSProperties {
+  return { "--beat": `${beatMs(people)}ms`, background: ringBackground(people) } as CSSProperties;
 }
 
 export function HeatBadge({
@@ -56,17 +65,27 @@ export function HeatBadge({
 
   return (
     <span
-      className={`inline-flex items-center ${floatLabel ? "relative" : inline ? "flex-row gap-[0.32em] align-middle" : "flex-col gap-[0.45em]"} ${sizes[size]} ${className}`}
+      className={`relative inline-flex items-center ${floatLabel ? "" : "isolate"} ${inline ? "flex-row gap-[0.32em] align-middle" : floatLabel ? "" : "flex-col gap-[0.45em]"} ${sizes[size]} ${className}`}
       role="img"
       aria-label={`${people} ${people === 1 ? "persona va" : "personas van"}: ${label}`}
     >
-      <span
-        className={`relative block size-[4.2em] shrink-0 rounded-full ${isStatic ? "" : "motion-safe:animate-heat-beat"}`}
-        style={ringStyle(people)}
-      >
-        <span className="absolute inset-[0.22em] flex items-center justify-center rounded-full bg-nv-bg">
-          <span className="text-[1.55em] leading-none font-extrabold tracking-tight text-white tabular-nums">
-            {people}
+      {/* El anillo va en un envoltorio sin transform; el halo cuelga de él con z
+          negativo, fuera del elemento que late, para no quedar atrapado en su capa
+          (en el hero queda detrás del texto del titular). */}
+      <span className="relative block shrink-0">
+        <span
+          aria-hidden="true"
+          className="pointer-events-none absolute -inset-[1.2em] -z-10 rounded-full"
+          style={{ background: haloBackground(people) }}
+        />
+        <span
+          className={`relative block size-[4.2em] rounded-full ${isStatic ? "" : "motion-safe:animate-heat-beat"}`}
+          style={ringStyle(people)}
+        >
+          <span className="absolute inset-[0.22em] flex items-center justify-center rounded-full bg-nv-bg">
+            <span className="text-[1.55em] leading-none font-extrabold tracking-tight text-white tabular-nums">
+              {people}
+            </span>
           </span>
         </span>
       </span>

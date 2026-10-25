@@ -68,7 +68,9 @@ export function FeatureRows() {
               <div
                 data-reveal-item
                 style={{ "--reveal-delay": "140ms", maxWidth: r.width } as CSSProperties}
-                className={`${r.phone} lg:ml-0 lg:w-full`}
+                // La demo del botón va ampliada en escritorio (+25 % y +40 %) para que
+                // la chispa se lea de principio a fin.
+                className={`${r.phone} lg:ml-0 lg:w-full ${r.id === "confirma" ? "lg:[zoom:1.25] xl:[zoom:1.4]" : ""}`}
               >
                 <AppScreen screen={r.screen} width={r.width} interactive={r.id === "confirma"} />
               </div>

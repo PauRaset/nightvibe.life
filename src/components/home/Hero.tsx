@@ -17,7 +17,7 @@ export function Hero() {
       <Container className="relative flex min-h-[calc(100svh-4rem)] flex-col justify-center py-12 sm:block sm:min-h-0 sm:pt-24 sm:pb-36 lg:pt-16 lg:pb-28">
         <h1
           id="hero-title"
-          className="text-[13.5vw] leading-[1] font-extrabold tracking-[-0.045em] text-white sm:text-[11vw] lg:text-[min(14.3vw,186px)]"
+          className="relative isolate text-[13.5vw] leading-[1] font-extrabold tracking-[-0.045em] text-white sm:text-[11vw] lg:text-[min(14.3vw,186px)]"
         >
           <span className="nv-rise block whitespace-nowrap" style={delay(0)}>
             Esta noche

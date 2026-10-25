@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { ringStyle } from "../HeatBadge";
+import { haloBackground, ringStyle } from "../HeatBadge";
 import { beatMs, getHeatLevel, heatLevels, type HeatLevel } from "@/lib/heat";
 
 // EL CALOR CON SCROLL (momento protagonista 1).
@@ -42,6 +42,7 @@ export function HeatScroll() {
   const [scrub, setScrub] = useState(false);
   const section = useRef<HTMLElement>(null);
   const ring = useRef<HTMLSpanElement>(null);
+  const halo = useRef<HTMLSpanElement>(null);
   const num = useRef<HTMLSpanElement>(null);
   const label = useRef<HTMLSpanElement>(null);
   const list = useRef<HTMLOListElement>(null);
@@ -69,7 +70,7 @@ export function HeatScroll() {
       if (ring.current) {
         const s = ringStyle(n) as Record<string, string>;
         ring.current.style.background = s.background;
-        ring.current.style.boxShadow = s.boxShadow;
+        if (halo.current) halo.current.style.background = haloBackground(n);
         ring.current.style.setProperty("--beat", `${beatMs(n)}ms`);
       }
       if (lv !== level) {
@@ -168,16 +169,24 @@ export function HeatScroll() {
             <span
               role="img"
               aria-label={`Ejemplo: de 0 a ${TOP} personas confirmadas`}
-              className="inline-flex flex-col items-center gap-[0.45em] text-[8.6vw] sm:text-[7vw] lg:text-[min(5.6vw,8.4svh)]"
+              className="relative isolate inline-flex flex-col items-center gap-[0.45em] text-[8.6vw] sm:text-[7vw] lg:text-[min(5.6vw,8.4svh)]"
             >
-              <span
-                ref={ring}
-                className="relative block size-[4.2em] rounded-full motion-safe:animate-heat-beat"
-                style={ringStyle(TOP)}
-              >
-                <span className="absolute inset-[0.22em] flex items-center justify-center rounded-full bg-nv-bg">
-                  <span ref={num} className="text-[1.55em] leading-none font-extrabold tracking-tight text-white tabular-nums">
-                    {TOP}
+              <span className="relative block">
+                <span
+                  ref={halo}
+                  aria-hidden="true"
+                  className="pointer-events-none absolute -inset-[1.2em] -z-10 rounded-full"
+                  style={{ background: haloBackground(TOP) }}
+                />
+                <span
+                  ref={ring}
+                  className="relative block size-[4.2em] rounded-full motion-safe:animate-heat-beat"
+                  style={ringStyle(TOP)}
+                >
+                  <span className="absolute inset-[0.22em] flex items-center justify-center rounded-full bg-nv-bg">
+                    <span ref={num} className="text-[1.55em] leading-none font-extrabold tracking-tight text-white tabular-nums">
+                      {TOP}
+                    </span>
                   </span>
                 </span>
               </span>

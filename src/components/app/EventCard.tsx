@@ -39,6 +39,8 @@ function arc(a: Point, b: Point, steps = 18): Point[] {
 
 export function EventCard({ interactive = false }: { interactive?: boolean }) {
   const [going, setGoing] = useState(false);
+  // La pista «Pruébalo» se va tras la primera interacción.
+  const [touched, setTouched] = useState(false);
   const count = featured.attendees + (going ? 1 : 0);
   // El número del badge va un paso por detrás: sube cuando aterriza la chispa.
   const [shown, setShown] = useState(featured.attendees);
@@ -65,15 +67,18 @@ export function EventCard({ interactive = false }: { interactive?: boolean }) {
     const c = card.getBoundingClientRect();
     const f = from.getBoundingClientRect();
     const t = to.getBoundingClientRect();
+    // La card puede ir ampliada (zoom en escritorio): pasamos de px de pantalla a
+    // px locales de la card para que la chispa salga y aterrice donde debe.
+    const k = card.offsetWidth ? c.width / card.offsetWidth : 1;
     const path = arc(
-      { x: f.left - c.left + f.width / 2, y: f.top - c.top + f.height / 2 },
-      { x: t.left - c.left + t.width / 2, y: t.top - c.top + t.height / 2 },
+      { x: (f.left - c.left + f.width / 2) / k, y: (f.top - c.top + f.height / 2) / k },
+      { x: (t.left - c.left + t.width / 2) / k, y: (t.top - c.top + t.height / 2) / k },
     );
     const frames = path.map((p) => ({ transform: `translate(${p.x}px, ${p.y}px)` }));
 
     for (let i = TAIL; i >= 0; i--) {
       // i = 0 es la cabeza: núcleo blanco con brillo magenta; la cola se enfría.
-      const size = i === 0 ? 12 : 9 - i;
+      const size = i === 0 ? 16 : 12 - i * 1.2;
       const dot = document.createElement("span");
       dot.setAttribute("aria-hidden", "true");
       dot.style.cssText = `position:absolute;left:${-size / 2}px;top:${-size / 2}px;width:${size}px;height:${size}px;border-radius:999px;pointer-events:none;z-index:5;opacity:0;`;
@@ -105,6 +110,7 @@ export function EventCard({ interactive = false }: { interactive?: boolean }) {
 
   const toggle = () => {
     stopAll();
+    setTouched(true);
     const next = !going;
     setGoing(next);
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -153,6 +159,13 @@ export function EventCard({ interactive = false }: { interactive?: boolean }) {
           </p>
         </div>
         {interactive ? (
+          <span className="relative shrink-0">
+          <span
+            aria-hidden="true"
+            className={`pointer-events-none absolute bottom-full left-1/2 mb-2 -translate-x-1/2 text-[13px] font-bold tracking-[0.14em] whitespace-nowrap text-nv-cyan uppercase transition-opacity duration-200 ease-[var(--ease-out)] ${touched ? "opacity-0" : "opacity-100"}`}
+          >
+            Pruébalo
+          </span>
           <button
             ref={button}
             type="button"
@@ -163,6 +176,7 @@ export function EventCard({ interactive = false }: { interactive?: boolean }) {
           >
             <AttendFace checked={going} />
           </button>
+          </span>
         ) : (
           <AttendFace checked={false} />
         )}

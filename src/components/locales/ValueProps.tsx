@@ -48,18 +48,18 @@ const items: Row[] = [
 export function ValueProps() {
   return (
     <section aria-labelledby="valor-title" className="py-16 sm:py-28">
-      <Container className="grid gap-y-14 lg:grid-cols-12 lg:gap-x-8">
+      <Container className="grid grid-cols-[minmax(0,1fr)] gap-y-14 lg:grid-cols-12 lg:gap-x-8">
         {/* Titular fijo en la columna izquierda mientras las filas pasan a la derecha. */}
         <div className="lg:col-span-5">
           <h2
             id="valor-title"
             data-reveal-item
-            className="text-4xl leading-none font-extrabold tracking-[-0.035em] text-balance text-white sm:text-[56px] lg:sticky lg:top-28 lg:text-[clamp(44px,3.8vw,56px)]"
+            className="text-[min(9.2vw,2.25rem)] leading-none font-extrabold tracking-[-0.035em] text-balance text-white sm:text-[56px] lg:sticky lg:top-28 lg:text-[clamp(44px,3.8vw,56px)]"
           >
             Lo que tienes con NightVibe.
           </h2>
         </div>
-        <div className="grid gap-y-14 lg:col-span-6 lg:col-start-7 lg:gap-y-24">
+        <div className="grid grid-cols-[minmax(0,1fr)] gap-y-14 lg:col-span-6 lg:col-start-7 lg:gap-y-24">
           {items.map((it) => (
             <article key={it.title} className="flex flex-col gap-8">
               <div>
@@ -78,7 +78,7 @@ export function ValueProps() {
                 <div
                   data-reveal-item
                   style={{ "--reveal-delay": "140ms", maxWidth: it.width } as CSSProperties}
-                  className={`${it.phone} lg:ml-0 lg:w-full`}
+                  className={`${it.phone} nv-piece max-md:w-full lg:ml-0 lg:w-full`}
                 >
                   <AppScreen screen={it.screen} rows={it.rows} width={it.width} />
                 </div>

@@ -38,7 +38,7 @@ const rows: Row[] = [
 export function FeatureRows() {
   return (
     <section aria-labelledby="movil-title" className="pt-12 pb-20 sm:pt-20 sm:pb-36">
-      <Container className="grid gap-y-16 lg:grid-cols-12 lg:gap-x-8">
+      <Container className="grid grid-cols-[minmax(0,1fr)] gap-y-16 lg:grid-cols-12 lg:gap-x-8">
         {/* Titular fijo en la columna izquierda mientras las filas pasan a la derecha. */}
         <div className="lg:col-span-5">
           <h2
@@ -50,7 +50,7 @@ export function FeatureRows() {
           </h2>
         </div>
 
-        <div className="grid gap-y-16 lg:col-span-6 lg:col-start-7 lg:gap-y-28">
+        <div className="grid grid-cols-[minmax(0,1fr)] gap-y-16 lg:col-span-6 lg:col-start-7 lg:gap-y-28">
           {rows.map((r) => (
             <article key={r.id} id={r.id} className="flex scroll-mt-16 flex-col gap-8">
               <div>
@@ -70,7 +70,7 @@ export function FeatureRows() {
                 style={{ "--reveal-delay": "140ms", maxWidth: r.width } as CSSProperties}
                 // La demo del botón va ampliada en escritorio (+25 % y +40 %) para que
                 // la chispa se lea de principio a fin.
-                className={`${r.phone} lg:ml-0 lg:w-full ${r.id === "confirma" ? "lg:[zoom:1.25] xl:[zoom:1.4]" : ""}`}
+                className={`${r.phone} nv-piece max-md:w-full lg:ml-0 lg:w-full ${r.id === "confirma" ? "lg:[zoom:1.25] xl:[zoom:1.4]" : ""}`}
               >
                 <AppScreen screen={r.screen} width={r.width} interactive={r.id === "confirma"} />
               </div>

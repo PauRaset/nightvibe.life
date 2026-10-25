@@ -48,7 +48,7 @@ export function AppScreen({ screen, glow, interactive = false, width = 360, rows
 
   const screenEl = (
     <div
-      className={`relative w-full overflow-hidden rounded-[1.75rem] bg-nv-surface ${className}`}
+      className={`nv-piece relative w-full overflow-hidden rounded-[1.75rem] bg-nv-surface ${className}`}
       style={{ maxWidth: width }}
     >
       {useCapture ? (
@@ -69,7 +69,7 @@ export function AppScreen({ screen, glow, interactive = false, width = 360, rows
   );
   if (!glow) return screenEl;
   return (
-    <div className="relative isolate w-full" style={{ maxWidth: width }}>
+    <div className="nv-piece relative isolate w-full" style={{ maxWidth: width }}>
       {/* Halo: degradado radial estático (sin filter: blur), barato en móvil. */}
       <div
         aria-hidden="true"

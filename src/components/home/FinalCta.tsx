@@ -12,7 +12,7 @@ export function FinalCta() {
   return (
     <section id="descargar" aria-labelledby="descargar-title" className="scroll-mt-16 overflow-x-clip py-24 sm:py-36 lg:py-44">
       <Container className="flex flex-col gap-14 lg:flex-row lg:items-center lg:gap-20">
-        <div aria-hidden="true" className="shrink-0">
+        <div aria-hidden="true" className="nv-piece shrink-0 max-md:w-fit">
           <HeatBadge
             value={featured.attendees}
             size="xl"

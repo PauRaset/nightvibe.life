@@ -43,6 +43,15 @@
   }
 }
 
+/* Pieza visual independiente (fragmento de la app, badge suelto): en móvil
+   (< 768px) se centra en su columna. El texto nunca lleva esta clase. Escritorio
+   y tablet no cambian. AppScreen la lleva de serie: todo fragmento la hereda. */
+@utility nv-piece {
+  @media (width < 48rem) {
+    margin-inline: auto;
+  }
+}
+
 @utility bg-nv-gradient {
   background-image: var(--nv-gradient);
 }

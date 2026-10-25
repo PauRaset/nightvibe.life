@@ -12,12 +12,14 @@ const delay = (ms: number) => ({ "--rise-delay": `${ms}ms` }) as CSSProperties;
 export function Hero() {
   return (
     <section aria-labelledby="hero-title" className="overflow-hidden">
-      <Container className="relative pt-14 pb-20 sm:pt-24 sm:pb-36 lg:pt-32">
+      {/* Móvil: la primera pantalla termina limpia (alto de pantalla menos la barra),
+          con la frase centrada; el calor empieza justo debajo del pliegue. */}
+      <Container className="relative flex min-h-[calc(100svh-4rem)] flex-col justify-center py-12 sm:block sm:min-h-0 sm:pt-24 sm:pb-36 lg:pt-16 lg:pb-28">
         <h1
           id="hero-title"
-          className="text-[13.5vw] leading-[1] font-extrabold tracking-[-0.045em] text-white sm:text-[11vw] lg:text-[clamp(96px,9vw,150px)]"
+          className="text-[13.5vw] leading-[1] font-extrabold tracking-[-0.045em] text-white sm:text-[11vw] lg:text-[min(14.3vw,186px)]"
         >
-          <span className="nv-rise block" style={delay(0)}>
+          <span className="nv-rise block whitespace-nowrap" style={delay(0)}>
             Esta noche
           </span>
           <span className="nv-rise block whitespace-nowrap" style={delay(110)}>

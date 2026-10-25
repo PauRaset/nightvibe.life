@@ -1,7 +1,7 @@
 import type { CSSProperties } from "react";
 import { featured, friends, privateAttendees } from "@/lib/demo";
 import { buildStars } from "@/lib/universe";
-import { Avatar } from "../app/AppScreen";
+import { Avatar } from "../app/Avatar";
 import { Container } from "../Container";
 import { UniverseCanvas } from "../live/UniverseCanvas";
 

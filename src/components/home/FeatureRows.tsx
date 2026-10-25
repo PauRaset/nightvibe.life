@@ -12,7 +12,7 @@ const rows: Row[] = [
   {
     id: "confirma",
     title: "Confirma que vas.",
-    body: "Un toque en «Voy» y sumas uno al número del local. Los tuyos lo ven, y tú ves a dónde van ellos.",
+    body: "Un toque en el + y sumas uno al número del local. Los tuyos lo ven, y tú ves a dónde van ellos.",
     screen: "evento",
     width: 340,
     phone: "w-full",
@@ -70,7 +70,7 @@ export function FeatureRows() {
                 style={{ "--reveal-delay": "140ms", maxWidth: r.width } as CSSProperties}
                 className={`${r.phone} lg:ml-0 lg:w-full`}
               >
-                <AppScreen screen={r.screen} width={r.width} />
+                <AppScreen screen={r.screen} width={r.width} interactive={r.id === "confirma"} />
               </div>
             </article>
           ))}

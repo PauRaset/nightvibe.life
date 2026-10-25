@@ -138,6 +138,11 @@
 }
 
 @layer base {
+  /* Titulares equilibrados: nunca una palabra sola en la última línea. */
+  h1, h2, h3 {
+    text-wrap: balance;
+  }
+
   html {
     background-color: var(--nv-bg);
     color-scheme: dark;

@@ -1,15 +1,21 @@
 // Configuración central del sitio. Ningún dato de contacto, URL externa o dato
 // legal debe estar hardcodeado fuera de este archivo.
 
+// EMAIL DE CONTACTO: el único sitio donde se cambia. Lo usan el footer, el aviso
+// legal, los términos y la política de privacidad. Mientras sea un placeholder
+// "[TODO: …]" el footer no lo muestra.
+// (El destino de los mensajes del formulario es otra cosa: la variable de entorno
+// CONTACT_TO_EMAIL del servidor; normalmente será esta misma dirección.)
+export const CONTACT_EMAIL = "tickets@nightvibe.life";
+
 export const siteConfig = {
   name: "NightVibe",
   siteUrl: "https://nightvibe.life",
   description:
-    "Descubre dónde está la noche ahora mismo. Calor en tiempo real, promociones por niveles, a dónde van tus amigos y entradas en el móvil.",
-  shortDescription: "La noche, en tiempo real.",
+    "Mira qué locales se están llenando esta noche y a dónde van los tuyos. Entradas con QR y premios reales en cada local.",
+  shortDescription: "La noche, en directo",
 
-  // TODO: email de contacto público definitivo.
-  contactEmail: "[TODO: email de contacto]",
+  contactEmail: CONTACT_EMAIL,
 
   // TODO: URLs de las stores. Vacías = el botón se muestra como "Próximamente".
   stores: {
@@ -29,8 +35,9 @@ export const siteConfig = {
     nif: "[TODO: NIF/CIF]",
     address: "[TODO: domicilio social completo]",
     registry: "[TODO: datos de inscripción en el Registro Mercantil]",
-    email: "[TODO: email de contacto legal]",
-    privacyEmail: "[TODO: email para ejercicio de derechos RGPD]",
+    // Mismo email por defecto; sepáralos aquí si el asesor legal lo pide.
+    email: CONTACT_EMAIL,
+    privacyEmail: CONTACT_EMAIL,
     dpo: "[TODO: delegado de protección de datos, si aplica]",
     minimumAge: "[TODO: edad mínima de uso, p. ej. 18]",
     lastUpdated: "[TODO: fecha de última actualización]",

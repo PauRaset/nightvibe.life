@@ -121,7 +121,9 @@ Fuente única de los hex: `src/styles/tokens.css`. **No inventes hex nuevos.**
 ## Configuración
 
 - Todos los datos de contacto, URLs de stores, redes y datos legales viven en
-  `src/config/site.ts`. Nada hardcodeado fuera de ahí. Los placeholders tienen la forma
+  `src/config/site.ts`. El email de contacto es UNA constante: `CONTACT_EMAIL` (arriba
+  del todo en site.ts); de ella salen `contactEmail`, `legal.email` y
+  `legal.privacyEmail`. Nada hardcodeado fuera de ahí. Los placeholders tienen la forma
   `[TODO: ...]`.
 - Env vars (solo servidor, nunca `NEXT_PUBLIC_`): `SENDGRID_API_KEY`, `CONTACT_TO_EMAIL`,
   `CONTACT_FROM_EMAIL`, `API_BASE` (URL del backend, p. ej. `https://api.nightvibe.life`).

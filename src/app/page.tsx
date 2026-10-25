@@ -10,15 +10,12 @@ import { Reveal } from "@/components/live/Reveal";
 import { siteConfig } from "@/config/site";
 import { pageMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = {
-  ...pageMetadata({
-    title: `${siteConfig.name} · ${siteConfig.shortDescription}`,
-    description: siteConfig.description,
-    path: "/",
-  }),
-  // La home usa el título completo, sin la plantilla "%s · NightVibe".
-  title: { absolute: `${siteConfig.name} · ${siteConfig.shortDescription}` },
-};
+export const metadata: Metadata = pageMetadata({
+  title: `${siteConfig.name} · ${siteConfig.shortDescription}`,
+  absoluteTitle: true,
+  description: siteConfig.description,
+  path: "/",
+});
 
 // "La frase es la composición": cada sección es una frase con su prueba al lado,
 // alternando escalas. Dos momentos protagonistas a ancho completo: el calor con

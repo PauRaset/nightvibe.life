@@ -63,7 +63,8 @@ export function ContactForm() {
     if (!parsed.success) {
       const next = flattenErrors(parsed.error);
       setErrors(next);
-      setStatus("idle");
+      setStatus("error");
+      setMessage("Revisa los campos marcados.");
       const first = Object.keys(next)[0];
       if (first) form.querySelector<HTMLElement>(`[name="${first}"]`)?.focus();
       return;
@@ -128,6 +129,7 @@ export function ContactForm() {
           id="mensaje"
           name="mensaje"
           rows={5}
+          maxLength={2000}
           required
           aria-invalid={errors.mensaje ? true : undefined}
           aria-describedby={describedBy("mensaje")}

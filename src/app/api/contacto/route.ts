@@ -4,6 +4,9 @@ import { rateLimit } from "@/lib/rateLimit";
 
 const RATE_LIMIT = 5;
 const RATE_WINDOW_MS = 10 * 60 * 1000;
+// Anti-spam: el cuerpo de una solicitud legítima ocupa unos pocos KB (el mensaje
+// tiene un máximo de 2000 caracteres). Por encima de esto se rechaza sin parsear.
+const MAX_BODY_BYTES = 16 * 1024;
 const GENERIC_ERROR = "No hemos podido enviar tu mensaje. Inténtalo de nuevo más tarde.";
 
 function getClientIp(request: Request): string {
@@ -42,9 +45,18 @@ export async function POST(request: Request) {
     );
   }
 
+  const declared = Number(request.headers.get("content-length") ?? 0);
+  if (declared > MAX_BODY_BYTES) {
+    return Response.json({ error: "El mensaje es demasiado largo." }, { status: 413 });
+  }
+
   let body: unknown;
   try {
-    body = await request.json();
+    const raw = await request.text();
+    if (raw.length > MAX_BODY_BYTES) {
+      return Response.json({ error: "El mensaje es demasiado largo." }, { status: 413 });
+    }
+    body = JSON.parse(raw);
   } catch {
     return Response.json({ error: "Solicitud no válida." }, { status: 400 });
   }

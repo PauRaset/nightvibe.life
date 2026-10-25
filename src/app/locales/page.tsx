@@ -11,10 +11,12 @@ import { ValueProps } from "@/components/locales/ValueProps";
 import { pageMetadata } from "@/lib/metadata";
 
 export const metadata: Metadata = pageMetadata({
-  title: "Para locales",
+  title: "NightVibe para locales · Llena tu sala esta noche",
+  absoluteTitle: true,
   description:
-    "Publica eventos, vende entradas y premia a quien vuelve con niveles y misiones. Hablemos de tu local.",
+    "Para clubs y locales: publica tus eventos, vende entradas con QR y haz que vuelvan con niveles, misiones y premios. Llega a la gente que decide esta noche a dónde ir.",
   path: "/locales",
+  image: "/locales/opengraph-image",
 });
 
 const delay = (ms: number) => ({ "--reveal-delay": `${ms}ms` }) as CSSProperties;

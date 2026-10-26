@@ -11,14 +11,15 @@ export const metadata: Metadata = pageMetadata({
   noindex: !siteConfig.legalPagesReady,
 });
 
-// Versión provisional: el texto definitivo está en preparación.
+// Provisional: los términos de la app y de compra de entradas se publican con el lanzamiento.
 export default function TerminosPage() {
   return (
     <LegalLayout
       title="Términos y condiciones"
       intro={
         <p>
-          Esta página está en preparación. Para cualquier consulta, escríbenos a{" "}
+          Los términos de uso de la app y de compra de entradas se publicarán con el lanzamiento de{" "}
+          {siteConfig.name}. Para cualquier consulta, escríbenos a{" "}
           <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>.
         </p>
       }

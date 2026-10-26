@@ -1,177 +1,132 @@
 // REVISAR POR ASESOR LEGAL ANTES DE PUBLICAR
 import type { Metadata } from "next";
-import Link from "next/link";
 import { LegalLayout, type LegalSection } from "@/components/legal/LegalLayout";
-import { siteConfig } from "@/config/site";
+import { CONTACT_EMAIL, siteConfig } from "@/config/site";
 import { pageMetadata } from "@/lib/metadata";
 
 export const metadata: Metadata = pageMetadata({
   title: "Política de privacidad",
-  description: `Cómo trata ${siteConfig.name} tus datos personales en la web y en la app.`,
+  description: `Cómo trata ${siteConfig.name} los datos personales en la web nightvibe.life.`,
   path: "/privacidad",
   noindex: !siteConfig.legalPagesReady,
 });
 
 const { legal } = siteConfig;
+const mail = (
+  <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>
+);
 
+// Basada en lo que hace de verdad el código (revisado en octubre de 2026):
+// - el formulario de /locales envía nombre, local, ciudad, email, teléfono y
+//   mensaje por email con SendGrid; no se guarda en ninguna base de datos;
+// - la web no usa cookies, analítica ni recursos de terceros.
 const sections: LegalSection[] = [
   {
     id: "responsable",
-    title: "Responsable del tratamiento",
+    title: "Responsable",
     content: (
-      <ul>
-        <li>
-          <strong>Responsable:</strong> {legal.holder}
-        </li>
-        <li>
-          <strong>NIF:</strong> {legal.nif}
-        </li>
-        <li>
-          <strong>Domicilio:</strong> {legal.address}
-        </li>
-        <li>
-          <strong>Email para privacidad:</strong> {legal.privacyEmail}
-        </li>
-        <li>
-          <strong>Delegado de protección de datos:</strong> {legal.dpo}
-        </li>
-      </ul>
+      <p>
+        El responsable del tratamiento de tus datos es <strong>{legal.holder}</strong>, titular de
+        esta web. Puedes escribir para cualquier cuestión sobre privacidad a {mail}.
+      </p>
     ),
   },
   {
-    id: "alcance",
-    title: "Alcance",
+    id: "ambito",
+    title: "Ámbito",
     content: (
       <p>
-        Esta política se aplica al sitio web {siteConfig.siteUrl} y a la aplicación móvil{" "}
-        {siteConfig.name}, conforme al Reglamento (UE) 2016/679 (RGPD) y la Ley Orgánica 3/2018
-        (LOPDGDD).
+        Esta política cubre la web nightvibe.life: la navegación por sus páginas y el formulario de
+        contacto para locales. La app de {siteConfig.name} tendrá su propia política de privacidad
+        cuando se publique.
       </p>
     ),
   },
   {
     id: "datos",
-    title: "Qué datos tratamos, para qué y con qué base legal",
+    title: "Qué datos recogemos",
     content: (
       <>
-        <h3>Formulario de contacto para locales (web)</h3>
         <p>
-          Nombre, nombre del local, ciudad, email, teléfono y mensaje. Finalidad: responder a tu
-          solicitud y, en su caso, gestionar la relación comercial. Base legal: tu consentimiento y
-          la aplicación de medidas precontractuales a petición tuya (art. 6.1.a y 6.1.b RGPD).
+          <strong>Al navegar por la web</strong> no te pedimos ningún dato ni usamos cookies ni
+          herramientas de analítica. El servidor que aloja la web registra datos técnicos de cada
+          conexión (como la dirección IP y el navegador) para poder servirla y mantenerla segura.
         </p>
-
-        <h3>Registro y autenticación por teléfono (app)</h3>
         <p>
-          Número de teléfono e identificador de cuenta. La verificación se realiza mediante un
-          código SMS a través de Firebase Authentication (Google). Finalidad: crear y proteger tu
-          cuenta. Base legal: ejecución del contrato (art. 6.1.b RGPD).
+          <strong>Si envías el formulario de contacto para locales</strong>, recogemos los datos que
+          escribes en él:
         </p>
-
-        <h3>Perfil y funciones sociales (app)</h3>
-        <p>
-          Nombre de usuario, foto de perfil si la añades, personas a las que sigues y que te siguen,
-          y los locales a los que indicas que vas. Finalidad: permitir que las personas que te
-          siguen vean a dónde vas y viceversa. Base legal: ejecución del contrato (art. 6.1.b
-          RGPD). [TODO: describir los controles de visibilidad disponibles en la app.]
-        </p>
-
-        <h3>Geolocalización (app)</h3>
-        <p>
-          Ubicación aproximada o precisa del dispositivo, solo si concedes el permiso. Finalidad:
-          mostrarte locales cercanos, calcular distancias y validar misiones en el local.
-          Contribuye, de forma agregada y anónima, al número de asistentes que muestra cada local. Base legal: tu
-          consentimiento (art. 6.1.a RGPD), que puedes retirar en cualquier momento desde los
-          ajustes del dispositivo. [TODO: confirmar si la ubicación se usa en segundo plano, con qué
-          precisión y durante cuánto tiempo se conserva.]
-        </p>
-
-        <h3>Fotos desde la cámara (app)</h3>
-        <p>
-          Imágenes que tomas con la cámara para completar misiones, solo si concedes el permiso.
-          Finalidad: validar la misión y, en su caso, mostrarlas al local correspondiente. Base
-          legal: tu consentimiento (art. 6.1.a RGPD). [TODO: indicar quién puede ver las fotos y
-          su plazo de conservación.]
-        </p>
-
-        <h3>Compra de entradas y pagos (app)</h3>
-        <p>
-          Datos de la compra (evento, importe, fecha, entrada QR). Los pagos se procesan a través
-          de Stripe; {siteConfig.name} no almacena los datos completos de tu tarjeta. Finalidad:
-          gestionar la compra, emitir la entrada y permitir el acceso al evento. Base legal:
-          ejecución del contrato (art. 6.1.b RGPD) y cumplimiento de obligaciones legales
-          fiscales y contables (art. 6.1.c RGPD).
-        </p>
-
-        <h3>Emails transaccionales</h3>
-        <p>
-          Email y datos de la operación. Finalidad: enviarte confirmaciones de compra, entradas y
-          avisos del servicio. Base legal: ejecución del contrato (art. 6.1.b RGPD). No enviamos
-          comunicaciones comerciales sin tu consentimiento. [TODO: indicar proveedor de envío si
-          se usa SendGrid u otro.]
-        </p>
-
-        <h3>Niveles, misiones y premios (app)</h3>
-        <p>
-          Visitas, misiones completadas y premios canjeados en cada local. Finalidad:
-          gestionar el programa de niveles de cada local. Base legal: ejecución del contrato (art.
-          6.1.b RGPD).
-        </p>
-      </>
-    ),
-  },
-  {
-    id: "destinatarios",
-    title: "Destinatarios y encargados del tratamiento",
-    content: (
-      <>
-        <p>No vendemos tus datos. Pueden acceder a ellos:</p>
         <ul>
-          <li>
-            <strong>Locales y organizadores</strong>: los datos necesarios para gestionar tu
-            entrada, el acceso y las promociones de su local. [TODO: detallar qué datos recibe el
-            local exactamente y en calidad de qué (responsable o encargado).]
-          </li>
-          <li>
-            <strong>Google (Firebase)</strong>: autenticación, base de datos y alojamiento.
-          </li>
-          <li>
-            <strong>Stripe</strong>: procesamiento de pagos.
-          </li>
-          <li>
-            <strong>Twilio SendGrid</strong>: envío de emails.
-          </li>
-          <li>
-            <strong>Vercel</strong>: alojamiento del sitio web.
-          </li>
-          <li>Administraciones públicas cuando exista obligación legal.</li>
+          <li>tu nombre;</li>
+          <li>el nombre del local;</li>
+          <li>la ciudad;</li>
+          <li>tu email;</li>
+          <li>tu teléfono;</li>
+          <li>el mensaje que nos escribes;</li>
+          <li>y la constancia de que has aceptado esta política, con la fecha y la hora del envío.</li>
         </ul>
-        <p>[TODO: revisar y completar la lista de proveedores.]</p>
+        <p>
+          Para evitar envíos masivos, el formulario usa tu dirección IP de forma temporal: solo se
+          mantiene en la memoria del servidor durante unos minutos y no se guarda.
+        </p>
       </>
     ),
   },
   {
-    id: "transferencias",
-    title: "Transferencias internacionales",
+    id: "finalidad",
+    title: "Para qué los usamos",
     content: (
       <p>
-        Algunos proveedores pueden tratar datos fuera del Espacio Económico Europeo (por ejemplo,
-        en Estados Unidos). En ese caso, las transferencias se amparan en el Marco de Privacidad de
-        Datos UE-EE. UU. o en las cláusulas contractuales tipo aprobadas por la Comisión Europea.
-        [TODO: verificar la garantía aplicable a cada proveedor.]
+        Usamos los datos del formulario para responder a tu solicitud de información sobre{" "}
+        {siteConfig.name} y, si lo deseas, concertar una reunión contigo. No los usamos para
+        publicidad ni los cedemos a terceros con fines comerciales.
+      </p>
+    ),
+  },
+  {
+    id: "base-legal",
+    title: "Base legal",
+    content: (
+      <p>
+        Tratamos los datos del formulario porque nos das tu consentimiento al marcar la casilla de
+        aceptación antes de enviarlo. Puedes retirarlo en cualquier momento escribiendo a {mail},
+        sin que ello afecte a lo tratado antes de retirarlo.
       </p>
     ),
   },
   {
     id: "conservacion",
-    title: "Plazos de conservación",
+    title: "Cuánto tiempo los conservamos",
     content: (
-      <ul>
-        <li>Datos de cuenta: mientras la cuenta esté activa.</li>
-        <li>Datos de compras: durante los plazos exigidos por la normativa fiscal y mercantil.</li>
-        <li>Solicitudes de contacto: el tiempo necesario para atenderlas. [TODO: plazo concreto.]</li>
-        <li>Ubicación y fotos de misiones: [TODO: plazo concreto].</li>
-      </ul>
+      <p>
+        Conservamos tus datos el tiempo necesario para atender tu solicitud. Si después no se inicia
+        ninguna relación con tu local, los suprimimos como máximo a los 12 meses del envío.
+      </p>
+    ),
+  },
+  {
+    id: "proveedores",
+    title: "Proveedores y transferencias internacionales",
+    content: (
+      <>
+        <p>
+          Para que la web funcione, dos proveedores tratan datos por cuenta del responsable, sin
+          poder usarlos para fines propios:
+        </p>
+        <ul>
+          <li>
+            <strong>Vercel</strong>: alojamiento de la web.
+          </li>
+          <li>
+            <strong>Twilio SendGrid</strong>: envío del email con los datos del formulario.
+          </li>
+        </ul>
+        <p>
+          Ambos tienen su sede en Estados Unidos. Las transferencias internacionales de datos se
+          amparan en las garantías que ofrecen estos proveedores: el Marco de Privacidad de Datos
+          UE-EE. UU. o las cláusulas contractuales tipo aprobadas por la Comisión Europea.
+        </p>
+      </>
     ),
   },
   {
@@ -180,52 +135,25 @@ const sections: LegalSection[] = [
     content: (
       <>
         <p>
-          Puedes ejercer tus derechos de acceso, rectificación, supresión, oposición, limitación
-          del tratamiento y portabilidad, así como retirar tu consentimiento en cualquier momento,
-          escribiendo a {legal.privacyEmail}. También puedes eliminar tu cuenta desde la app. [TODO:
-          confirmar que la app permite eliminar la cuenta.]
+          Puedes ejercer en cualquier momento tus derechos de acceso, rectificación, supresión,
+          oposición, limitación del tratamiento y portabilidad, y retirar tu consentimiento,
+          escribiendo a {mail}.
         </p>
         <p>
-          Si consideras que no hemos tratado tus datos correctamente, puedes presentar una
-          reclamación ante la Agencia Española de Protección de Datos (
+          Si consideras que no hemos tratado bien tus datos, puedes reclamar ante la Agencia
+          Española de Protección de Datos en{" "}
           <a href="https://www.aepd.es" target="_blank" rel="noopener noreferrer">
             www.aepd.es
           </a>
-          ).
+          .
         </p>
       </>
     ),
   },
   {
-    id: "menores",
-    title: "Edad mínima",
-    content: (
-      <p>
-        El uso de la app está reservado a personas con edad igual o superior a {legal.minimumAge}{" "}
-        años. No tratamos conscientemente datos de menores de esa edad.
-      </p>
-    ),
-  },
-  {
-    id: "seguridad",
-    title: "Seguridad",
-    content: (
-      <p>
-        Aplicamos medidas técnicas y organizativas adecuadas para proteger tus datos frente a
-        accesos no autorizados, pérdida o alteración.
-      </p>
-    ),
-  },
-  {
-    id: "cambios",
-    title: "Cambios en esta política",
-    content: (
-      <p>
-        Podemos actualizar esta política. Si los cambios son relevantes, te avisaremos en la app o
-        por email. Consulta también el <Link href="/aviso-legal">Aviso legal</Link> y la{" "}
-        <Link href="/cookies">Política de cookies</Link>.
-      </p>
-    ),
+    id: "decisiones",
+    title: "Decisiones automatizadas",
+    content: <p>No tomamos decisiones automatizadas ni elaboramos perfiles con tus datos.</p>,
   },
 ];
 

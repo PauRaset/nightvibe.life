@@ -29,18 +29,14 @@ export const siteConfig = {
     tiktok: "",
   },
 
-  // TODO: datos del titular (LSSI-CE art. 10). Se muestran en las páginas legales.
+  // Titular de la web y responsable de los datos (persona física: NightVibe aún
+  // no es una actividad dada de alta). Se muestran en las páginas legales.
   legal: {
-    holder: "[TODO: razón social del titular]",
-    nif: "[TODO: NIF/CIF]",
-    address: "[TODO: domicilio social completo]",
-    registry: "[TODO: datos de inscripción en el Registro Mercantil]",
+    holder: "Pau Raset Soler",
     // Mismo email por defecto; sepáralos aquí si el asesor legal lo pide.
     email: CONTACT_EMAIL,
     privacyEmail: CONTACT_EMAIL,
-    dpo: "[TODO: delegado de protección de datos, si aplica]",
-    minimumAge: "[TODO: edad mínima de uso, p. ej. 18]",
-    lastUpdated: "[TODO: fecha de última actualización]",
+    lastUpdated: "octubre de 2026",
   },
 
   // Capturas reales de la app en public/screens/ (home.png, evento.png,

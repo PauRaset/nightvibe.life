@@ -2,71 +2,47 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { LegalLayout, type LegalSection } from "@/components/legal/LegalLayout";
-import { siteConfig } from "@/config/site";
+import { CONTACT_EMAIL, siteConfig } from "@/config/site";
 import { pageMetadata } from "@/lib/metadata";
 
 export const metadata: Metadata = pageMetadata({
   title: "Política de cookies",
-  description: `Uso de cookies en el sitio web de ${siteConfig.name}.`,
+  description: `Uso de cookies en la web de ${siteConfig.name}: no usamos ninguna.`,
   path: "/cookies",
   noindex: !siteConfig.legalPagesReady,
 });
 
-// Fase 1: sin cookies no esenciales ni analytics. Si se añaden, hay que
-// implementar un banner de consentimiento ANTES de activarlas y actualizar esta página.
+// Comprobado en octubre de 2026: la web no crea cookies ni usa localStorage,
+// analítica, píxeles ni recursos de terceros (las fuentes se sirven desde la
+// propia web). Si se añade cualquier cookie no técnica, ANTES hace falta un
+// banner de consentimiento y actualizar esta página.
 const sections: LegalSection[] = [
   {
     id: "que-son",
     title: "Qué son las cookies",
     content: (
       <p>
-        Las cookies son pequeños archivos que un sitio web guarda en tu navegador. Se regulan en el
-        artículo 22.2 de la LSSI-CE y, cuando tratan datos personales, en el RGPD.
+        Las cookies son pequeños archivos que un sitio web guarda en tu navegador para recordar
+        información entre visitas.
       </p>
     ),
   },
   {
     id: "uso",
-    title: "Cookies que usa este sitio",
+    title: "Cookies que usa esta web",
     content: (
       <>
         <p>
-          <strong>Este sitio no utiliza cookies analíticas, publicitarias ni de terceros.</strong>{" "}
-          Solo podría usar cookies técnicas estrictamente necesarias para el funcionamiento del
-          sitio, que están exentas del deber de consentimiento según el artículo 22.2 de la
-          LSSI-CE.
+          <strong>Ninguna.</strong> Esta web no instala cookies en tu navegador: ni técnicas, ni de
+          análisis, ni de publicidad, ni de terceros. Tampoco guarda información en el
+          almacenamiento local de tu navegador.
         </p>
-        <div className="overflow-x-auto">
-          <table>
-            <thead>
-              <tr>
-                <th scope="col">Cookie</th>
-                <th scope="col">Tipo</th>
-                <th scope="col">Finalidad</th>
-                <th scope="col">Duración</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>[TODO: ninguna / nombre]</td>
-                <td>Técnica</td>
-                <td>[TODO]</td>
-                <td>[TODO]</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+        <p>
+          No usamos herramientas de analítica ni píxeles de seguimiento, y las fuentes tipográficas
+          se sirven desde la propia web, sin llamadas a servicios externos. Por eso no te mostramos
+          ningún aviso de cookies.
+        </p>
       </>
-    ),
-  },
-  {
-    id: "gestion",
-    title: "Cómo gestionar las cookies",
-    content: (
-      <p>
-        Puedes bloquear o eliminar las cookies desde la configuración de tu navegador. Si bloqueas
-        las técnicas, algunas partes del sitio podrían no funcionar correctamente.
-      </p>
     ),
   },
   {
@@ -74,9 +50,10 @@ const sections: LegalSection[] = [
     title: "Cambios",
     content: (
       <p>
-        Si en el futuro incorporamos cookies no esenciales, te pediremos el consentimiento antes de
-        instalarlas y actualizaremos esta política. Más información en la{" "}
-        <Link href="/privacidad">Política de privacidad</Link>.
+        Si en el futuro usamos cookies que no sean estrictamente necesarias, te pediremos antes tu
+        consentimiento y actualizaremos esta página. Para cualquier duda, escribe a{" "}
+        <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a> o consulta nuestra{" "}
+        <Link href="/privacidad">política de privacidad</Link>.
       </p>
     ),
   },
